@@ -1,0 +1,14 @@
+1.FreeMarker是一个用Java语言编写的模板引擎，它基于模板来生成文本输出。FreeMarker与Web容器无关，
+即在Web运行时，它并不知道Servlet或HTTP。它不仅可以用作表现层的实现技术，而且还可以用于生成XML，JSP或Java 等。
+
+2.使用时先导入Freemarker的jar包.它能解析一个后缀名为.ftl的模板文件,并按照模板的内容生成相应的文件.
+
+3.对模板文件中${name},它能对name变量进行批量替换,使用时只需在map集合中传入变量的值即可
+     如rootMap.put("name","jack"),这样name就会被jack替换掉,注意模板中所有的变量都必须替换完全,否则会报错.
+     
+4.在模板中使用如下标记,可以对传入的数组,集合进行遍历:
+  <#list nodeList as node>
+		${node}
+  </#list>
+  
+  我们只需在代码中个传入集合或数组:rootMap.put("nodeList",nodeList)

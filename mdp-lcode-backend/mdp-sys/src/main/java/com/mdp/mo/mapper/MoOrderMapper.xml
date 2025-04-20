@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.mo.mapper.MoOrderMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from mo_order res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'res.ctime desc')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+</mapper>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmBranchStateMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_branch_state res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+    <select id="listPortalAllXmBranchSumState" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        sum(ifnull(`project_cnt`,0)) AS `project_cnt`,
+        sum(ifnull(`file_cnt`,0)) AS `file_cnt`,
+        sum(ifnull(`phase_cnt`,0)) AS `phase_cnt`,
+        sum(ifnull(`phase_finish_cnt`,0)) AS `phase_finish_cnt`,
+        sum(ifnull(`need_pay_at`,0)) AS `need_pay_at`,
+        sum(ifnull(`finish_pay_at`,0)) AS `finish_pay_at`,
+        sum(ifnull(`need_col_at`,0)) AS `need_col_at`,
+        sum(ifnull(`finish_col_at`,0)) AS `finish_col_at`,
+        sum(ifnull(`risk_cnt`,0)) AS `risk_cnt`,
+        sum(ifnull(`risk_finish_cnt`,0)) AS `risk_finish_cnt`,
+        sum(ifnull(`budget_nouser_at`,0)) AS `budget_nouser_at`,
+        sum(ifnull(`budget_ouser_at`,0)) AS `budget_ouser_at`,
+        sum(ifnull(`budget_iuser_at`,0)) AS `budget_iuser_at`,
+        sum(ifnull(`act_user_at`,0)) AS `act_user_at`,
+        sum(ifnull(`act_iuser_at`,0)) AS `act_iuser_at`,
+        sum(ifnull(`act_ouser_at`,0)) AS `act_ouser_at`,
+        sum(ifnull(`act_nouser_at`,0)) AS `act_nouser_at`,
+        sum(ifnull(`finish_rate`,0)) AS `finish_rate`,
+        sum(ifnull(`budget_workload`,0)) AS `budget_workload`,
+        sum(ifnull(`budget_ouser_workload`,0)) AS `budget_ouser_workload`,
+        sum(ifnull(`budget_iuser_workload`,0)) AS `budget_iuser_workload`,
+        sum(ifnull(`estimate_workload`,0)) AS `estimate_workload`,
+        sum(ifnull(`act_workload`,0)) AS `act_workload`,
+        sum(ifnull(`act_ouser_workload`,0)) AS `act_ouser_workload`,
+        sum(ifnull(`act_iuser_workload`,0)) AS `act_iuser_workload`,
+        sum(ifnull(`need_pay_cnt`,0)) AS `need_pay_cnt`,
+        sum(ifnull(`finish_pay_cnt`,0)) AS `finish_pay_cnt`,
+        sum(ifnull(`finish_pay_user_cnt`,0)) AS `finish_pay_user_cnt`,
+        sum(ifnull(`need_pay_user_cnt`,0)) AS `need_pay_user_cnt`,
+        sum(ifnull(`test_cases`,0)) AS `test_cases`,
+        sum(ifnull(`exec_cases`,0)) AS `exec_cases`,
+        sum(ifnull(`design_cases`,0)) AS `design_cases`,
+        sum(ifnull(`finish_cases`,0)) AS `finish_cases`,
+        sum(ifnull(`iteration_cnt`,0)) AS `iteration_cnt`,
+        sum(ifnull(`product_cnt`,0)) AS `product_cnt`,
+        sum(ifnull(`min_start_time`,0)) AS `min_start_time`,
+        sum(ifnull(`max_end_time`,0)) AS `max_end_time`,
+        sum(ifnull(`menu_cnt`,0)) AS `menu_cnt`,
+        sum(ifnull(`menu_finish_cnt`,0)) AS `menu_finish_cnt`,
+        sum(ifnull(`menu_exec_cnt`,0)) AS `menu_exec_cnt`,
+        sum(ifnull(`menu_unstart_cnt`,0)) AS `menu_unstart_cnt`,
+        sum(ifnull(`menu_close_cnt`,0)) AS `menu_close_cnt`,
+        sum(ifnull(`task_cnt`,0)) AS `task_cnt`,
+        sum(ifnull(`task_unstart_cnt`,0)) AS `task_unstart_cnt`,
+        sum(ifnull(`task_exec_cnt`,0)) AS `task_exec_cnt`,
+        sum(ifnull(`task_finish_cnt`,0)) AS `task_finish_cnt`,
+        sum(ifnull(`task_set_cnt`,0)) AS `task_set_cnt`,
+        sum(ifnull(`task_out_cnt`,0)) AS `task_out_cnt`,
+        sum(ifnull(`task_close_cnt`,0)) AS `task_close_cnt`,
+        sum(ifnull(`bug_cnt`,0)) AS `bug_cnt`,
+        sum(ifnull(`closed_bugs`,0)) AS `closed_bugs`,
+        sum(ifnull(`resolved_bugs`,0)) AS `resolved_bugs`,
+        sum(ifnull(`active_bugs`,0)) AS `active_bugs`,
+        sum(ifnull(`confirmed_bugs`,0)) AS `confirmed_bugs`,
+        sum(ifnull(`plan_workhours`,0)) AS `plan_workhours`,
+        sum(ifnull(`plan_worker_cnt`,0)) AS `plan_worker_cnt`,
+        sum(ifnull(`act_worker_cnt`,0)) AS `act_worker_cnt`,
+        sum(ifnull(`budget_at`,0)) AS `budget_at`,
+        sum(ifnull(`act_at`,0)) AS `act_at`,
+        sum(ifnull(`product_budget_workload`,0)) AS `product_budget_workload`,
+        sum(ifnull(`product_act_workload`,0)) AS `product_act_workload`
+        FROM
+        `xm_branch_state`
+        <!-- where res.biz_date = DATE_FORMAT(date_sub(now(),INTERVAL 1 DAY), '%Y-%m-%d')-->
+
+    </select>
+
+    <select id="tasksSumDw" parameterType="String" resultType="HashMap">
+        select * from xm_task t where t.branch_id=#{branchId}
+    </select>
+</mapper>

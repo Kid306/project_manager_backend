@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.menu.mapper.MenuDefMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,count(c.pid) child_num from menu_def res left join menu_def c on res.id=c.pid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <if test=" ext.roleids!=null ">
+                and exists (select 1 from menu_role mr where mr.mid=res.id and  mr.roleid in
+                <foreach collection="ext.roleids" item="item" index="index" open="(" separator="," close=")" >
+                    #{item }
+                </foreach>
+                )
+            </if>
+        </where>
+        group by res.id
+    </select>
+
+    <select id="selectMenusByRoleid" parameterType="HashMap" resultType="HashMap">
+        select res.* from menu_def res
+        <where>
+            <if test="key != null and key !='' ">       </if>
+            and exists (select 1 from menu_role r where r.mid=res.id and r.roleid = #{roleid})
+        </where>
+    </select>
+    <!-- 通过条件查询获取数据列表 返回list<map> -->
+    <select id="selectMenusByRoleids" parameterType="List" resultType="com.mdp.menu.entity.MenuDef">
+        select res.* from menu_def res where  exists (select 1 from menu_role r where r.mid = res.id
+        and  r.roleid in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item.roleid }
+        </foreach>
+        )
+    </select>
+
+    <!-- 获取数据条目 返回long -->
+    <select id="countChildrenByIds" parameterType="List" resultType="long">
+        select count(1) from menu_def res
+        where pid in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item.id }
+        </foreach>
+    </select>
+    <select id="selectMenusInDbByRidAndModuleId" parameterType="List" resultType="com.mdp.menu.entity.MenuDef">
+        select * from menu_def res
+        where (res.module_id,res.rid) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            (#{item.moduleId },#{item.rid})
+        </foreach>
+    </select>
+
+    <select id="selectExistsButonsByIds" parameterType="List" resultType="com.mdp.menu.entity.MenuDef">
+        select * from menu_def res
+        where res.id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item.id }
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmCostRecordMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_cost_record res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+    <!-- 查询非人力的支出及对应的项目的预算，非人力支出不能大于项目非人力总预算 -->
+    <select id="selectTotalProjectAndNouserActCost" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        sum(  ifnull(res.act_at,0)   ) AS act_cost_nouser_amount,
+        p.plan_nouser_at,
+        p.plan_iuser_at,
+        p.plan_ouser_at,
+        p.locked,
+        p.plan_workload,
+        p.total_receivables,
+        p.budget_margin_rate,
+        p.contract_amt,
+        p.plan_iuser_price,
+        p.plan_ouser_price,
+        p.plan_ouser_cnt,
+        p.plan_iuser_cnt,
+        p.plan_working_hours
+        FROM
+        xm_project p
+        LEFT JOIN xm_cost_record res ON p.id = res.project_id
+        <where>
+            p.id = #{projectId}
+            <if test=" excludeIds !=null "> and res.id not in
+                <foreach collection="excludeIds" item="item" index="index" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <!-- 通过条件查询获取数据列表 返回list<map> -->
+    <select id="listSum" parameterType="HashMap" resultType="HashMap">
+        select ${groupBy},max(res.subject_name) as subject_name,max(res.username) as username,sum(res.act_at) as act_at from  xm_cost_record res
+        <where>
+            <if test="branchId != null and branchId !='' ">     and res.branch_id=#{branchId} </if>
+
+            <if test="projectId != null and projectId !='' ">     and res.project_id=#{projectId} </if>
+
+            <if test="subjectId != null and subjectId !='' ">     and res.subject_id =#{subjectId} </if>
+            <if test="costType != null and costType !='' ">     and res.cost_type =#{costType} </if>
+            <if test="startBizMonth != null and startBizMonth !='' ">     and res.biz_month &gt;= #{startBizMonth} </if>
+            <if test="endBizMonth != null and endBizMonth !='' ">     and res.biz_month &lt;= #{endBizMonth} </if>
+            <if test="collectId!=null and collectId!=''"> and exists ( select 1 from xm_collect_link l where l.collect_id=#{collectId} and l.project_id=res.project_id )</if>
+
+        </where>
+        group by ${groupBy}
+    </select>
+</mapper>

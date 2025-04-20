@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmProjectStateHisMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_project_state_his res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+            <if test="ext.startBizDate != null and ext.startBizDate !='' ">   and res.biz_date &gt;=#{ext.startBizDate}    </if>
+            <if test="ext.endBizDate != null and ext.endBizDate !='' ">   and res.biz_date &lt;=#{ext.endBizDate}    </if>
+            <if test="ext.collectId!=null and ext.collectId!=''"> and exists (select 1 from xm_collect_link l where l.project_id=res.project_id and l.collect_id=#{ext.collectId}) </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+</mapper>

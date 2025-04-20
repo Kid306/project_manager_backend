@@ -1,0 +1,13 @@
+/**/target/
+/target/
+/xm-core/target/
+/.idea/**
+/xm-bootstrap/target/
+/.idea/**
+/**/target/*
+/**/.
+/**/.idea/**
+/**/Maven_*
+/**/**.iml
+/**/*.log
+

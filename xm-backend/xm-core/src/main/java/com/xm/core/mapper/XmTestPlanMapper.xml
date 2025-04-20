@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTestPlanMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_test_plan res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.linkIterationId!=null and ext.linkIterationId!=''">
+                and exists (select 1 from xm_menu m
+                inner join xm_test_case c on m.menu_id=c.menu_id
+                inner join xm_test_plan_case pc on pc.case_id=c.id
+                where m.iteration_id=#{ext.linkIterationId} and pc.plan_id=res.id
+                )
+            </if>
+            <if test="ext.collectId!=null and ext.collectId!=''">
+                and exists (select 1 from xm_collect_link l where l.collect_id=#{ext.collectId} and l.project_id=res.project_id)
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+</mapper>

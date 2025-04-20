@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-lcode</artifactId>
+  <packaging>jar</packaging>
+  <name>mdp-lcode 低代码管理系统</name>
+  <description>低代码管理系统</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-lcode-backend</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-springdoc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-dm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-dev</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-form</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-sys</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-arc-mate</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-arc-pub</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-onepark</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies> 
+</project>

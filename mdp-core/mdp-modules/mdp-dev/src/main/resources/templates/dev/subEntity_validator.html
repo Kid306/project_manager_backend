@@ -1,0 +1,77 @@
+package  ${largeModulePackage}.entity;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+<#list importClassList as column>
+import ${column.fullJavaClassName};
+</#list>
+
+/**
+ * ${entityName} entity.<br>
+ * 大模块 ${largeModuleName}<br>
+ * 小模块 ${smallModuleName}<br>
+ * 表 ${tableName} ${tableRemarks}<br>
+ * 实体 ${entityName}<br>
+ * 表是指数据库结构中的表,实体是指java类型中的实体类<br>
+ * 当前所有字段名:<br>
+ *	<#list columnList as column>${column.camelsColumnName}<#if column_has_next>,</#if></#list>;<br>
+ * 当前主键(包括多主键):<br>
+ *	<#list primaryKeysList as column>${column.camelsColumnName}<#if column_has_next>,</#if></#list>;<br>
+ */
+
+public class ${entityName}  implements java.io.Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	<#list columnList as column>
+	
+	/**${column.remarks}**/
+	${column.simpleJavaClassName} ${column.camelsColumnName};
+  	</#list>
+
+
+	public ${entityName}() {
+	}
+
+	public ${entityName}(<#list columnList as column><#if column_has_next>${column.simpleJavaClassName} ${column.camelsColumnName} ,<#else>${column.simpleJavaClassName} ${column.camelsColumnName}</#if></#list>){
+		<#list columnList as column>
+		this.${column.camelsColumnName}=${column.camelsColumnName};
+  		</#list>
+	}
+	
+	<#list columnList as column>
+	/**${column.remarks}**/
+	public void set${column.bigCamelsColumnName}(${column.simpleJavaClassName} ${column.camelsColumnName}) {
+		this.${column.camelsColumnName} = ${column.camelsColumnName};
+	}
+	</#list>
+	
+	<#list columnList as column>
+	/** ${column.remarks}**/
+	<#if column.simpleJavaClassName=='String'>
+	@Size(max=${column.columnSize},min=0) 
+	<#if column.isNullAble=='NO'>
+	@NotBlank
+	</#if>
+	<#elseif column.simpleJavaClassName=='Date'>
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	<#if column.isNullAble=='NO'>
+	@NotNull
+	</#if>
+	<#elseif column.simpleJavaClassName=='boolean'>
+	<#else>
+	@Digits(integer=${column.columnSize},fraction=${column.decimalDigits})
+	<#if column.isNullAble=='NO'>
+	@NotNull
+	</#if>
+	</#if>
+	public ${column.simpleJavaClassName} get${column.bigCamelsColumnName}() {
+		return this.${column.camelsColumnName};
+	}
+	</#list>
+
+}

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmQuestionMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_question res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <sql id="whereForMap">
+        <if test="ext.tagIdList != null"> and
+            <foreach collection="ext.tagIdList" item="item" index="index" open="(" separator=" or " close=")" >
+                find_in_set(#{item},res.tag_ids)
+            </foreach>
+        </if>
+        <if test="ext.createTimeStart !=null "> and res.create_time between #{ext.createTimeStart} and #{ext.createTimeEnd} </if>
+        <if test="ext.ltimeStart !=null "> and res.ltime between #{ext.ltimeStart} and #{ext.ltimeEnd} </if>
+        <if test="ext.myUserid != null and ext.myUserid != ''"> and ( res.create_userid=#{ext.myUserid} or res.handler_userid=#{ext.myUserid}) </if>
+         
+        <if test="ext.compete != null and ext.compete!=''">
+            and (res.handler_userid=#{ext.compete} or res.create_userid=#{ext.compete})
+        </if>
+        <if test="ext.work != null and ext.work != ''"> and res.status !='8' </if>
+        <if test="ext.linkIterationId != null and ext.linkIterationId != ''"> and exists (select 1 from xm_menu m where m.iteration_id=#{ext.linkIterationId} and m.menu_id=res.menu_id) </if>
+
+        <if test="ext.collectId!=null and ext.collectId!=''">
+            and exists (select 1 from xm_collect_link l where l.collect_id=#{ext.collectId} and l.project_id=res.project_id)
+        </if>
+        <!--   下面填写场景化代码     -->
+            <if test="ext.his!=null and ext.his!=''">
+                and exists (select 1 from xm_question_handle h where h.question_id = res.id
+                <if test="ext.hisHandlerUserid!=null and ext.hisHandlerUserid!=''">
+                    and (h.handler_userid=#{ext.hisHandlerUserid}
+                    <if test="ext.hisTargetUserid!=null and ext.hisTargetUserid!=''">
+                        or h.target_userid=#{ext.hisTargetUserid}
+                    </if>
+                    )
+                </if>
+                <if test="ext.hisHandleStatus!=null and ext.hisHandleStatus!=''">
+                    and h.handle_status=#{ext.hisHandleStatus}
+                </if>
+                <if test="ext.hisHandleSolution!=null and ext.hisHandleSolution!=''">
+                    and h.handle_solution=#{ext.hisHandleSolution}
+                </if>
+                <if test="ext.retestCount!=null and ext.retestCount!=''">
+                    and h.handle_status in ('4') and h.old_status!='4'
+                    group by h.question_id HAVING count(1) > #{ext.retestCount}
+                </if>
+                )
+        </if>
+    </sql>
+
+    <select id="getXmQuestionAttDist" resultType="HashMap">
+        select count(*) as value,${ext.groupBy} as name from xm_question res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <include refid="whereForMap"></include>
+        </where>
+        group by ${ext.groupBy}
+    </select>
+    <select id="getXmQuestionAgeDist" resultType="HashMap">
+
+        select sum(value) as value,case when age&lt;3 then 0 when age &lt;6 then 1 when age &lt;8 then 2 when age &lt;16 then 3 when age&lt;31 then 4 else 5 end as name from (
+        select count(*) as value, datediff (res.end_time,res.create_time)  as age from  xm_question res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <include refid="whereForMap"></include>
+        </where>
+        group by age
+        ) as a
+        group by name
+    </select>
+    <select id="getXmQuestionSort"  resultType="HashMap">
+        select count(*) as value,${ext.groupBy} as id,
+        max( <if test="ext.groupBy=='handler_userid'">handler_username</if>
+        <if test="ext.groupBy=='ask_userid'">ask_username</if>
+        <if test="ext.groupBy=='create_userid'">create_username</if>
+        <if test="ext.groupBy=='func_id'">func_name</if>
+        <if test="ext.groupBy=='menu_id'">menu_name</if> ) as name from xm_question res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <include refid="whereForMap"></include>
+        </where>
+        group by ${ext.groupBy}
+    </select>
+
+
+    <select id="getXmQuestionRetestDist" resultType="HashMap">
+
+        select count(*) as bugs_num,retimes from
+        (
+        SELECT count(*) as retimes,h.question_id FROM xm_question_handle h inner join xm_question res
+        on res.id=h.question_id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <include refid="whereForMap"></include>
+            and h.handle_status='9'
+        </where>
+
+        group by h.question_id ) as ret
+        group by ret.retimes
+        order by retimes desc
+    </select>
+
+
+    <update id="calcWorkloadByRecord" parameterType="List">
+        update xm_question res left join
+        (select w.bug_id, sum(ifnull(w.workload,0)) as workload  from xm_workload w where w.bug_id  in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        group by w.bug_id
+        )
+        as w on res.id=w.bug_id
+        set res.act_workload=w.workload,res.rate=case
+        when res.budget_workload>0 then ifnull(w.workload,0)*100/ res.budget_workload
+        when w.workload>0 then 100
+        else res.rate end
+        where res.id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="batchUpdateBudgetWorkloadAndRate" parameterType="HashMap">
+        update  xm_question res
+        set
+        res.init_workload=if(res.init_workload is null or res.init_workload=0,#{budgetWorkload},res.init_workload),
+        res.budget_workload=#{budgetWorkload},
+        res.rate=case
+        when #{budgetWorkload}>0 then ifnull(res.act_workload,0)*100/ #{budgetWorkload}
+        when res.act_workload>0 then 100
+        else res.rate end
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,17 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-qx-api</artifactId>
+  
+  <packaging>jar</packaging>
+  <name>mdp-qx-api 权限api</name>
+  <description>权限相关api </description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-framework</artifactId>
+    <version>${revision}</version>
+  </parent> 
+  <dependencies>
+  </dependencies> 
+</project>

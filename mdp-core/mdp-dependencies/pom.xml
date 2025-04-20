@@ -1,0 +1,751 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>mdp-dependencies</artifactId>
+  <packaging>pom</packaging>
+  <name>mdp-dependencies 依赖包</name>
+    <parent>
+        <groupId>com.mdp</groupId>
+        <artifactId>mdp-core</artifactId>
+        <version>${revision}</version>
+    </parent>
+  <description>依赖包，经常用到的jar包大部分都在这里，项目内使用无须带版本，避免将来升级冲突</description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
+        <spring-cloud.version>2021.0.4</spring-cloud.version>
+        <spring-boot.version>2.6.11</spring-boot.version>
+        <jexl13.version>3.1</jexl13.version>
+
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+        <spring-boot-maven-plugin.version>2.3.5.RELEASE</spring-boot-maven-plugin.version>
+
+
+        <!--copy spring boot 的-->
+
+        <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+        <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
+        <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+        <maven-invoker-plugin.version>3.2.2</maven-invoker-plugin.version>
+        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-shade-plugin.version>3.3.0</maven-shade-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+
+        <!-- 统一依赖管理 -->
+        <!-- Web 相关 -->
+        <springdoc.version>1.7.0</springdoc.version>
+        <servlet.versoin>2.5</servlet.versoin>
+        <!-- DB 相关 -->
+        <druid.version>1.2.21</druid.version>
+
+        <mysql-connector-j.version>8.0.31</mysql-connector-j.version>
+        <mybatis-plus.version>3.5.5</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.5.5</mybatis-plus-generator.version>
+        <dynamic-datasource.version>4.3.0</dynamic-datasource.version>
+        <mybatis-plus-join.version>1.4.10</mybatis-plus-join.version>
+        <easy-trans.version>2.2.11</easy-trans.version>
+        <redisson.version>3.18.0</redisson.version> <!-- Spring Boot 2.X 最多使用 3.18.0 版本，否则会报 Tuple NoClassDefFoundError -->
+        <dm8.jdbc.version>8.1.3.62</dm8.jdbc.version>
+        <!-- 消息队列 -->
+        <rocketmq-spring.version>2.2.3</rocketmq-spring.version>
+        <!-- 服务保障相关 -->
+        <lock4j.version>2.2.7</lock4j.version>
+        <!-- 监控相关 -->
+        <skywalking.version>8.12.0</skywalking.version>
+        <spring-boot-admin.version>2.7.15</spring-boot-admin.version>
+        <opentracing.version>0.33.0</opentracing.version>
+        <!-- Test 测试相关 -->
+        <podam.version>7.2.11.RELEASE</podam.version> <!-- Spring Boot 2.X 最多使用 7.2.11 版本 -->
+        <jedis-mock.version>1.0.13</jedis-mock.version>
+        <mockito-inline.version>4.11.0</mockito-inline.version>
+        <!-- Bpm 工作流相关 -->
+        <flowable.version>6.8.1</flowable.version>
+        <!-- 工具类相关 -->
+        <captcha-plus.version>1.0.10</captcha-plus.version>
+        <jsoup.version>1.17.2</jsoup.version>
+        <lombok.version>1.18.30</lombok.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <hutool-all.version>5.8.25</hutool-all.version>
+        <easyexcel.verion>3.3.3</easyexcel.verion>
+        <velocity.version>2.3</velocity.version>
+        <screw.version>1.0.5</screw.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <guice.version>5.1.0</guice.version>
+        <transmittable-thread-local.version>2.14.5</transmittable-thread-local.version>
+        <commons-net.version>3.10.0</commons-net.version>
+        <jsch.version>0.1.55</jsch.version>
+        <tika-core.version>2.9.1</tika-core.version>
+        <ip2region.version>2.7.0</ip2region.version>
+        <bizlog-sdk.version>3.0.6</bizlog-sdk.version>
+        <!-- 三方云服务相关 -->
+        <okio.version>3.5.0</okio.version>
+        <okhttp3.version>4.11.0</okhttp3.version>
+        <dom4j.version>2.1.3</dom4j.version>
+        <commons-fileupload.version>1.4</commons-fileupload.version>
+        <commons-io.version>2.15.1</commons-io.version>
+        <minio.version>8.5.7</minio.version>
+        <aliyun-java-sdk-core.version>4.6.4</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-dysmsapi.version>2.2.1</aliyun-java-sdk-dysmsapi.version>
+        <tencentcloud-sdk-java.version>3.1.880</tencentcloud-sdk-java.version>
+        <justauth.version>1.0.8</justauth.version>
+        <jimureport.version>1.6.6</jimureport.version>
+        <xercesImpl.version>2.12.2</xercesImpl.version>
+        <weixin-java.version>4.6.0</weixin-java.version>
+        <javassist.version>3.20.0-GA</javassist.version>
+        <spring-boot-starter-data-redis.version>2021.1.2</spring-boot-starter-data-redis.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <druid-spring-boot-starter.version>1.2.4</druid-spring-boot-starter.version>
+        <javassist.version>3.20.0-GA</javassist.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <jackson.version>2.12.1</jackson.version>
+        <jexl3.version>3.3</jexl3.version>
+        <swagger-annotations.version>2.2.9</swagger-annotations.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
+        <logback.version>1.2.12</logback.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <knife4j.version>4.3.0</knife4j.version>
+        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <!-- 下个版本删除 -->
+        <springfox.version>2.8.0</springfox.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring 原生的 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>asm</artifactId>
+                        <groupId>org.ow2.asm</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mockito</groupId>
+                        <artifactId>mockito-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j.version}</version>
+            </dependency>
+
+            <!-- 唛盟 框架 mdp-framework -->
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-qx-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-safe-license</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- mdp-boots 下面的 -->
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-mq-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-mybatis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-web</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-springdoc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-tomcat</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-test</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-boot-starter-swagger</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!--mdp boots 结束 -->
+
+            <!-- mdp-clients 下面的-->
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-email</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-safe</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-tpa</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-meta</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-micro</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-msg</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-plat</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-sms</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-audit-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-oauth2</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-client-oauth2-cloud</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- mdp-clients 结束-->
+
+            <!-- mdp-modules 下面的 -->
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-sensitive-word</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-mq</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-dev</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-dm-base</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <!-- mdp-modules 结束 -->
+
+            <!-- 下面开始第三方jar包引入 -->
+
+
+            <!-- db  相关的-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <!--db 相关 结束 -->
+
+            <!-- 接口文档说明 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- 下个版本彻底改为springdoc-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <!-- 接口文档说明 结束-->
+
+            <dependency><!-- 单元测试，随机生成 POJO 类 -->
+                <groupId>uk.co.jemos.podam</groupId>
+                <artifactId>podam</artifactId>
+                <version>${podam.version}</version>
+            </dependency>
+            <dependency><!-- 支持 Mockito 的 final 类与 static 方法的 mock -->
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-inline</artifactId>
+                <version>${mockito-inline.version}</version>
+            </dependency>
+
+            <!-- 工作流相关 -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-process</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-actuator</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+            <!-- 工作流相关结束 -->
+
+
+            <!-- https://mvnrepository.com/artifact/org.dom4j/dom4j -->
+            <dependency>
+                <groupId>org.dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency> <!-- 表达式引擎 -->
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-jexl3</artifactId>
+                <version>${jexl3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency> <!--操作java对象的工具-->
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
+
+            <dependency><!--操作excel的工具-->
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.verion}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <dependency><!-- 文件类型的识别 -->
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+
+            <dependency><!-- 解决 ThreadLocal 父子线程的传值问题 -->
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <dependency><!-- 解决 ftp 连接 -->
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons-net.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.xingyuv</groupId>
+                <artifactId>spring-boot-starter-captcha-plus</artifactId>
+                <version>${captcha-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+
+            <!-- 三方云服务相关 -->
+            <dependency>
+                <groupId>com.squareup.okio</groupId>
+                <artifactId>okio</artifactId>
+                <version>${okio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-jdk8</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-actuator</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+
+
+    </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>User Project Release</name>
+            <url>https://www.qingqinkj.com/nexus/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>User Project SNAPSHOTS</name>
+            <url>https://www.qingqinkj.com/nexus/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+            <!-- maven-surefire-plugin 插件，用于运行单元测试。 -->
+            <!-- 注意，需要使用 3.0.X+，因为要支持 Junit 5 版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <!-- maven-compiler-plugin 插件，解决 spring-boot-configuration-processor + Lombok + MapStruct 组合 -->
+            <!-- https://stackoverflow.com/questions/33483697/re-run-spring-boot-configuration-annotation-processor-to-update-generated-metada -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                            <version>${spring-boot.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+            </plugin>
+
+
+            <plugin>
+                <!-- 发布插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven-deploy-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <!-- 打包插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- 安装插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${maven-install-plugin.version}</version>
+            </plugin>
+
+            <!-- -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--spring boot 3.0前的必须指定版本，否则打包出错 -->
+                <version>${spring-boot-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>otf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- 源码插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+            </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!-- 统一 revision 版本 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.NotifyMsgMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_notify_msg res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'order by oper_time desc')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <select id="myUnReadMsgNums" parameterType="HashMap" resultType="long">
+        select count(*) from sys_notify_msg res
+        <where>
+            and res.to_userid=#{toUserid}
+            <if test=" objTypes != null">  and (res.obj_type) in
+                <foreach collection="objTypes" item="item" index="index" open="(" separator="," close=")" >
+                    ( #{item})
+                </foreach>
+            </if>
+            and res.had_read='0'
+        </where>
+    </select>
+</mapper>

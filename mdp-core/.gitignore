@@ -1,0 +1,12 @@
+/.idea/
+/*.iml/
+/*/*.iml
+/logs/
+/*/logs/**
+/**/logs/
+/target/
+/**/target/
+/*/target/**
+/mdp-core.iml
+/*/.flattened-pom.xml
+/**/.flattened-pom.xml

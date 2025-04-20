@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.CreditMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_credit res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+
+    <select id="selectOneByCreditScore" parameterType="Integer" resultType="com.mdp.sys.entity.Credit">
+        select * from sys_credit res where res.start_score &lt;=#{score} and res.end_score &gt;=#{score}
+    </select>
+</mapper>

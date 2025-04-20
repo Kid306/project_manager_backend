@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserGradeRecordMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user_grade_record res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <update id="updateByBizIdAndUserid" parameterType="com.mdp.sys.entity.UserGradeRecord">
+        update sys_user_grade_record
+        set at=#{at},
+        exp=#{exp},
+        remark=#{remark},
+        state=#{state}
+        where userid=#{userid} and biz_id=#{bizId}
+    </update>
+
+    <select id="selectUserTotalExp" parameterType="String" resultType="java.math.BigDecimal">
+        select sum(ifnull(res.exp,0)) as exp from sys_user_grade_record res
+        where userid=#{userid}
+    </select>
+</mapper>

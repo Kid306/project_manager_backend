@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTestPlanCaseMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,c.case_name,c.ver_num,c.case_remark,c.func_id,c.func_name,c.menu_id,c.menu_name,c.product_id,c.case_type,c.case_status,c.casedb_id,c.casedb_name,c.pre_remark,c.test_type,c.auto_step,c.cpriority,c.sort_no from xm_test_plan_case res left join xm_test_case c on res.case_id=c.id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <sql id="whereForMap"> 
+         <if test="ext.caseStatus != null and ext.caseStatus !='' "> and c.case_status = #{ext.caseStatus}    </if>
+        <if test="ext.funcPidPathsLike!=null and ext.funcPidPathsLike!=''">
+            and exists( select 1 from xm_func f where f.pid_paths like concat(#{ext.funcPidPathsLike},'%') and c.func_id=f.id)
+        </if>
+        <if test="ext.productId!=null and ext.productId!=''">
+            and c.product_id=#{ext.productId}
+        </if>
+        <if test="ext.casedbId!=null and ext.casedbId!=''">
+            and c.casedb_id=#{ext.casedbId}
+        </if>
+        <if test="ext.pbranchId!=null and ext.pbranchId!=''">
+            and c.pbranch_id=#{ext.pbranchId}
+        </if>
+        <if test="ext.testType!=null and ext.testType!=''">
+            and c.test_type=#{ext.testType}
+        </if>
+        <if test="ext.linkIterationId!=null">
+            and exists ( select 1 from  xm_menu m
+            where m.iteration_id=#{ext.linkIterationId} and c.menu_id=m.menu_id
+            <if test="ext.productId!=null and ext.productId!=''">
+                and m.product_id=#{ext.productId}
+            </if>
+            )
+        </if>
+    </sql>
+    <select id="selectListByCaseIdsAndPlanId" parameterType="HashMap"  resultType="com.xm.core.entity.XmTestPlanCase">
+        select * from xm_test_plan_case res where  res.plan_id=#{planId} and res.case_id in
+        <foreach collection="caseIds" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+
+    </select>
+
+    <update id="calcWorkloadByRecord" parameterType="List">
+        update xm_test_plan_case res left join
+        (select w.plan_id,w.case_id, sum(ifnull(w.workload,0)) as workload  from xm_workload w where (w.plan_id,w.case_id)  in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            (#{item.planId},#{item.caseId})
+        </foreach>
+        and w.biz_type='4'
+        group by w.plan_id,w.case_id
+        )
+        as w on res.plan_id=w.plan_id and res.case_id=w.case_id
+        set res.act_workload=w.workload,res.exec_rate=case
+        when res.budget_workload>0 then ifnull(w.workload,0)*100/ res.budget_workload
+        when w.workload>0 then 100
+        else res.exec_rate end
+        where (res.plan_id,res.case_id) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            (#{item.planId},#{item.caseId})
+        </foreach>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="batchUpdateBudgetWorkloadAndRate" parameterType="HashMap">
+        update  xm_test_plan_case res
+        set
+        res.init_workload=if(res.init_workload is null or res.init_workload=0,#{budgetWorkload},res.init_workload),
+        res.budget_workload=#{budgetWorkload},
+        res.exec_rate=case
+        when #{budgetWorkload}>0 then ifnull(res.act_workload,0)*100/ #{budgetWorkload}
+        when res.act_workload>0 then 100
+        else res.exec_rate end
+        where (res.plan_id,res.case_id) in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            (#{item.planId},#{item.caseId})
+        </foreach>
+    </update>
+</mapper>

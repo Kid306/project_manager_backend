@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <artifactId>xxx-bootstrap-cloud</artifactId>
+  <packaging>jar</packaging>
+  <name>xxx-bootstrap-cloud</name>
+  <description>后台管理系统</description>
+  <parent>
+    <groupId>com.nt</groupId>
+    <artifactId>xxx-sample</artifactId>
+    <version>${revision}</version>
+  </parent>
+    <dependencies>
+        <!-- mdp-boot-starter-cloud ,mdp-oauth2-client-cloud 必须放在业务包之上优先加载，如果需要部署到微服务环境，需要引入以下两个cloud相关的包
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter-cloud</artifactId>
+            <version>${mdp.version}</version>
+        </dependency>
+        -->
+        <!--begin oauth2client 如果需要接入统一认证中心，需要引入以下jar包
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-oauth2-client-cloud</artifactId>
+            <version>${mdp.version}</version>
+        </dependency>
+        -->
+        <!--end oauth2server-->
+        <dependency>
+            <groupId>com.nt</groupId>
+            <artifactId>xxx</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter-redis</artifactId>
+        </dependency>
+    </dependencies>
+  <build>
+  	<plugins>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </plugin>
+  		<!-- -->
+  		<plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+    	</plugin>
+     </plugins>
+  </build>
+</project>

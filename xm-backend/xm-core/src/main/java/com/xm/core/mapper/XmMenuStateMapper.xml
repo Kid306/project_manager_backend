@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmMenuStateMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_menu_state res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+    <insert id="batchLoadXmMenuToState" parameterType="HashMap">
+        insert into xm_menu_state (product_id,menu_id,biz_date) select i.product_id,i.menu_id,#{bizDate} from xm_menu i left join xm_menu_state s on s.product_id=i.product_id and s.menu_id=i.menu_id  where i.product_id=#{productId}  and s.menu_id is null
+    </insert>
+</mapper>

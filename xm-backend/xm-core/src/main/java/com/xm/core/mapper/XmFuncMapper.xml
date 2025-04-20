@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmFuncMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,count(c.pid) as child_num from xm_func res left join xm_func c on res.id=c.pid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,' group by  res.id ')}
+    </select>
+
+    <update id="batchChangeParent" parameterType="HashMap">
+        update   xm_func res inner join (
+        select t.id,pid_paths,pid from xm_func t where t.id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        ) as t1 on res.pid_paths like concat(t1.pid_paths,'%')
+
+        set res.pid_paths = replace(res.pid_paths,t1.pid_paths,concat(#{parentPidPaths},t1.id,',')),
+        res.pid=if(res.id=t1.id,#{pid},res.pid),
+        res.lvl= LENGTH(replace(res.pid_paths,t1.pid_paths,concat(#{parentPidPaths},t1.id,',')))-LENGTH(REPLACE(replace(res.pid_paths,t1.pid_paths,concat(#{parentPidPaths},t1.id,',')),',',''))-1
+
+    </update>
+</mapper>

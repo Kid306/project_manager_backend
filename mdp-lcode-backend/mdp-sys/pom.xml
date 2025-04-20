@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-sys</artifactId>
+  
+  <packaging>jar</packaging>
+  <name>mdp-sys 用户、角色、部门、菜单、元数据、字典等</name>
+  <description>用户、角色、部门、菜单、元数据、字典等</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-lcode-backend</artifactId>
+    <version>${revision}</version>
+  </parent> 
+  <dependencies>
+      <dependency>
+          <groupId>nl.bitwalker</groupId>
+          <artifactId>UserAgentUtils</artifactId>
+          <version>1.2.4</version>
+      </dependency>
+      <dependency>
+          <groupId>com.mdp</groupId>
+          <artifactId>mdp-onepark</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.mdp</groupId>
+          <artifactId>mdp-onepark</artifactId>
+      </dependency>
+  </dependencies>
+         
+</project>

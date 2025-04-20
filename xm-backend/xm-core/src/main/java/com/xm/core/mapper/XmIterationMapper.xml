@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmIterationMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_iteration res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"/>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,' res.ctime desc')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <sql id="whereForMap">
+        <if test="ext.createTimeStart !=null and ext.createTimeStart!=''"> and res.ctime &gt; #{ext.createTimeStart} </if>
+        <if test="ext.createTimeEnd !=null and ext.createTimeEnd !=''"> and res.ctime &lt; #{ext.createTimeEnd} </if>
+        <if test="ext.onlineTimeStart !=null and ext.onlineTimeStart !='' "> and res.online_time &gt; #{ext.onlineTimeStart} </if>
+        <if test="ext.onlineTimeEnd !=null and ext.onlineTimeEnd !=''"> and res.online_time &lt; #{ext.onlineTimeEnd} </if>
+        <if test="ext.menuId != null and ext.menuId !=''">
+            and exists ( select 1 from xm_menu im where  im.iteration_id=res.id and  im.menu_id=#{ext.menuId}
+            <if test="ext.productId != null and ext.productId !='' ">  and  im.product_id=#{ext.productId}    </if>
+            )
+        </if>
+        <if test="ext.linkProjectId !=null and ext.linkProjectId!=''">
+            and exists( select 1 from  xm_product_project_link ppl
+            where ppl.project_id=#{ext.linkProjectId} and ppl.product_id =res.product_id
+            )
+        </if>
+        <if test="ext.collectId!=null and ext.collectId!='' and (ext.linkProjectId ==null or ext.linkProjectId=='') ">
+            and exists( select 1 from  xm_product_project_link ppl inner join xm_collect_link l on ppl.project_id=l.project_id and l.collect_id=#{ext.collectId}
+                where l.collect_id=#{ext.collectId} and ppl.product_id =res.product_id
+            )
+        </if>
+        <if test="ext.compete !=null and ext.compete!=''">
+            and ( res.admin_userid=#{ext.compete}
+            or exists (select 1 from  xm_menu m where m.mm_userid=#{ext.compete} and m.iteration_id=res.id)
+            )
+        </if>
+
+        <if test="ext.key != null and ext.key !='' ">   and res.iteration_name like #{ext.key}    </if>
+
+    </sql>
+
+
+
+    <select id="selectListMapByWhereWithState" parameterType="HashMap" resultType="HashMap">
+        select res.*, s.* from xm_iteration res left join xm_iteration_state s on res.id=s.iteration_id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"/>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'order by res.online_time desc')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+</mapper>

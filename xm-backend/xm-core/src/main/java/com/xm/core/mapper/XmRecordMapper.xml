@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmRecordMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_record res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.collectId!=null and ext.collectId!=''">
+                and exists ( select 1 from xm_collect_link l where l.collect_id=#{ext.collectId} and l.project_id=res.project_id)
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <select id="selectChangeBranchIds" parameterType="HashMap" resultType="String">
+        SELECT DISTINCT
+        branch_id
+        FROM
+        xm_record
+        where oper_time &gt;= DATE_SUB(now(), INTERVAL 2 DAY)
+    </select>
+    <select id="selectChangeCollectIds" parameterType="HashMap" resultType="String">
+        SELECT DISTINCT
+        l.collect_id
+        FROM
+        xm_record res inner join xm_collect_link l on l.project_id=res.project_id
+        where oper_time &gt;= DATE_SUB(now(), INTERVAL 2 DAY)
+    </select>
+    <select id="selectChangeProjectIds" parameterType="HashMap" resultType="String">
+        SELECT DISTINCT
+        project_Id
+        FROM
+        xm_record
+        where oper_time &gt;= DATE_SUB(now(), INTERVAL 2 DAY)
+    </select>
+
+    <select id="selectChangeProductIds" parameterType="HashMap" resultType="String">
+        SELECT DISTINCT
+        product_id
+        FROM
+        xm_record
+        where oper_time &gt;= DATE_SUB(now(), INTERVAL 2 DAY)
+    </select>
+    <select id="selectChangeIterationIds" parameterType="HashMap" resultType="String">
+        SELECT DISTINCT
+        m.iteration_id
+        FROM
+        xm_record r inner join xm_menu m on m.menu_id=r.biz_id and r.obj_type='menu'
+        where oper_time &gt;= DATE_SUB(now(), INTERVAL 2 DAY)
+    </select>
+</mapper>

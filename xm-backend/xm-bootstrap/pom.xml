@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>xm-bootstrap</artifactId>
+  <packaging>jar</packaging>
+  <name>xm-bootstrap 唛盟云-项目管理系统服务端单体应用启动器</name>
+    <parent>
+        <groupId>com.xm</groupId>
+        <artifactId>xm-backend</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter-mq-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xm</groupId>
+            <artifactId>xm-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+  <description>唛盟云-项目管理系统微服务启动器</description>
+</project>

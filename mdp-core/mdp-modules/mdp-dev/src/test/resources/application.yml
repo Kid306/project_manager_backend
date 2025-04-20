@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: mdp-code-generator
+  profiles:
+    active: dev

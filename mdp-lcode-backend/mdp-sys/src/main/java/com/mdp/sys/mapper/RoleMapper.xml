@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.RoleMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_role res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="selectListNotInPostId" parameterType="HashMap" resultType="HashMap">
+        select * from sys_role res
+        <where>
+            and not exists (select 1 from sys_post_role pr where pr.roleid=res.roleid and pr.post_id=#{postId})
+            <if test="rolename != null and rolename != ''">      and res.rolename = #{rolename}     </if>
+            <if test="roletype != null and roletype != ''">      and res.roletype = #{roletype}     </if>
+            <if test="enabled != null and enabled != ''">      and res.enabled = #{enabled}     </if>
+            <if test="branchId != null and branchId != '' and ( roletype !=1 )" >      and res.branch_id = #{branchId}     </if>
+            <if test="key != null and key !='' ">  and res.rolename like #{key}      </if>
+        </where>
+    </select>
+
+</mapper>

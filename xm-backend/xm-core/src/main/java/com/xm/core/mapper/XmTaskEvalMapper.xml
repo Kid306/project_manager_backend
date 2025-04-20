@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTaskEvalMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_task_eval res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <select id="getServiceProviderEval" parameterType="com.mdp.safe.client.entity.User" resultType="com.xm.core.entity.MyTotalEval">
+        select sum(ifnull(total_star,5))/count(*) as total_star,sum(ifnull(wspeed,5))/count(*) as wspeed,
+        sum(ifnull(wattit,5))/count(*) as wattit,sum(ifnull(wquality,5))/count(*) as wquality,
+        sum(ifnull(coop_happy,5))/count(*) as coop_happy,sum(ifnull(pay_speed,5))/count(*) as pay_speed,
+        count(*) as eval_user_cnt from xm_task_eval
+        where to_branch_id=#{branchId}
+        group by to_branch_id
+    </select>
+    <select id="getPersonEval" parameterType="com.mdp.safe.client.entity.User" resultType="com.xm.core.entity.MyTotalEval">
+        select sum(ifnull(total_star,5))/count(*) as total_star,sum(ifnull(wspeed,5))/count(*) as wspeed,
+        sum(ifnull(wattit,5))/count(*) as wattit,sum(ifnull(wquality,5))/count(*) as wquality,
+        sum(ifnull(coop_happy,5))/count(*) as coop_happy,sum(ifnull(pay_speed,5))/count(*) as pay_speed,
+        count(*) as eval_user_cnt from xm_task_eval
+        where to_userid=#{userid}
+        group by to_userid
+    </select>
+</mapper>

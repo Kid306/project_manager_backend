@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.DeptPostMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,p.* from sys_dept_post res left join sys_post p on res.post_id=p.id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="selectListDeptPostRoleByRoleids"    resultType="HashMap">
+        SELECT pr.*,dp.deptid FROM sys_post_role pr left join sys_dept_post dp on pr.post_id=dp.post_id left join sys_dept d on d.deptid=dp.deptid
+        where pr.roleid in
+        <foreach collection="roleids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        and d.branch_id=#{branchId}
+    </select>
+    <select id="selectListMapByDeptids"    resultType="HashMap">
+        select res.*,d.dept_name,p.post_name from sys_dept_post res left join sys_dept d on res.deptid=d.deptid left join sys_post p on p.id=res.post_id
+        where res.deptid in
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")" >
+            #{item }
+        </foreach>
+    </select>
+    <select id="selectByDeptidAndPostIdList"    resultType="com.mdp.sys.entity.DeptPost">
+        select res.* from sys_dept_post res
+        where (res.deptid ,res.post_id) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            (#{item.deptid },#{item.postId})
+        </foreach>
+    </select>
+</mapper>

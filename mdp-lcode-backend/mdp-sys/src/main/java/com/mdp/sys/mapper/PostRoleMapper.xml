@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.PostRoleMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,post.post_name,role.rolename from sys_post_role res left join sys_post post on res.post_id=post.id left join sys_role role on role.roleid=res.roleid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+</mapper>

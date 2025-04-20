@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+   
+  <artifactId>mdp-client-meta</artifactId>
+  <packaging>jar</packaging>
+  <name>mdp-meta-client 元数据客户端</name>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-clients</artifactId>
+    <version>${revision}</version>
+  </parent> 
+  <dependencies>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+      </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-annotation</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-micro</artifactId>
+    </dependency>
+  </dependencies> 
+  <description>mdp平台公共服务-公共参数，机构参数</description>
+</project>

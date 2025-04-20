@@ -1,0 +1,37 @@
+<?xml version="1.0"?>  
+<configuration>  
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->  
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">  
+        <encoder>  
+            <pattern>[%X{gloNo}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger][%X{reqNo}] -%msg%n</pattern>  
+        </encoder>
+    </appender>  
+  
+    <!-- ch.qos.logback.core.rolling.RollingFileAppender 文件日志输出 -->  
+    <appender name="file"  
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/mdp_lcode.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <FileNamePattern>logs/mdp_lcode.%d{yyyy-MM-dd}.%i.log
+            </FileNamePattern>  
+            <MaxHistory>20</MaxHistory>
+            <MaxFileSize>100MB</MaxFileSize>
+        </rollingPolicy>  
+        <layout class="ch.qos.logback.classic.PatternLayout">  
+            <pattern>[%X{gloNo}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger][%X{reqNo}] -%msg%n 
+            </pattern>  
+        </layout>  
+    </appender>  
+	<logger name="java.sql.PreparedStatement" value="DEBUG" />    
+    <logger name="java.sql.Connection" value="DEBUG" />    
+    <logger name="java.sql.Statement" value="DEBUG" />    
+    <logger name="com.ibatis" value="DEBUG" />    
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" value="DEBUG" />    
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>    
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" value="DEBUG" />  
+    <!-- 日志级别 -->  
+    <root level="debug">
+        <appender-ref ref="file" />   
+        <appender-ref ref="console" />  
+    </root>  
+</configuration> 

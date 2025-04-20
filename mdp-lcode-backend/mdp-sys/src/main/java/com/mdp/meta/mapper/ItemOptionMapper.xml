@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.meta.mapper.ItemOptionMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,item.* from meta_item_option res right join meta_item item on res.item_id = item.id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <if test="ext.itemCodes!=null">
+                and item.item_code in
+                <foreach collection="ext.itemCodes" separator="," open="(" close=")" item="item" >
+                    #{item}
+                </foreach>
+            </if>
+            <if test="ext.categoryIds!=null">
+                and item.category_id in
+                <foreach collection="ext.categoryIds" separator="," open="(" close=")" item="item" >
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        <!--xxxxxxx-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,"order by res.item_id asc,res.seq_order asc")}
+
+    </select>
+</mapper>

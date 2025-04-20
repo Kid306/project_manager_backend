@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmEnvListMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_env_list res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.fuzzy != null and ext.fuzzy != ''">
+                and (res.ip_address like #{ext.fuzzy} or res.web_ip_address like #{ext.fuzzy} or res.access_url like #{ext.fuzzy})
+            </if>
+            <if test="ext.linkProductId!=null and ext.linkProductId!=''">
+                and exists( select 1 from xm_product_project_link l where l.product_id=#{ext.linkProductId} and l.project_id=res.project_id)
+            </if>
+            and (res.read_qx='0' or (res.create_userid=#{ext.userid} and res.read_qx='9') or (res.branch_id=#{ext.branchId} and res.read_qx='1') or (res.project_id=#{ext.projectId} and res.read_qx ='2'))
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+</mapper>

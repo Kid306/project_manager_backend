@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTestCaseMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_test_case res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <sql id="whereForMap"> 
+        <if test="ext.ctimeStart !=null "> and res.ctime &gt; #{ext.ctimeStart} </if>
+        <if test="ext.ctimeTimeEnd !=null "> and res.ctime &lt; #{ext.ctimeTimeEnd} </if>
+
+        <if test="ext.myUserid!=null and ext.myUserid!='' "> and (res.luserid=#{ext.myUserid} or res.cuserid=#{ext.myUserid})</if>
+        <if test="ext.compete!=null and ext.compete!='' "> and (res.luserid=#{ext.compete} or res.cuserid=#{ext.compete})</if>
+        <if test="ext.menuIds != null">  and
+            res.menu_id in
+            <foreach collection="ext.menuIds" item="item" index="index" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        </if>
+        <if test="ext.projectId !=null and ext.projectId !=''"> and exists ( select 1 from xm_test_plan_case c where c.case_id=res.id and c.project_id=#{ext.projectId} )</if>
+        <if test="ext.iterationId!=null and ext.iterationId!=''">    and exists( select 1 from xm_menu m where m.menu_id =res.menu_id
+            <if test="ext.productId != null and ext.productId !=''" >and m.product_id=#{ext.productId}  </if>
+            <if test="ext.iterationId != null and ext.iterationId !=''" >and m.iteration_id=#{ext.iterationId}  </if>
+            )
+        </if>
+        <if test="ext.key != null and ext.key !='' ">   and res.case_name like concat('%',#{ext.key},'%')    </if>
+        <if test="ext.notJoinPlanId != null and ext.notJoinPlanId !='' ">  and not exists(select 1 from xm_test_plan_case c where c.plan_id=#{ext.notJoinPlanId} and c.case_id=res.id)     </if>
+
+        <if test="ext.funcPidPathsLike!=null and ext.funcPidPathsLike!=''">
+            and exists( select 1 from xm_func f where f.pid_paths like concat(#{ext.funcPidPathsLike},'%') and res.func_id=f.id)
+        </if>
+    </sql>
+
+    <update id="calcWorkloadByRecord" parameterType="List">
+        update xm_test_case res left join
+        (select w.case_id, sum(ifnull(w.workload,0)) as workload  from xm_workload w where w.case_id  in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        and w.biz_type='3'
+        group by w.case_id
+        )
+        as w on res.id=w.case_id
+        set res.act_workload=w.workload,res.rate=case
+        when res.budget_workload>0 then ifnull(w.workload,0)*100/ res.budget_workload
+        when w.workload>0 then 100
+        else res.rate end
+        where res.id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 批量更新 -->
+    <update id="batchUpdateBudgetWorkloadAndRate" parameterType="HashMap">
+        update  xm_test_case res
+        set
+        res.init_workload=if(res.init_workload is null or res.init_workload=0,#{budgetWorkload},res.init_workload),
+        res.budget_workload=#{budgetWorkload},
+        res.rate=case
+        when #{budgetWorkload}>0 then ifnull(res.act_workload,0)*100/ #{budgetWorkload}
+        when res.act_workload>0 then 100
+        else res.rate end
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+</mapper>

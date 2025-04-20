@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.menu.mapper.MenuRoleMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from menu_role res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+    <delete id="deleteMenuRoleByMids">
+        delete from menu_role
+        where mid in
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")" >
+            #{item }
+        </foreach>
+    </delete>
+    <delete id="deleteMenuRoleByRoleids">
+        delete from menu_role
+        where roleid in
+        <foreach collection="array" item="item" index="index" open="(" separator="," close=")" >
+            #{item }
+        </foreach>
+    </delete>
+
+    <!-- 通过条件查询获取数据列表 不分页 返回 list<Object> -->
+    <select id="selectExistsMenuRoles" parameterType="com.mdp.menu.entity.MenuRole" resultType="com.mdp.menu.entity.MenuRole">
+        select * from menu_role res
+        where (res.roleid,res.mid) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            ( #{item.roleid },#{item.mid}  )
+        </foreach>
+    </select>
+    <delete id="deleteExistsMenuRoles" parameterType="list">
+        delete  from menu_role
+        where (roleid,mid) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            ( #{item.roleid },#{item.mid}  )
+        </foreach>
+    </delete>
+    <select id="selectListByMidAndBranchId" parameterType="HashMap" resultType="com.mdp.menu.entity.MenuRole">
+        select res.* from menu_role res inner join sys_role r on r.roleid=res.roleid where res.mid=#{mid} and r.branch_id=#{branchId}
+    </select>
+</mapper>

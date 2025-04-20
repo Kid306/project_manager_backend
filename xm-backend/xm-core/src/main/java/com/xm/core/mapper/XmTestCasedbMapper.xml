@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTestCasedbMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_test_casedb res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.linkProjectId!=null and ext.linkProjectId!=''">
+                and exists (select 1 from xm_product_project_link l where l.project_id=#{ext.linkProjectId} and l.product_id=res.product_id)
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+    <select id="getExistsPlanCasedbIds" parameterType="List" resultType="String">
+        select id from xm_test_casedb res where exists(select 1 from xm_test_plan p where p.casedb_id=res.id
+        and p.casedb_id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        )
+        and id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+</mapper>

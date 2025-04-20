@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>xxx-biz1</artifactId>
+  <packaging>jar</packaging>
+  <name>xxx-biz1 xx业务管理系统例子</name>
+  <description>xx业务管理系统例子</description>
+    <parent>
+        <groupId>com.nt</groupId>
+        <artifactId>xxx-sample</artifactId>
+        <version>${revision}</version>
+    </parent>
+</project>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmKpiMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_kpi res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.queryScope=='kadm'">
+                and res.kadm_status &gt;= '1' and exists (select 1 from xm_kpi k where k.kself_userid=#{ext.admUserid} and k.id=res.parent_id)
+            </if>
+            <if test="ext.collectId!=null and ext.collectId!=''">
+                and exists (select 1 from xm_collect_link l where l.project_id=res.project_id and l.collect_id=#{ext.collectId})
+            </if>
+            <if test="ext.linkProductId!=null and ext.linkProductId!=''">
+                and exists (select 1 from xm_product_project_link l where l.project_id=res.project_id and l.product_id=#{ext.linkProductId})
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <update id="updateChildrenCntByIds" parameterType="List">
+        UPDATE xm_kpi t
+        LEFT JOIN ( SELECT count( 1 ) AS children_cnt,tt.parent_id AS id FROM xm_kpi tt  WHERE
+        (tt.parent_id) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            ( #{item})
+        </foreach>
+        group by tt.parent_id ) t2 ON t2.id = t.id
+        SET t.children_cnt = ifnull( t2.children_cnt, 0 )
+        WHERE  (t.id) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            ( #{item})
+        </foreach>
+    </update>
+    <update id="batchChangeParent" parameterType="HashMap">
+        update   xm_kpi res inner join (
+        select t.id,pid_paths,parent_id from xm_kpi t where t.id in
+        <foreach collection="kpiIds" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        ) as t1 on res.pid_paths like concat(t1.pid_paths,'%')
+
+        set res.pid_paths =replace(res.pid_paths,t1.pid_paths,concat(#{parentPidPaths},t1.id,',')),
+        res.parent_id=if(res.id=t1.id,#{parentId},res.parent_id)
+    </update>
+    <update id="loadToHis" parameterType="List">
+          insert into xm_kpi_his select * from xm_kpi t where t.id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+         and t.kadm_status='3'
+    </update>
+
+
+    <select id="listHasQxKpisByIds" parameterType="HashMap" resultType="com.xm.core.entity.XmKpi">
+        select distinct res.* from xm_kpi res inner join xm_kpi k on  res.pid_paths like
+        CONCAT(k.pid_paths,'%')
+        where res.id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+         and k.kself_userid=#{kselfUserid}
+    </select>
+</mapper>

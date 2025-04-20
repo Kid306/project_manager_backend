@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserTpaMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,u.userid,u.username uusername,u.branch_id,u.headimgurl uheadimgurl,u.display_userid from sys_user_tpa res inner join sys_user_tpa_link l on l.tpa_id=res.openid inner join sys_user u
+        on l.sys_userid=u.userid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <if test="ext.inviteId!=null or ext.sendUserid!=null or ext.sendTimeStart!=null or ext.sendTimeEnd!=null or ext.sendBranchId!=null or ext.joinUserid!=null or ext.inviteState!=null or  ext.inviteScene!=null or ext.inviteType!=null  ">
+                and exists ( select 1 from sys_user_tpa_invite_link il inner join sys_user_tpa_invite i on il.invite_id=i.invite_id
+                    where il.join_tpa_id=res.openid
+                        <if test="ext.inviteId!=null"> and il.invite_id=#{ext.inviteId} </if>
+                        <if test="ext.sendUserid!=null"> and i.send_userid=#{ext.sendUserid} </if>
+                        <if test="ext.sendBranchId!=null"> and i.send_branch_id=#{ext.sendBranchId} </if>
+                        <if test="ext.sendTimeStart!=null"> and i.send_time &gt; #{ext.sendTimeStart} </if>
+                        <if test="ext.sendTimeEnd!=null"> and i.send_time &lt; #{ext.sendTimeEnd} </if>
+                        <if test="ext.joinUserid!=null"> and il.join_userid = #{ext.joinUserid} </if>
+                        <if test="ext.inviteState!=null"> and i.invite_state = #{ext.inviteState} </if>
+                        <if test="ext.inviteScene!=null"> and i.invite_scene = #{ext.inviteScene} </if>
+                        <if test="ext.inviteType!=null"> and i.invite_type = #{ext.inviteType} </if>
+                )
+            </if>
+            <if test="ext.userid!=null">
+                and l.sys_userid=#{ext.userid}
+            </if>
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+</mapper>

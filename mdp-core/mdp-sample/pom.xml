@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>mdp-sample</artifactId>
+    <name>mdp-sample 样例项目</name>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>com.mdp</groupId>
+        <artifactId>mdp-core</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modules>
+        <module>xxx-sample</module>
+    </modules>
+    <description>
+        注意：该项目仅仅作为展示。
+        企业基于唛盟框架开发或者整合，可以参考xxx-sample的结构进行整合。
+        xxx-sample/xxx 作为主业务代码工程，存放主要的代码、单员测试用例等
+        xxx-sample/xxx-biz1、xxx-biz2 作为主业务工程的相对独立的模块，尽量单独一个子工程，避免主工程越来越臃肿。
+        xxx-sample/xxx-bootstrap 单体环境下的打包工程，或者开发调试用此工程也行，建议开发调试等在xxx进行
+        xxx-sample/xxx-bootstrap-cloud cloud版的打包工程
+    </description>
+</project>

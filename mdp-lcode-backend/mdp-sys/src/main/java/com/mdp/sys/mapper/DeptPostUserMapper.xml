@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.DeptPostUserMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from  V_SYS_DEPT_POST_USER res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+    <delete id="delByUseridAndDeptids" parameterType="HashMap">
+        delete  from sys_dept_post_user  where userid=#{userid} and  deptid in
+        <foreach collection="deptids" item="item" index="index" open="(" separator="," close=")" >
+            #{item }
+        </foreach>
+
+    </delete>
+
+    <select id="listDeptPostUserRoles" parameterType="HashMap" resultType="HashMap">
+        select * from V_SYS_DEPT_POST_USER_ROLE res
+        <where>
+
+            <if test="branchId != null and branchId != ''">      and res.branch_id = #{branchId}     </if>
+            <if test="key != null and key !='' ">  and (res.username like #{key} or res.userid like #{key} or res.display_userid like #{key} or res.dept_name like #{key} or post_name like #{key} or res.deptid like #{key}  or res.roleid like #{key} or res.rolename like #{key})  </if>
+        </where>
+    </select>
+    <select id="listDeptPostUserMenus" parameterType="HashMap" resultType="HashMap">
+        select * from V_SYS_DEPT_POST_USER_MENU res
+        <where>
+
+            <if test="branchId != null and branchId != ''">      and res.branch_id = #{branchId}     </if>
+            <if test="key != null and key !='' ">  and (res.username like #{key} or res.userid like #{key} or res.display_userid like #{key} or res.dept_name like #{key} or post_name like #{key} or res.deptid like #{key}  or res.roleid like #{key} or res.rolename like #{key} or res.rpath like #{key} or res.mname like #{key}) </if>
+        </where>
+    </select>
+    <update id="setAllPostNotMaster" parameterType="HashMap">
+        update  sys_dept_post_user res set master='0'
+        where  userid=#{userid} and id!=#{id} and exists (select 1 from sys_dept d where d.deptid=res.deptid and d.branch_id=#{branchId})
+    </update>
+
+    <update id="setPostMaster" parameterType="HashMap">
+        update  sys_dept_post_user set master=#{master}
+        where id=#{id}
+    </update>
+</mapper>

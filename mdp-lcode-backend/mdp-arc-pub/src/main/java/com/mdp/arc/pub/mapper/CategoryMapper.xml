@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.arc.pub.mapper.CategoryMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select c.*,count(s.pid) as child_num from arc_category c left join arc_category s on c.id=s.pid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+            <if test="ext.branchIds != null">   and (res.branch_id) in
+                <foreach collection="ext.branchIds" item="item" index="index" open="(" separator="," close=")" >
+                    (#{item})
+                </foreach>
+            </if>
+            <if test="ext.tagId!=null"> and FIND_IN_SET( #{ext.tagId}, c.tag_ids ) </if>
+            and (
+            c.cuserid=#{ext.qxUserid}
+            OR c.qx_lvl = '0'
+            OR c.qx_lvl IS NULL
+            OR ( c.qx_lvl = '1'  AND c.BRANCH_ID = #{ext.qxBranchId})
+            OR EXISTS ( SELECT 1 FROM arc_category r1 LEFT JOIN arc_category_qx qx ON qx.CATE_ID = r1.ID
+            WHERE
+            r1.branch_id=#{ext.qxBranchId} and r1.qx_lvl = '2' and qx.oth_query='1'
+            AND (
+
+            FIND_IN_SET( #{ext.qxUserid}, ifnull(qx.QRY_USERIDS,'') )>0
+            <if test="ext.qxDeptids!=null"> or
+                <foreach collection="ext.qxDeptids" item="item" index="index" open="(" separator=" or " close=")" >
+                    FIND_IN_SET( #{item}, ifnull(qx.QRY_DEPTIDS,'') )>0
+                </foreach>
+            </if>
+            <if test="ext.qxRoleids!=null"> or
+                <foreach collection="ext.qxRoleids" item="item" index="index" open="(" separator=" or " close=")" >
+                    FIND_IN_SET( #{item}, ifnull(qx.QRY_ROLEIDS,'') )>0
+                </foreach>
+            </if>
+            )
+            AND (
+            FIND_IN_SET( #{ext.qxUserid}, ifnull(qx.NQ_USERIDS,'') )=0
+            <if test="ext.qxDeptids!=null"> and
+                <foreach collection="ext.qxDeptids" item="item" index="index" open="(" separator=" and " close=")" >
+                    FIND_IN_SET( #{item}, ifnull(qx.NQ_DEPTIDS,'') )=0
+                </foreach>
+            </if>
+            <if test="ext.qxRoleids!=null"> and
+                <foreach collection="ext.qxRoleids" item="item" index="index" open="(" separator=" and " close=")" >
+                    FIND_IN_SET( #{item}, ifnull(qx.NQ_ROLEIDS,'') )=0
+                </foreach>
+            </if>
+            )
+            AND c.paths LIKE concat( r1.paths, '%' )
+            )
+
+            )
+
+        </where>
+        group by c.id
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+    <update id="updatecategoryTypeByPid" parameterType="com.mdp.arc.pub.entity.Category">
+        update  arc_category  set category_type = #{categoryType} where pid = #{id}
+    </update>
+
+    <update id="batchUpdatePaths">
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update  arc_category
+            set paths=#{item.paths}
+            where id = #{item.id}
+        </foreach>
+    </update>
+    <select id="listSubCategorys" parameterType="HashMap" resultType="HashMap">
+        select C.*,(select count(1) from ARC_ARCHIVE_CATEGORY A where A.category_id=C.id and exists(select 1 from arc_archive ac where ac.id = a.archive_id)) as count from ARC_CATEGORY C order by pid,id
+    </select>
+
+    <update id="batchChangeParent" parameterType="HashMap">
+        update   arc_category res inner join (
+        select t.id,paths,pid from arc_category t where t.id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        ) as t1 on res.paths like concat(t1.paths,'%')
+
+        set res.paths =  replace(res.paths,t1.paths,concat(#{paths},t1.id,',')),
+        res.pid=if(res.id=t1.id,#{pid},res.pid)
+
+    </update>
+</mapper>

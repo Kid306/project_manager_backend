@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserFocusMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user_focus res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="myFocusForIndex" parameterType="String" resultType="HashMap">
+        select t.*
+        from
+        (select t1.*,
+        (select count(*)+1
+        from sys_user_focus a
+        where a.userid=#{userid} and a.focus_type=t1.focus_type
+        and a.ftime>t1.ftime
+        ) as group_id
+        from sys_user_focus t1
+        where t1.userid=#{userid}
+        ) t
+        where group_id &lt;=5
+        order by ftime desc, group_id asc
+    </select>
+</mapper>

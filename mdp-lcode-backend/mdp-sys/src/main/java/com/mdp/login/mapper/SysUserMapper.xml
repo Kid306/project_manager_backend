@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.login.mapper.SysUserMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+    <select id="queryByUserloginid" parameterType="com.mdp.safe.client.entity.User" resultType="com.mdp.safe.client.entity.User">
+        select if(u.mem_type='0',u.ilvl_id,c.ilvl_id) as ilvl_id,if(u.mem_type='0',u.ilvl_name,c.ilvl_name) as ilvl_name, u.*,b.branch_name,b.enabled from sys_user u left join sys_branch b on u.branch_id=b.id left join sys_branch_interests c on u.branch_id=c.branch_id
+        <where>
+            <if test="userid!=null and userid !='' ">and u.userid=#{userid}</if>
+            <if test="displayUserid!=null and displayUserid !='' ">and u.display_userid=#{displayUserid}</if>
+            <if test="email!=null and email !='' ">and (u.email=#{email} or u.email_bak=#{email})</if>
+            <if test="phoneno!=null and phoneno !='' ">and u.phoneno=#{phoneno}</if>
+            <if test="atype!=null and atype !='' ">and u.atype=#{atype}</if>
+            <if test="memType!=null and memType !='' ">and u.mem_type=#{memType}</if>
+            <if test="branchId!=null and branchId !='' ">and u.branch_id=#{branchId}</if>
+            <if test="cpaOrg!=null and cpaOrg !='' ">and u.cpa_org=#{cpaOrg}</if>
+            <if test="cpaType!=null and cpaType !='' ">and u.cpa_type=#{cpaType}</if>
+            <if test="tpaOpenid!=null and tpaOpenid !='' ">
+                and exists(
+                select 1 from sys_user_tpa tpa where tpa.openid=#{tpaOpenid} and tpa.userid=u.userid
+                )
+
+            </if>
+            <if test="(codeScene!=null and codeScene!='') or (valiCode !=null and valiCode!='') or (codeEmail !=null and codeEmail!='')">
+                and exists ( select 1 from  sys_user_valid_code res
+
+                <where>
+                    <if test="userid != null and userid != ''">      and res.userid = #{userid}     </if>
+                    <if test="valiCode != null and valiCode != ''">      and res.vali_code = #{valiCode} and res.userid=u.userid    </if>
+                    <if test="codeSendTime != null">      and date_format(res.code_send_time,'%Y-%m-%d') = date_format(#{codeSendTime},'%Y-%m-%d')     </if>
+                    <if test="codeEmail != null and codeEmail != ''">      and res.code_email = #{codeEmail}     </if>
+                    <if test="codeScene != null and codeScene != ''">      and res.code_scene = #{codeScene}     </if>
+                    <if test="codeValidTime != null">      and date_format(res.code_valid_time,'%Y-%m-%d') = date_format(#{codeValidTime},'%Y-%m-%d')     </if>
+                </where>
+                )
+            </if>
+            <if test="idType=='all' and userloginid!=null and userloginid!=''">
+                and (userid=#{userloginid} or phoneno=#{userloginid} or email=#{userloginid} or display_userid=#{userloginid})
+            </if>
+        </where>
+    </select>
+
+    <select id="queryMyUsers" parameterType="com.mdp.safe.client.entity.User" resultType="com.mdp.safe.client.entity.User">
+        select u.*,b.branch_name,b.enabled from sys_user u left join sys_branch b on u.branch_id=b.id
+        where exists (select 1 from sys_user u2 where u2.userid=#{userid} and ( u2.unionid=ifnull(u.unionid,'xxxxx') or u2.phoneno=ifnull(u.phoneno,'111') or u2.email=ifnull(u.email,'1111')))
+
+    </select>
+
+    <!--根据用户编号查询所有的角色 返回 list<Map> add by chenyc 20160223
+        支持根据用户编号+机构号查，或者用户编号+部门号查，或者只根据用户编号查，或者用户编号+机构号+部门号同时查
+    -->
+    <select id="loadUserDeptPostRolesByUserid" parameterType="HashMap" resultType="com.mdp.safe.client.entity.DeptPostRole">
+        select  r.roleid,r.rolename,d.branch_id,r.roletype,r.data_lvl,dpu.deptid,d.dept_name,b.branch_name,
+        dpu.post_id,dpu.master
+        from sys_dept_post_user dpu
+        inner join sys_post_role pr on dpu.post_id=pr.post_id
+        inner join sys_role r on pr.roleid=r.roleid
+        inner join sys_dept d on d.deptid=dpu.deptid
+        inner JOIN sys_branch b ON b.id = d.branch_id
+        <where>
+            dpu.userid=#{userid}
+            <if test=" branchId != '' and branchId !=null "> and d.branch_id=#{branchId}</if>
+            <if test=" branchId != '' and branchId !=null ">
+                and (r.branch_id=#{branchId}  or (r.branch_id = #{platformBranchId} and r.roletype='1')  )
+            </if>
+            <if test=" deptid !='' and deptid !=null " > and dpu.deptid=#{deptid}</if>
+        </where>
+
+        order by r.sort_order asc
+    </select>
+    <select id="loadUserPostsByUserid" parameterType="String" resultType="com.mdp.safe.client.entity.Post">
+        select distinct d.branch_id,dpu.deptid,d.dept_name,b.branch_name,dpu.post_id,p.post_name
+        from sys_dept_post_user dpu
+        inner join sys_post p on p.id=dpu.post_id
+        inner join sys_dept d on d.deptid=dpu.deptid
+        inner JOIN sys_branch b ON b.id = d.branch_id
+        where dpu.userid=#{userid}
+    </select>
+
+    <select id="getRoleQxs" parameterType="HashMap" resultType="com.mdp.safe.client.entity.Qx">
+        select * from sys_qx qx
+        where exists (
+        select 1 from sys_role_qx rq where rq.roleid=#{roleid}
+        )
+    </select>
+    <select id="getRole" parameterType="HashMap" resultType="com.mdp.safe.client.entity.Role">
+        select * from sys_role r
+        where  r.roleid=#{roleid}
+    </select>
+
+    <select id="getDept" parameterType="HashMap" resultType="HashMap">
+        select * from sys_dept d where d.deptid=#{deptid}
+    </select>
+
+
+    <select id="getBranch" parameterType="HashMap" resultType="com.mdp.safe.client.entity.Branch">
+        select b.id branch_id,b.* from sys_branch b where b.id=#{branchId}
+    </select>
+
+    <select id="getRoleMenus" parameterType="HashMap" resultType="com.mdp.safe.client.entity.Menu">
+        select * from menu_def m
+        where exists(
+        select 1 from menu_role mr where mr.mid=m.id and mr.roleid=#{roleid}
+        )
+
+    </select>
+    <update id="updateUserPassword" parameterType="com.mdp.safe.client.entity.User">
+        update   sys_user  set password = #{password},pwd_strong = #{pwdStrong}
+        <where>
+            <if test="phoneno != null and phoneno != ''">and phoneno=#{phoneno}</if>
+            <if test="userid != null and userid != ''">and userid=#{userid}</if>
+            <if test="email != null and email != ''"> and (email = #{email} or email_bak = #{email} </if>
+        </where>
+    </update>
+
+    <update id="unregister" parameterType="com.mdp.safe.client.entity.User">
+        update  sys_user set ustatus='2'
+        where userid = #{userid}
+    </update>
+</mapper>

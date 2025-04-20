@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-modules</artifactId>
+  
+  <packaging>pom</packaging>
+  <name>mdp-modules 技术组件库 </name>
+  <description>技术组件库</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-core</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <modules>
+    <module>mdp-dev</module>
+    <module>mdp-dm-base</module>
+    <module>mdp-mq</module>
+    <module>mdp-sensitive-word</module>
+  </modules>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.mdp</groupId>
+        <artifactId>mdp-dependencies</artifactId>
+        <version>${revision}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

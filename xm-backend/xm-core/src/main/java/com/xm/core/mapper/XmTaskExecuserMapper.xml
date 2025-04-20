@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTaskExecuserMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_task_execuser res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <sql id="whereForMap">
+         <if test="ext.taskState != null and ext.taskState !='' "> and task_state=#{ext.taskState}</if>
+        <if test="ext.linkBranchId!=null and ext.linkBranchId!=''">
+            and (res.branch_id = #{ext.linkBranchId} or res.bid_branch_id=#{ext.linkBranchId})
+        </if>
+    </sql>
+    <update id="updateXmTaskExeUseridsAndUsernamesByTaskId"
+            parameterType="String">
+        UPDATE xm_task t
+        left join
+        (
+        SELECT
+        task_id,
+        max(
+        CASE
+
+        WHEN e.STATUS != '7'
+        AND e.STATUS != '0'
+        AND e.STATUS != '8' THEN
+        e.quote_amount ELSE NULL
+        END
+        ) AS quote_amount,
+        count(*) as exec_users,
+        max(
+        CASE
+
+        WHEN e.STATUS != '7'
+        AND e.STATUS != '0'
+        AND e.STATUS != '8' THEN
+        e.bid_userid ELSE NULL
+        END
+        ) AS executor_userid,
+        max(
+        CASE
+
+        WHEN e.STATUS != '7'
+        AND e.STATUS != '0'
+        AND e.STATUS != '8' THEN
+        e.bid_username ELSE NULL
+        END
+        ) AS executor_username,
+        group_concat( concat( e.bid_userid, '(', e.STATUS, ')' ) SEPARATOR ',' ) AS exe_userids,
+        group_concat(
+        concat(
+        e.bid_username,
+        CASE
+
+        WHEN e.STATUS = '0' THEN
+        '(候选)'
+        WHEN e.STATUS = '1' THEN
+        '(执行中)'
+        WHEN e.STATUS = '2' THEN
+        '(已提交)'
+        WHEN e.STATUS = '3' THEN
+        '(已验收)'
+        WHEN e.STATUS = '4' THEN
+        '(验收不过)'
+        WHEN e.STATUS = '6' THEN
+        '(已结算)'
+        WHEN e.STATUS = '7' THEN
+        '(放弃任务)'
+        WHEN e.STATUS = '8' THEN
+        '(黑名单)' ELSE '(其它)'
+        END
+        ) SEPARATOR ','
+        ) AS exe_usernames
+        FROM
+        xm_task_execuser e
+        WHERE
+        e.task_id = #{taskId} ) e1
+        on t.id=e1.task_id
+        SET t.exe_userids = e1.exe_userids,
+        t.exec_users=e1.exec_users,
+        t.exe_usernames = e1.exe_usernames,
+        t.executor_userid = e1.executor_userid,
+        t.executor_username = e1.executor_username,
+        t.task_state=case when e1.executor_userid is null and t.task_state='1' then '0' when e1.executor_userid is not null and t.task_state='0' then '1' else t.task_state end,
+        t.bid_step=
+        case when t.crowd='0' or t.crowd is null then t.bid_step
+        when t.crowd='1' and (t.estate in( '0','4') or t.estate is null or (t.estate in ('2','3') and t.efunds &lt;e1.quote_amount))  and e1.executor_userid is not null and (t.bid_step is null or t.bid_step in('0','1','2','3')) then '4'
+        when t.crowd='1' and t.estate ='2' and t.efunds &gt;=e1.quote_amount and e1.executor_userid is not null and (t.bid_step is null or t.bid_step in('0','1','2','3','4')) then '5'
+        when t.crowd='1' and e1.executor_userid is null and t.task_state in('0') then '2'
+        else t.bid_step end,
+        t.quote_final_at=ifnull(e1.quote_amount,t.quote_final_at)
+        WHERE t.id = #{taskId}
+    </update>
+    <select id="selectListMapByWhereWithTask" resultType="HashMap">
+        select res.*,t.* from xm_task_execuser res left join xm_task t on res.task_id=t.id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmTaskSbillMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_task_sbill res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+            <if test="ext.startTime !=null and ext.startTime != ''">
+                AND res.ctime BETWEEN #{ext.startTime} AND #{ext.endTime}
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <update id="updateBySbillDetailList" parameterType="List">
+        update xm_task_sbill res left join (
+        select w.sbill_id,sum(ifnull(w.amt,0)) as amt,sum(ifnull(w.samt,0)) as samt,sum(ifnull(w.sworkload,0)) as workload from xm_task_sbill_detail w
+        where w.sbill_id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        group by w.sbill_id
+        ) as w on res.id=w.sbill_id
+        set
+        res.amt=ifnull(w.samt,0),
+        res.workload=ifnull(w.workload,0)
+        where (res.id) in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            ( #{item})
+        </foreach>
+    </update>
+</mapper>

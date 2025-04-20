@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.GuardDamageMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_guard_damage res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="sumGuardDamageHisFee" parameterType="String" resultType="java.math.BigDecimal">
+        select sum(ifnull(res.pay_at,0)) as pay_at from sys_guard_damage res where res.pay_userid=#{payUserid}  and res.pay_status='1'
+    </select>
+</mapper>

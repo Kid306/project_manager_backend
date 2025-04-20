@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserDeptMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.userid,res.deptid,b.id as branch_id, b.branch_name,
+        d.dept_name, u.username, u.display_userid from sys_user_dept res
+        left join sys_dept d on res.deptid=d.deptid left join sys_branch b on d.branch_id=b.id left join sys_user u
+        on u.userid=res.userid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <if test='ext.includeSubDept=="0" '> and res.deptid=#{ext.deptid} and d.branch_id=#{ext.branchId}
+            </if>
+            <if test='ext.includeSubDept=="1" '>
+                <if test="ext.branchId!='' and ext.branchId!=null"> and d.branch_id=#{ext.branchId}</if>
+                and exists (select 1
+                from sys_dept srd0
+                where d.id_path like CONCAT(srd0.id_path,'%')
+                and srd0.DEPTID =d.deptid
+                and d.branch_id = srd0.branch_id)
+            </if>
+        </where>
+    </select>
+    <delete id="delByUseridAndDeptids" parameterType="HashMap">
+        delete  from sys_user_dept  where userid=#{userid} and  deptid in
+        <foreach collection="deptids" item="item" index="index" open="(" separator="," close=")" >
+            #{item }
+        </foreach>
+
+    </delete>
+</mapper>

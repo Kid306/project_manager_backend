@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: xm
+  profiles:
+    active: dev

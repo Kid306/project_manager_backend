@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.arc.pub.mapper.TagMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from arc_tag res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <select id="selectNotPubTag" parameterType="String" resultType="HashMap">
+        select res.tag_name,ifnull(res.category_id,c.id) category_id,res.id tag_id,res.is_pub pub_tag,c.category_name,c.is_pub  pubc
+        from arc_tag res right join arc_tag_category c on res.category_id=c.id
+        where c.branch_id =#{branchId} and c.is_pub!='1'
+    </select>
+    <select id="selectPubTag" parameterType="String" resultType="HashMap">
+        select res.tag_name,ifnull(res.category_id,c.id) category_id,res.id tag_id,res.is_pub pub_tag,c.category_name,c.is_pub  pubc
+        from arc_tag res right join arc_tag_category c on res.category_id=c.id
+        where c.branch_id =#{branchId} and c.is_pub='1'
+    </select>
+    <!-- 按条件删除若干条记录-->
+    <delete id="deleteByCategoryId" parameterType="HashMap">
+        delete from arc_tag where category_id=#{categoryId} and branch_id=#{branchId}
+    </delete>
+</mapper>

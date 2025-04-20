@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.menu.mapper.MenuModuleBranchMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from menu_module_branch res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+
+    <select id="countModuleUsersByBranchIdAndPostIds"  parameterType="HashMap" resultType="HashMap">
+        select mo.category,count(DISTINCT dpu.USERID) as users from sys_dept_post_user dpu
+        inner join sys_dept d on d.deptid=dpu.deptid
+        inner join  (
+        select pr.POST_ID,m.CATEGORY from menu_role mr
+        inner join menu_def m on m.id=mr.mid
+        inner join sys_post_role pr on pr.ROLEID=mr.ROLEID
+        where pr.post_id   in
+        <foreach collection="postIds" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+
+        ) as mo on mo.post_id=dpu.POST_ID
+        where d.branch_id=#{branchId}
+        GROUP BY mo.category
+    </select>
+    <select id="calcBranchModule" resultType="HashMap" parameterType="String">
+        select  count(*) as all_modules,sum(if(m.bill_mode='0',1,0)) as free_modules,
+        count(distinct res.module_id) as had_modules,sum(if(m.bill_mode='0' and res.module_id ,1,0)) as had_free_modules
+        from menu_module m left join menu_module_branch res on m.id=res.module_id and res.branch_id=#{branchId}
+        where m.status='1'
+    </select>
+</mapper>

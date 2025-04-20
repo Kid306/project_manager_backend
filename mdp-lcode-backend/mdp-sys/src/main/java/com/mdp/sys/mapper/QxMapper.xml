@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.QxMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_qx res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+
+            <if test="ext.roleids!=null">
+                and exists ( select 1 from sys_role_qx rq
+                where res.qx_id= rq.qx_id and rq.roleid in
+                <foreach collection="ext.roleids" item="item" index="index" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+</mapper>

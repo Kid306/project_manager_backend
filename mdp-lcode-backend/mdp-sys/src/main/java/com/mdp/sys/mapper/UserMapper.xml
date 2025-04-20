@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+
+            <if test=" ext.deptid != '' and ext.deptid !=null   "> and exists
+                (select 1 from sys_user_dept ud where ud.userid=res.userid and   ud.deptid=#{ext.deptid} )
+            </if>
+
+            <if test="ext.skillIdList!=null">
+                and exists( select 1 from sys_user_skill sk where sk.userid=res.userid and skill_id in
+                <foreach collection="ext.skillIdList" item="item" index="index" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="ext.profeTypes!=null">
+                and (
+                <foreach collection="ext.profeTypes" item="item" index="index" open="(" separator="or" close=")" >
+                    FIND_IN_SET(#{item},res.profe_type)>0
+                </foreach>
+                )
+            </if>
+            <if test="ext.memTypes!=null">
+                and res.mem_type in
+                <foreach collection="ext.memTypes" item="item" index="index" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+            </if>
+            <if test=" ext.key != '' and ext.key !=null "> and (res.nickname like #{ext.key} or res.username like #{ext.key}  )</if>
+        </where>
+    </select>
+
+    <select id="selectOneObjectWithPassword" parameterType="com.mdp.sys.entity.User" resultType="com.mdp.sys.entity.User">
+        select * from sys_user res where res.userid = #{userid}
+    </select>
+    <!--根据用户编号查询所有的角色 返回 list<Map> add by chenyc 20160223-->
+    <select id="loadUserRolesByUserid" parameterType="HashMap" resultType="com.mdp.safe.client.entity.Role">
+        select  r.roleid,r.rolename,r.branch_id,r.roletype,r.data_lvl from sys_role r
+        where  ( exists (select 1 from sys_dept_post_user dpu inner join sys_post_role pr  on dpu.post_id=pr.post_id
+        inner join sys_dept d on d.deptid=dpu.deptid
+        where pr.roleid=r.roleid and dpu.userid=#{userid}
+        <if test=" branchId != '' and branchId !=null ">
+            and ( 	( d.branch_id=#{branchId}  <if test=" deptid != '' and deptid !=null "> and dpu.deptid=#{deptid} </if>
+            ) or d.branch_id=#{platformBranchId}
+            )
+        </if>
+        )
+        or exists (select 1 from sys_user u where u.userid=#{userid} and find_in_set(r.roleid,u.roleids)))
+        <if test=" branchId != '' and branchId !=null "> and (r.branch_id=#{branchId}  or (r.branch_id = #{platformBranchId} and r.roletype='1')  ) </if>
+
+        order by r.sort_order asc
+    </select>
+    <update id="autoSetUserUsername" parameterType="HashMap">
+        update  sys_user res
+        set res.username= (select max(u.nickname) from sys_user_tpa u where u.userid=res.userid)
+        where res.username is null  and date_format(res.startdate,'%Y-%m-%d') = date_format(#{startdate},'%Y-%m-%d')
+    </update>
+    <!-- 通过条件查询获取数据列表 返回list<map> -->
+    <select id="listUserNames" parameterType="HashMap" resultType="HashMap">
+        select res.userid,res.username  from sys_user res
+        <where>
+
+
+        </where>
+    </select>
+    <select id="selectListSimpleMapByWhere">
+        select res.userid, res.username,res.display_userid,res.headimgurl,res.branch_id,res.mem_type, res.ilvl_id,ilvl_name,grade_id,grade_name,city,province,b.branch_name from sys_user res left join sys_branch b on b.id=res.branch_id
+        <where>
+
+
+        </where>
+    </select>
+
+    <select id="selectListByPhonenosAndBranchId" parameterType="HashMap" resultType="com.mdp.sys.entity.User">
+        select * from sys_user res
+        where res.branch_id=#{branchId} and res.phoneno in
+        <foreach collection="phonenos" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectListByEmailsAndBranchId" parameterType="HashMap" resultType="com.mdp.sys.entity.User">
+        select * from sys_user res
+        where res.branch_id=#{branchId} and res.email in
+        <foreach collection="emails" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+    <update id="setUsersToBranchAdm" parameterType="HashMap">
+        update  sys_user
+        set mem_type='1'
+        where userid in
+        <foreach collection="userids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="setUsersUnBranchAdm" parameterType="HashMap">
+        update  sys_user
+        set mem_type='2'
+        where userid in
+        <foreach collection="userids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="selectListMapByWhereForCrowd" parameterType="HashMap" resultType="HashMap">
+        select res.*,i.up_rate,i.ctotal_bids,i.cmonth_bids,i.ctotal_receive_at,i.ctotal_at,i.total_at,i.bids,i.smax_at,i.srv_times from sys_user res left join sys_user_interests i on res.userid=i.userid
+        <where>
+
+
+        </where>
+    </select>
+    <select id="detailWithInterests" parameterType="HashMap" resultType="HashMap">
+        select * from sys_user res left join sys_user_interests i on i.userid=res.userid
+        where res.userid=#{userid}
+    </select>
+
+    <select id="checkIdCardNoExistsAndValid" parameterType="HashMap" resultType="long">
+        select count(*) from sys_user res
+        <where>
+            res.id_card_no = #{idCardNo} and res.mem_type='0' and res.valid_lvls like '1%'
+            <if test="excludeUserid!=null and excludeUserid!=''">and res.userid!=#{excludeUserid}</if>
+        </where>
+    </select>
+
+    <update id="interestsOverUpdate" parameterType="com.mdp.sys.entity.User">
+        update  sys_user set ilvl_id=#{ilvlId},ilvl_name=#{ilvlName},istatus='1' ,ietime=null,istime=null,
+        ltime=#{ltime}
+        where userid=#{userid}
+    </update>
+    <select id="selectListByTpaOpenidOrTpaUnionidOrPhoneno" parameterType="com.mdp.sys.entity.UserTpa" resultType="com.mdp.sys.entity.User">
+        select * from sys_user res
+        where exists ( select 1 from sys_user_tpa_link l inner join sys_user_tpa tpa on l.tpa_id=tpa.openid
+        where l.sys_userid=res.userid
+        and  (
+        tpa.openid=#{openid}
+        <if test="phoneno !=null and phoneno !='' ">  or tpa.phoneno=#{phoneno}  </if>
+        <if test="unionid !=null and unionid !='' ">  or tpa.unionid=#{unionid}  </if>
+        )
+        )
+        <if test="phoneno !=null and phoneno !='' ">  or res.phoneno=#{phoneno}</if>
+    </select>
+</mapper>

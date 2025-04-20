@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.DeptMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select res.*,count(c.pdeptid) as child_num from sys_dept res left join sys_dept c on res.deptid=c.pdeptid
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+
+            <if test="ext.autoDetectParentDeptids != null and ext.autoDetectParentDeptids !='' "> and exists(select 1
+                from sys_dept sd
+                where res.id_path like concat(sd.id_path,'%')
+                and sd.deptid in
+                <foreach collection="ext.autoDetectParentDeptids" item="item" index="index" open="(" separator="," close=")" >
+                    #{item}
+                </foreach>
+
+                and res.branch_id = sd.branch_id )
+            </if>
+        </where>
+        group by res.deptid
+    </select>
+
+
+    <!-- 查询子部门 -->
+    <select id="selectChildrenByDeptid" parameterType="com.mdp.sys.entity.Dept" resultType="com.mdp.sys.entity.Dept">
+        select * from sys_dept
+        where pdeptid=#{deptid}
+    </select>
+
+    <!-- 查找部门 -->
+    <select id="selectUsersByDeptid" parameterType="HashMap"
+            resultType="HashMap">
+        select
+        u.userid,u.username,u.display_userid,u.nickname,u.deptid,u.phoneno,u.headimgurl,u.district_id,u.sex
+        from SYS_USER u
+        where exists (select 1 from user_dept d where d.deptid = #{deptid} and
+        d.userid=u.userid )
+    </select>
+    <select id="selectUsersByDeptids" parameterType="List"
+            resultType="HashMap">
+        select
+        u.userid,u.username,u.display_userid,u.nickname,u.deptid,u.phoneno,u.headimgurl,u.district_id,u.sex
+        from SYS_USER u
+        where exists (select 1 from sys_user_dept ud where ud.userid=u.userid
+        and ud.deptid in
+        <foreach collection="list" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item.deptid }
+        </foreach>
+        )
+    </select>
+
+    <!-- 查询某个部门的最大儿子部门list<Dept> -->
+    <select id="selectMaxSubDeptByPdeptid" parameterType="String"
+            resultType="com.mdp.sys.entity.Dept">
+        select * from sys_dept d
+        where pdeptid=#{pdeptid} and deptid=(select max(deptid) from sys_dept
+        d2 where d2.pdeptid=#{pdeptid})
+    </select>
+    <!-- 查询某个部门的孩子部门包括自己 list<map> -->
+    <select id="listSubDepts" parameterType="HashMap"
+            resultType="HashMap">
+        select * from sys_dept d
+        where exists(select 1
+        from sys_dept sd
+        where d.id_path like concat(sd.id_path,'%')
+        and d.deptid=#{deptid}
+        and d.branch_id = sd.branch_id)
+    </select>
+
+    <!-- 查询某个部门的孩子部门 包括自己list<dept> -->
+    <select id="listSubDeptObjects" parameterType="String"
+            resultType="com.mdp.sys.entity.Dept">
+        select * from sys_dept d
+        where exists(select 1
+        from sys_dept sd
+        where d.id_path like concat(sd.id_path,'%')
+        and sd.deptid=#{deptid}
+        and d.branch_id = sd.branch_id)
+    </select>
+
+
+    <!-- 通过deptid查找子部门列表以及其子孙部门所包含的员工人数 -->
+    <select id="selectDeptListAndCount" parameterType="HashMap"
+            resultType="HashMap">
+        select d.*,
+        (select count(*)
+        from sys_user_dept u
+        where u.deptid in
+        (select srd.DEPTID
+        from sys_dept srd
+        where exists(select 1
+        from sys_dept srd0
+        where srd.id_path like CONCAT(srd0.id_path,'%')
+        and srd0.DEPTID =d.deptid
+        and srd.branch_id = srd0.branch_id))) count
+        from sys_dept d
+        where d.pdeptid = #{deptid}
+    </select>
+    <select id="selectCompanyUser" parameterType="HashMap"
+            resultType="HashMap">
+        select
+        u.userid,u.username,u.display_userid,u.nickname,u.deptid,u.phoneno,u.headimgurl,u.district_id,u.sex
+        from SYS_USER u
+
+        where exists ( select 1 from SYS_USER_DEPT ud where ud.userid=u.userid
+        and
+        exists(select 1 from sys_dept sd
+        where d.id_path like concat(sd.id_path,'%')
+        and d.deptid=#{deptid}
+        and d.branch_id = sd.branch_id)
+        )
+    </select>
+
+
+
+    <!-- 通过deptid查找所有后代节点，包括儿子孙子 返回List<Object> -->
+    <select id="selectOffspringByDeptid"
+            parameterType="com.mdp.sys.entity.Dept"
+            resultType="com.mdp.sys.entity.Dept">
+        SELECT * FROM sys_dept d
+        where exists(select 1
+        from sys_dept sd
+        where d.id_path like concat(sd.id_path,'%')
+        and sd.deptid=#{deptid}
+        and d.branch_id = sd.branch_id)
+    </select>
+
+    <!-- 通过deptid查找所有父节点，包括祖宗 返回List<Object> -->
+    <select id="selectAncestorByDeptid"
+            parameterType="com.mdp.sys.entity.Dept"
+            resultType="com.mdp.sys.entity.Dept">
+        select srd.* from sys_dept srd
+        where exists(select 1
+        from sys_dept srd0
+        where srd0.id_path like CONCAT(srd.id_path,'%')
+        and srd0.DEPTID =#{deptid}
+        and srd.branch_id = srd0.branch_id)
+    </select>
+
+    <!-- 通过deptid查找直接父节点 返回object -->
+    <select id="selectFatherByDeptid"
+            parameterType="com.mdp.sys.entity.Dept"
+            resultType="com.mdp.sys.entity.Dept">
+        SELECT pdept.* FROM sys_dept dept
+        inner join sys_dept pdept
+        on pdept.deptid=dept.pdeptid
+        where dept.deptid=#{deptid}
+    </select>
+
+    <!-- 通过deptid查找后代，包括孙子所拥有的员工 -->
+    <select id="selectUserByDeptid"
+            parameterType="com.mdp.sys.entity.Dept"
+            resultType="com.mdp.safe.client.entity.User">
+        SELECT su.userid,su.username FROM SYS_USER u
+        where exists (select 1 from sys_user_dept ud
+        where ud.userid=u.userid and exists(
+        select 1 from sys_dept srd
+        where exists(select 1
+        from sys_dept srd0
+        where srd.id_path like CONCAT(srd0.id_path,'%')
+        and srd0.DEPTID =#{deptid}
+        and srd.branch_id = srd0.branch_id)
+        ))
+    </select>
+
+    <!-- 更新user表 -->
+    <update id="updateUser"
+            parameterType="com.mdp.safe.client.entity.User">
+        <!--begin -->
+        <foreach collection="list" item="item" index="index"
+                 separator=";">
+            update sys_user
+            set
+            deptid = #{item.deptid}
+            where userid= #{item.userid}
+        </foreach>
+        <!--;end; -->
+    </update>
+
+    <!-- 查询公众号下部门的信息 -->
+    <select id="selectWeixinSocsec" parameterType="HashMap"
+            resultType="HashMap">
+        select extin.mobilephone,extin.region_name,loac.* from sys_dept
+        res left join sys_dept_extinfo extin on
+        res.deptid=extin.deptid left join sys_dept_location
+        loac on extin.deptid=loac.deptid
+        <where>
+
+        </where>
+    </select>
+    <!-- 插入流程审批表数据 -->
+    <insert id="insertProcessApprova"
+            parameterType="HashMap"
+            useGeneratedKeys="false" keyProperty="id">
+        insert into sys_dept_process_approva(
+        id,deptid,flow_branch_id,agree,act_id,task_name,proc_inst_id,main_title,comment_msg,flow_last_time,event_name,biz_key,model_key,assignee,start_userid,proc_def_id,branch_id
+        ) values (
+        #{id},#{deptid},#{flowBranchId},#{agree},#{actId},#{taskName},#{procInstId},#{mainTitle},#{commentMsg},#{flowLastTime},#{eventName},#{bizKey},#{modelKey},#{assignee},#{startUserid},#{procDefId},#{branchId}
+        )
+    </insert>
+
+    <!-- 同时修改业务表及流程审批表数据状态 -->
+    <update id="updateProcessApprova"
+            parameterType="HashMap">
+        update sys_dept b ,adm.sys_dept_process_approva pa
+        <set>
+            <if test=' agree != null and agree !="" '> pa.agree = #{agree},</if>
+            <if test=' actId != null and actId !="" '> pa.act_id = #{actId},</if>
+            <if test=' assignee != null and assignee !="" '> pa.assignee = #{assignee},</if>
+            <if test=' assigneeName != null and assigneeName !="" '> pa.assignee_name = #{assigneeName},</if>
+            <if test=' taskName != null and taskName !="" '> pa.task_name = #{taskName},</if>
+            <if test=' commentMsg != null and commentMsg !="" '> pa.comment_msg = #{commentMsg},</if>
+            pa.flow_last_time = now(),
+            <if test=' eventName != null and eventName !="" '> pa.event_name = #{eventName},</if>
+            <if test=' flowState != null and flowState !="" '> pa.flow_state=#{flowState},</if>
+            <if test=' bizFlowState != null and bizFlowState !="" '> b.biz_flow_state=#{bizFlowState},</if>
+            <if test=' bizProcInstId != null and bizProcInstId !="" '> b.biz_proc_inst_id=#{bizProcInstId},</if>
+            <if test=' enabled != null and enabled !="" '> b.enabled=#{enabled},</if>
+        </set>
+        where pa.proc_inst_id = #{procInstId} and pa.flow_branch_id=#{flowBranchId}
+        and pa.deptid=b.deptid
+    </update>
+
+
+    <update id="batchChangeParent" parameterType="HashMap">
+        update   sys_dept res inner join (
+        select t.deptid,id_path,pdeptid from sys_dept t where t.deptid in
+        <foreach collection="deptids" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        ) as t1 on res.id_path like concat(t1.id_path,'%')
+
+        set res.id_path = replace(res.id_path,t1.id_path,concat(#{parentPidPaths},t1.deptid,',')),
+        res.pdeptid=if(res.deptid=t1.deptid,#{pdeptid},res.pdeptid)
+
+    </update>
+</mapper>

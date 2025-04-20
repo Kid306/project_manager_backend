@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>mdp-client-micro</artifactId>
+  <packaging>jar</packaging>
+  <name>mdp-client-micro 微服务远程调用客户端</name>
+  <description>微服务远程调用客户端</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-clients</artifactId>
+    <version>${revision}</version>
+  </parent> 
+  <dependencies>
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-webflux</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.mdp</groupId>
+          <artifactId>mdp-common</artifactId>
+          <scope>compile</scope>
+      </dependency>
+  </dependencies> 
+</project>

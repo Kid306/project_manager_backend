@@ -1,0 +1,67 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <pluginGroups>
+    <pluginGroup>org.sonatype.plugins</pluginGroup>
+  </pluginGroups>
+
+ <servers>
+    <server>
+      <id>nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+  </servers>
+
+<mirrors>
+    <mirror>
+      <id>nexus</id>
+      <mirrorOf>*</mirrorOf>
+      <url>http://123.207.117.5:8081/repository/maven-public/</url>
+    </mirror>
+    <mirror>  
+      <id>repo2</id>  
+      <mirrorOf>central</mirrorOf>  
+      <name>Human Readable Name for this Mirror.</name>  
+      <url>http://repo2.maven.org/maven2/</url>  
+    </mirror>
+
+  </mirrors>
+
+<profiles>
+<profile>
+      <id>nexus</id>
+        <repositories>
+        <!-- 私有库地址-->
+          <repository>
+          <id>nexus</id>
+          <url>http://123.207.117.5:8081/repository/maven-public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>      
+      <pluginRepositories>
+        <!--插件库地址-->
+        <pluginRepository>
+          <id>nexus</id>
+          <url>http://123.207.117.5:8081/repository/maven-public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+           </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+  </profiles>
+  <activeProfiles>
+    <activeProfile>nexus</activeProfile>
+  </activeProfiles>
+</settings>

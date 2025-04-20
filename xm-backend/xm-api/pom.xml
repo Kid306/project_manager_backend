@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>xm-api</artifactId>
+  <packaging>jar</packaging>
+  <name>xm-api 唛盟云-项目管理系统服务端api</name>
+  <description>唛盟云-项目管理系统服务端api</description>
+  <parent>
+    <groupId>com.xm</groupId>
+    <artifactId>xm-backend</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.mdp</groupId>
+			<artifactId>mdp-boot-starter</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-client-audit-log</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>com.mdp</groupId>
+			<artifactId>mdp-client-tpa</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

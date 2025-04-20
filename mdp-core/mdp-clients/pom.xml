@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-clients</artifactId>
+  
+  <packaging>pom</packaging>
+  <name>mdp-clients 客户端组件</name>
+  <description>客户端组件</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-core</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <modules>
+    <module>mdp-client-audit-log</module>
+    <module>mdp-client-email</module>
+    <module>mdp-client-meta</module>
+    <module>mdp-client-micro</module>
+    <module>mdp-client-msg</module>
+    <module>mdp-client-plat</module>
+    <module>mdp-client-safe</module>
+    <module>mdp-client-sms</module>
+    <module>mdp-client-tpa</module>
+    <module>mdp-client-oauth2</module>
+    <module>mdp-client-oauth2-cloud</module>
+  </modules>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.mdp</groupId>
+        <artifactId>mdp-dependencies</artifactId>
+        <version>${revision}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

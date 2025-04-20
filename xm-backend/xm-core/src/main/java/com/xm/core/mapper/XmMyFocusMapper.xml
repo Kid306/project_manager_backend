@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmMyFocusMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from xm_my_focus res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <select id="myFocusForIndex" parameterType="String" resultType="HashMap">
+        select t.*
+        from
+        (select t1.*,
+        (select count(*)+1
+        from xm_my_focus a
+        where a.userid=#{userid} and a.focus_type=t1.focus_type
+        and a.ftime>t1.ftime
+        ) as group_id
+        from xm_my_focus t1
+        where t1.userid=#{userid}
+        ) t
+        where group_id &lt;=5
+        order by ftime desc, group_id asc
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserSvrMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user_svr res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+    <select id="detail" parameterType="String" resultType="HashMap">
+        select res.*,u.* from sys_user_svr res left join sys_user u on u.userid=res.userid
+        where res.id=#{id}
+    </select>
+</mapper>

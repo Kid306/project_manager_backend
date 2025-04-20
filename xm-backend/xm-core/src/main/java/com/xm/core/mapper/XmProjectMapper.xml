@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmProjectMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap"> 
+        select res.*,s.* from xm_project res
+        left join xm_project_state s on s.project_id=res.id
+        <if test="ext.linkProductId !=null and ext.linkProductId!=''">
+            inner join xm_product_project_link ppl on res.id=ppl.project_id and ppl.product_id=#{ext.linkProductId}
+        </if>
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <include refid="whereForMap"></include>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        <if test="ext.linkProductId !=null and ext.linkProductId!=''">
+            ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'order by ppl.seq asc')}
+        </if>
+
+        <if test="ext.linkProductId ==null or ext.linkProductId==''">
+            ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        </if>
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+
+    </select>
+
+    <sql id="whereForMap">
+        <if test='ext.isTpl=="1"'>
+                and  (res.branch_id=#{ext.linkBranchId} or res.show_out='9')
+        </if>
+        <if test='ext.isTpl!="1"  and (ext.id==null or ext.id=="") '>
+            and res.branch_id=#{ext.linkBranchId} and res.is_tpl!='1'
+        </if>
+        <if test="ext.startYear != null and ext.startYear != ''" >and (
+            date_format(start_time,'%Y') = #{ext.startYear}
+            or date_format(end_time,'%Y') = #{ext.startYear}
+            or ( date_format(start_time,'%Y') &lt; #{ext.startYear} and date_format(end_time,'%Y') &gt; #{ext.startYear} )
+            )
+        </if>
+        <!-- 筛选掉已结束项目 -->
+        <if test="ext.hideStatus != null and ext.hideStatus != ''">
+            and res.status != #{ext.hideStatus}
+        </if>
+
+        <if test="ext.myExecuserStatus != null and ext.myExecuserStatus != ''">
+            and  exists ( select 1 from xm_task_execuser exe where exe.project_id=res.id and exe.bid_userid=#{ext.myUserid}
+            <if test='ext.myExecuserStatus != "all" '>
+                and exe.status=#{ext.myExecuserStatus}
+            </if>
+            )
+        </if>
+        <if test="ext.linkIterationId!=null and ext.linkIterationId!=''">
+            and exists( select 1 from xm_iteration ipl inner join xm_product_project_link l on ipl.product_id=l.product_id
+            where l.project_id =res.id and ipl.id=#{ext.linkIterationId}
+            )
+        </if>
+        <if test="ext.key != null and ext.key !='' ">  and res.name like concat('%',#{ext.key} ,'%')   </if>
+        <if test='ext.queryScope=="projectAdm"'>  and (res.create_userid=#{ext.myUserid} or res.pm_userid=#{ext.myUserid} or res.ass_userid=#{ext.myUserid} or res.adm_userid=#{ext.myUserid})   </if>
+        <if test="ext.del==null or ext.del==''">
+            and res.del!="1"
+        </if>
+        <if test="ext.collectId!=null and ext.collectId!=''">
+            and exists  ( select 1 from xm_collect_link l where l.collect_id=#{ext.collectId} and l.project_id=res.id)
+        </if>
+        <if test='(ext.queryScope=="compete")  and (ext.id=="" or ext.id==null) and (ext.queryScope!="projectAdm") and (ext.isTpl==null or ext.isTpl=="0") and (ext.linkProductId ==null or ext.linkProductId=="") and (ext.linkIterationId ==null or ext.linkIterationId=="")'>
+            and (
+            exists(select 1 from xm_group_user gu where gu.userid=#{ext.myUserid} and gu.project_id=res.id)
+            or (res.create_userid = #{ext.myUserid} or res.adm_userid= #{ext.myUserid} or res.pm_userid=#{ext.myUserid} or res.ass_userid=#{ext.myUserid})
+            or (CASE
+            WHEN res.show_out = '1' THEN
+            res.branch_id = #{ext.linkBranchId}
+            when res.show_out='3' then
+            res.deptid_path like  CONCAT(#{ext.myIdPath},'%') or #{ext.myIdPath} like CONCAT(res.deptid_path,'%')
+            when res.show_out='4' then
+            res.deptid_path like CONCAT(#{ext.myIdPath},'%')
+            when res.show_out='5' then
+            #{ext.myIdPath} like CONCAT(res.deptid_path,'%')
+            when res.show_out='6' then
+            res.deptid=#{ext.myDeptid}
+            end))
+        </if>
+
+    </sql> 
+</mapper>

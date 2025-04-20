@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserFansMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user_fans res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+    <select id="myFans" parameterType="HashMap" resultType="HashMap">
+        select u.* from sys_user_fans res inner join sys_user u on u.userid=res.userid
+        <where>
+            res.fuserid=#{fuserid}
+
+            <if test="userid!=null and userid !=''">
+                and res.userid=#{userid}
+            </if>
+            <if test="memType!=null and memType !=''">
+                and u.mem_type = #{memType}
+            </if>
+            <if test="key!=null and key !=''">
+                and u.username like concat('%',#{key},'%')
+            </if>
+
+        </where>
+    </select>
+    <select id="myFocus" parameterType="HashMap" resultType="HashMap">
+        select u.* from sys_user_fans res inner join sys_user u on u.userid=res.fuserid
+        <where>
+            res.userid=#{userid}
+            <if test="fuserid!=null and fuserid !=''">
+                and res.fuserid=#{fuserid}
+            </if>
+            <if test="memType!=null and memType !=''">
+                and u.mem_type = #{memType}
+            </if>
+            <if test="key!=null and key !=''">
+                and u.username like concat('%',#{key},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="fansCpd" parameterType="HashMap" resultType="com.mdp.sys.entity.FansCpdVo">
+        select sum(case when res.userid=#{userid} then 1 else 0 end) as my_focus_cnt,
+        sum(case when res.fuserid=#{fuserid} then 1 else 0 end) as my_fans_cnt
+        from sys_user_fans res where res.userid=#{userid} or res.fuserid=#{fuserid}
+    </select>
+</mapper>

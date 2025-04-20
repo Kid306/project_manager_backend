@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.arc.img.mapper.ImageMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from arc_image res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+            <if test="ext.key!='' and ext.key!=null "> and (res.name like #{ext.key} or res.tag like #{ext.key} or res.url like #{ext.key})</if>
+            <if test="ext.type!='movie'">
+            and (res.FILE_SUFFIX = '.bmp' or  res.FILE_SUFFIX = '.jpg' or  res.FILE_SUFFIX = '.jpeg' or  res.FILE_SUFFIX = '.png' or  res.FILE_SUFFIX = '.gif')
+            </if>
+            <if test="ext.type=='movie'">
+                and (res.FILE_SUFFIX = '.mkv' or  res.FILE_SUFFIX = '.mp4' or  res.FILE_SUFFIX = '.avi' or  res.FILE_SUFFIX = '.rmvb')
+            </if>
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+</mapper>

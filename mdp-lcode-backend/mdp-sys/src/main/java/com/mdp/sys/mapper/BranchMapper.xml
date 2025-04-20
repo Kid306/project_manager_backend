@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.BranchMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_branch res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="calcBranchUsers" parameterType="HashMap" resultType="HashMap">
+        SELECT
+        #{branchId} AS branch_id,
+        b.branch_name,
+        b.img_url,
+        c.istatus,
+        c.ilvl_id,
+        c.ilvl_name,
+        c.ilevel,
+        c.pic_url,
+        c.max_users,
+        c.sfee_rate,
+        c.is_free,
+        u.curr_users,
+        c.rtime,
+        c.mver,
+        c.max_rtime
+        FROM ( SELECT #{branchId} AS branch_id, count( * ) AS curr_users FROM sys_user u WHERE u.branch_id = #{branchId} ) AS u
+        left join sys_branch b on u.branch_id=b.id
+        LEFT JOIN sys_branch_interests c ON b.id = c.branch_id
+    </select>
+    <select id="checkBranchNameExistsAndValid" parameterType="HashMap" resultType="long">
+        select count(*) from sys_branch res
+        <where>
+            res.branch_name = #{branchName} and res.valid_lvls like '1%'
+            <if test="excludeBranchId!=null and excludeBranchId!=''">and res.id!=#{excludeBranchId}</if>
+        </where>
+    </select>
+    <select id="checkBcodeExistsAndValid" parameterType="HashMap" resultType="long">
+        select count(*) from sys_branch res
+        <where>
+            res.bcode = #{bcode} and res.valid_lvls like '1%'
+            <if test="excludeBranchId!=null and excludeBranchId!=''">and res.id!=#{excludeBranchId}</if>
+        </where>
+    </select>
+</mapper>

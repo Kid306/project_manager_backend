@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.core.mapper.XmGroupUserMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+         select res.*,g.group_name,g.crow_branch_name,g.crow_branch_id,g.is_crow,g.leader_username,g.ass_username,g.leader_userid,g.ass_userid from xm_group_user res left join xm_group g on res.group_id=g.id
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+            <!--下面可以添加更多查询条件，正常的if 条件都是支持的-->
+
+        </where>
+        <!--下面双引号内可以添加默认排序，如果前端没有上传排序，将使用引号内的排序规则-->
+        ${@com.mdp.Util@trimOrderBy(ew.customSqlSegment,'order by res.seq_no asc')}
+        <!--下面双引号内可以添加默认分组，如果前端没有上传分组，将使用引号内的分组规则-->
+        ${@com.mdp.Util@trimGroupBy(ew.customSqlSegment,'')}
+    </select>
+
+    <!-- 通过条件查询获取数据列表 不分页 返回 list<Object> -->
+    <select id="selectGroupUserListByProjectId" parameterType="String" resultType="com.xm.core.entity.XmGroupUser">
+        select * from xm_group_user res
+        <where>
+            exists( select 1 from xm_group g where g.id=res.group_id and g.project_id=#{projectId})
+        </where>
+    </select>
+    <select id="selectGroupUserListByProductId" parameterType="String" resultType="com.xm.core.entity.XmGroupUser">
+        select * from xm_group_user res
+        <where>
+            exists( select 1 from xm_group g where g.id=res.group_id and g.product_id=#{productId})
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title th:text="${data!=null?data.archiveTitle:'文章'}"></title>
+<style type="text/css">
+	.paddingToCenter{  
+	}
+	.mlToNull{
+		margin-left:0px;
+	}
+	
+	.line{
+		border-bottom: 1px solid #ccc;
+	    border-top: 1px solid #ccc;
+	    height: 60px;
+	    margin-bottom: 20px;
+	}
+	.lineHeight{
+		line-height: 50px;
+	}
+	.date {
+	    font-size: 16px;
+	    color: #888;
+	}
+	.context {
+	}
+	
+	/*此处根据不同屏幕分配率显示不同的样式*/
+	/*手机端*/
+	@media only screen and (min-width: 0px) and (max-width: 360px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{
+		     width: 100%;
+		     max-width: 360px;
+		}
+	}
+		/*手机端*/
+	@media only screen and (min-width: 360px) and (max-width: 450px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{
+		     width: 100%;
+		     max-width: 450px;
+		}
+	}
+		/*手机端*/
+	@media only screen and (min-width: 450px) and (max-width: 550px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{
+		     width: 100%;
+		     max-width: 550px;
+		}
+	}
+		/*手机端*/
+	@media only screen and (min-width: 550px) and (max-width: 650px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{
+		     width: 100%;
+		     max-width: 650px;
+		}
+	} 
+			/*手机端*/
+	@media only screen and (min-width: 650px) and (max-width: 768px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{ 
+		 	 width: 100%;
+		     max-width: 768px;
+		}
+	} 
+	/*ipad*/
+	@media only screen and (min-width: 768px) and (max-width: 992px) {
+		.paddingToCenter .context{ 
+			padding-left: 10px;
+	   	 	padding-right: 10px;
+		}
+		.context img{ 
+			width: 100%;
+			max-width: 768px;
+		}
+	}
+	/*ipadpro*/
+	@media only screen and (min-width: 992px) and (max-width: 1200px) {
+		.paddingToCenter .context{ 
+			padding-left: 80px;
+	   	 	padding-right: 80px;
+		}
+		.context img{  
+			max-width: 1040px;
+		}
+	}
+	/*笔记本*/
+	@media only screen and (min-width: 1200px) and (max-width: 1920px) {
+		.paddingToCenter .context{ 
+			padding-left: 200px;
+	   	 	padding-right: 200px;
+		}
+		.context img{  
+			max-width: 1520px;
+		}
+	}
+	/*台式电脑*/
+	@media only screen and (min-width: 1920px) {
+		.paddingToCenter .context{ 
+			padding-left: 250px;
+	   	 	padding-right: 250px;
+		}
+		.context img{  
+			max-width: 2000px;
+		}
+	}
+</style>
+</head>
+<body>
+	<div class="paddingToCenter">
+		<div class="context">
+			<div th:if="${tips.isOk==true}">
+			<h1 th:text="${data.archiveTitle}"></h1>
+			<div class="line">
+				<div  class="lineHeight mlToNull"> 
+					 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;<span    class=" date" th:text="' '+${data.createDate!=null?#dates.format(data.createDate,'yyyy-MM-dd'):''}"></span>
+					&nbsp;&nbsp;&nbsp;&nbsp; <span    class="" th:text="'编辑：'+${data.authorName}"></span>
+				</div>
+			</div>
+			<div  th:utext="${data.archiveContext}"></div>
+			</div>
+			<div th:if="${tips.isOk==false}"><span th:text="${tips.msg}"></span></div>
+		</div>
+	</div>
+</body>
+
+
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.InterestsOrdersMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_interests_orders res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="selectLastOrders" parameterType="String" resultType="com.mdp.sys.entity.InterestsOrders">
+        select * from sys_interests_orders res where userid=#{userid} and pay_status='1' order by res.rtime desc
+        limit 1
+    </select>
+    <select id="selectListNeedCalc" parameterType="HashMap" resultType="com.mdp.sys.entity.InterestsOrders">
+        select * from sys_interests_orders res where res.rtime between  date(subdate(now(),7)) and date(subdate(now(),0))
+        and res.calc_status='2' and res.calc_state='2'
+        limit 200
+    </select>
+</mapper>

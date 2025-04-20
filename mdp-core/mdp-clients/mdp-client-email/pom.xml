@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mdp</groupId>
+	<artifactId>mdp-client-email</artifactId>
+	<packaging>jar</packaging>
+	<name>mdp-email-client 邮箱发件服务</name>
+	<description>邮箱发件服务</description>
+	<parent>
+		<groupId>com.mdp</groupId>
+		<artifactId>mdp-clients</artifactId>
+		<version>${revision}</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-common</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xm.biz.calc.mapper.BizXmCalcMapper">
+
+    <!-- 适合没有交叉的，没用父子关系的一批任务的更新 -->
+    <update id="xmMenuBatchSumParents" parameterType="List">
+        update xm_menu_state s  left join
+        (select m.pmenu_id,
+        sum(ss.budget_workload) as budget_workload,
+        sum(ss.budget_iuser_workload) as budget_iuser_workload,
+        sum(ss.budget_ouser_workload) as budget_ouser_workload,
+        sum(ss.budget_at) as budget_at,
+        sum(ss.budget_iuser_at) as budget_iuser_at,
+        sum(ss.budget_ouser_at) as budget_ouser_at,
+        sum(ss.act_workload) as act_workload,
+        sum(ss.act_iuser_workload) as act_iuser_workload,
+        sum(ss.act_ouser_workload) as act_ouser_workload,
+        sum(ss.act_at) as act_at,
+        sum(ss.act_iuser_at) as act_iuser_at,
+        sum(ss.act_ouser_at) as act_ouser_at,
+        sum(ifnull(ss.finish_rate,0))/count(1) as raw_rate,
+        sum(ss.task_cnt) as task_cnt,
+        sum(ss.task_unstart_cnt) as task_unstart_cnt,
+        sum(ss.task_exec_cnt) as task_exec_cnt,
+        sum(ss.task_finish_cnt) as task_finish_cnt,
+        sum(ss.task_set_cnt) as task_set_cnt,
+        sum(ss.task_close_cnt) as task_close_cnt,
+        sum(ss.test_cases) as test_cases,
+        sum(ss.exec_cases) as exec_cases,
+        sum(ss.design_cases) as design_cases,
+        sum(ss.finish_cases) as finish_cases,
+        sum(ss.bug_cnt) as bug_cnt,
+        sum(ss.active_bugs) as active_bugs,
+        sum(ss.confirmed_bugs) as confirmed_bugs,
+        sum(ss.resolved_bugs) as resolved_bugs,
+        sum(ss.closed_bugs) as closed_bugs,
+        min(ss.min_start_time) as min_start_time,
+        max(ss.max_end_time) as max_end_time
+        from xm_menu_state ss inner join xm_menu m on ss.menu_id=m.menu_id   where m.pmenu_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by m.pmenu_id) s2 on s2.pmenu_id=s.menu_id inner join xm_menu xmm on xmm.menu_id=s.menu_id
+        set
+        s.budget_workload=ifnull(s2.budget_workload,0),
+        s.budget_iuser_workload=ifnull(s2.budget_iuser_workload,0),
+        s.budget_ouser_workload=ifnull(s2.budget_ouser_workload,0),
+        s.budget_at=ifnull(s2.budget_at,0),
+        s.budget_iuser_at=ifnull(s2.budget_iuser_at,0),
+        s.budget_ouser_at=ifnull(s2.budget_ouser_at,0),
+        s.act_workload=ifnull(s2.act_workload,0),
+        s.act_iuser_workload=ifnull(s2.act_iuser_workload,0),
+        s.act_ouser_workload=ifnull(s2.act_ouser_workload,0),
+        s.act_at=ifnull(s2.act_at,0),
+        s.act_iuser_at=ifnull(s2.act_iuser_at,0),
+        s.act_ouser_at=ifnull(s2.act_ouser_at,0),
+        s.finish_rate=case when  ifnull(s2.budget_workload,0)  >0
+        then 100*(ifnull(s2.act_workload,0)) / s2.budget_workload
+        when ifnull(s2.act_workload,0)>0 then 100
+        when xmm.status >'4' then 100
+        else  0  end,
+        s.task_cnt=ifnull(s2.task_cnt,0),
+        s.task_unstart_cnt=ifnull(s2.task_unstart_cnt,0),
+        s.task_finish_cnt=ifnull(s2.task_finish_cnt,0),
+        s.task_set_cnt=ifnull(s2.task_set_cnt,0),
+        s.task_close_cnt=ifnull(s2.task_close_cnt,0),
+        s.test_cases=ifnull(s2.test_cases,0),
+        s.exec_cases=ifnull(s2.exec_cases,0),
+        s.design_cases=ifnull(s2.design_cases,0),
+        s.finish_cases=ifnull(s2.finish_cases,0),
+        s.bug_cnt=ifnull(s2.bug_cnt,0),
+        s.active_bugs=ifnull(s2.active_bugs,0),
+        s.confirmed_bugs=ifnull(s2.confirmed_bugs,0),
+        s.resolved_bugs=ifnull(s2.resolved_bugs,0),
+        s.closed_bugs=ifnull(s2.closed_bugs,0),
+        s.min_start_time=s2.min_start_time,
+        s.max_end_time=s2.max_end_time,
+        xmm.start_time=s2.min_start_time,
+        xmm.end_time=s2.max_end_time
+        where s.menu_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+    <!-- 适合父子关系的一批任务的更新 -->
+    <update id="xmMenuSumParents" parameterType="String">
+        update xm_menu_state s  left join
+        (select m.pmenu_id,
+        count(1) as children_cnt,
+        sum(ss.budget_workload) as budget_workload,
+        sum(ss.budget_iuser_workload) as budget_iuser_workload,
+        sum(ss.budget_ouser_workload) as budget_ouser_workload,
+        sum(ss.budget_at) as budget_at,
+        sum(ss.budget_iuser_at) as budget_iuser_at,
+        sum(ss.budget_ouser_at) as budget_ouser_at,
+        sum(ss.act_workload) as act_workload,
+        sum(ss.act_iuser_workload) as act_iuser_workload,
+        sum(ss.act_ouser_workload) as act_ouser_workload,
+        sum(ss.act_at) as act_at,
+        sum(ss.act_iuser_at) as act_iuser_at,
+        sum(ss.act_ouser_at) as act_ouser_at,
+        sum(ifnull(ss.finish_rate,0))/count(1) as raw_rate,
+        sum(ss.task_cnt) as task_cnt,
+        sum(ss.task_unstart_cnt) as task_unstart_cnt,
+        sum(ss.task_exec_cnt) as task_exec_cnt,
+        sum(ss.task_finish_cnt) as task_finish_cnt,
+        sum(ss.task_set_cnt) as task_set_cnt,
+        sum(ss.task_close_cnt) as task_close_cnt,
+        sum(ss.test_cases) as test_cases,
+        sum(ss.exec_cases) as exec_cases,
+        sum(ss.design_cases) as design_cases,
+        sum(ss.finish_cases) as finish_cases,
+        sum(ss.bug_cnt) as bug_cnt,
+        sum(ss.active_bugs) as active_bugs,
+        sum(ss.confirmed_bugs) as confirmed_bugs,
+        sum(ss.resolved_bugs) as resolved_bugs,
+        sum(ss.closed_bugs) as closed_bugs,
+        min(ss.min_start_time) as min_start_time,
+        max(ss.max_end_time) as max_end_time
+        from xm_menu_state ss inner join xm_menu m on ss.menu_id=m.menu_id   where m.pmenu_id =#{menuId}
+        group by m.pmenu_id) s2 on s2.pmenu_id=s.menu_id inner join xm_menu xmm on s.menu_id=xmm.menu_id
+        set
+        s.budget_workload=ifnull(s2.budget_workload,0),
+        s.budget_iuser_workload=ifnull(s2.budget_iuser_workload,0),
+        s.budget_ouser_workload=ifnull(s2.budget_ouser_workload,0),
+        s.budget_at=ifnull(s2.budget_at,0),
+        s.budget_iuser_at=ifnull(s2.budget_iuser_at,0),
+        s.budget_ouser_at=ifnull(s2.budget_ouser_at,0),
+        s.act_workload=ifnull(s2.act_workload,0),
+        s.act_iuser_workload=ifnull(s2.act_iuser_workload,0),
+        s.act_ouser_workload=ifnull(s2.act_ouser_workload,0),
+        s.act_at=ifnull(s2.act_at,0),
+        s.act_iuser_at=ifnull(s2.act_iuser_at,0),
+        s.act_ouser_at=ifnull(s2.act_ouser_at,0),
+        s.finish_rate=case when  ifnull(s2.budget_workload,0)  >0
+        then 100*(ifnull(s2.act_workload,0)) / s2.budget_workload
+        when ifnull(s2.act_workload,0)>0 then 100
+        when xmm.status >'4' then 100
+        else  0  end,
+        s.task_cnt=ifnull(s2.task_cnt,0),
+        s.task_unstart_cnt=ifnull(s2.task_unstart_cnt,0),
+        s.task_finish_cnt=ifnull(s2.task_finish_cnt,0),
+        s.task_set_cnt=ifnull(s2.task_set_cnt,0),
+        s.task_close_cnt=ifnull(s2.task_close_cnt,0),
+        s.test_cases=ifnull(s2.test_cases,0),
+        s.exec_cases=ifnull(s2.exec_cases,0),
+        s.design_cases=ifnull(s2.design_cases,0),
+        s.finish_cases=ifnull(s2.finish_cases,0),
+        s.bug_cnt=ifnull(s2.bug_cnt,0),
+        s.active_bugs=ifnull(s2.active_bugs,0),
+        s.confirmed_bugs=ifnull(s2.confirmed_bugs,0),
+        s.resolved_bugs=ifnull(s2.resolved_bugs,0),
+        s.closed_bugs=ifnull(s2.closed_bugs,0),
+        s.min_start_time=s2.min_start_time,
+        s.max_end_time=s2.max_end_time,
+        xmm.start_time=s2.min_start_time,
+        xmm.end_time=s2.max_end_time
+        where s.menu_id = #{menuId}
+    </update>
+
+
+    <!-- 适合没有交叉的，没用父子关系的一批任务的更新 -->
+    <update id="xmTaskBatchSumParents" parameterType="List">
+        UPDATE xm_task res
+        LEFT JOIN (
+        SELECT
+        t.parent_taskid,
+        count(1) as children_cnt,
+        sum( if( t.ntype='0',1,0)) as sub_task_cnt,
+        sum( if( t.ntype='0',0,1)) as sub_plan_cnt,
+        sum( ifnull( t.budget_at, 0 ) ) AS budget_at,
+        sum( ifnull( t.budget_workload, 0 ) ) AS budget_workload,
+        sum( ifnull( t.act_at, 0 ) ) AS act_at,
+        sum( ifnull( t.act_workload, 0 ) ) AS act_workload,
+        sum( ifnull( t.budget_workload, 0 ) * ifnull( t.rate, 0 ) )   AS budget_workload_calc,
+        sum( ifnull(t.rate,0)) as total_rate,
+        min( t.start_time ) AS start_time,
+        max( t.end_time ) AS end_time,
+        min( t.act_start_time ) AS act_start_time,
+        max( t.act_end_time ) AS act_end_time
+        FROM
+        xm_task t
+        WHERE
+        t.parent_taskid in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        group by t.parent_taskid
+        ) t2 ON t2.parent_taskid = res.id
+        SET
+        res.budget_workload=ifnull(t2.budget_workload,0),
+        res.act_at = t2.act_at,
+        res.act_workload = t2.act_workload,
+        res.rate = case when ifnull(t2.budget_workload,0) >0 then ifnull(t2.budget_workload_calc,0) / t2.budget_workload
+        when  t2.act_workload >0 then 100
+        when  res.task_state &gt;='2' then 100
+        else res.rate end,
+        res.start_time = ifnull(res.start_time,t2.start_time),
+        res.end_time = ifnull(t2.end_time,t2.end_time),
+        res.act_start_time = t2.act_start_time,
+        res.act_end_time = t2.act_end_time,
+        res.children_cnt = ifnull( t2.children_cnt, 0 ),
+        res.sub_task_cnt = ifnull(t2.sub_task_cnt,0),
+        res.sub_plan_cnt = ifnull(t2.sub_plan_cnt,0)
+        WHERE
+        res.id in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        and res.ntype='1'
+    </update>
+    <!-- 适合父子关系的一批任务的更新 -->
+    <update id="xmTaskSumParents" parameterType="String">
+        UPDATE xm_task res
+        left JOIN (
+        SELECT
+        t.parent_taskid,
+        count(1) as children_cnt,
+        sum( if( t.ntype='0',1,0)) as sub_task_cnt,
+        sum( if( t.ntype='0',0,1)) as sub_plan_cnt,
+        sum( ifnull( t.act_at, 0 ) ) AS act_at,
+        sum( ifnull( t.act_workload, 0 ) ) AS act_workload,
+        sum( ifnull( t.budget_at, 0 ) ) AS budget_at,
+        sum( ifnull( t.budget_workload, 0 ) * ifnull( t.rate, 0 ) ) as budget_workload_calc,
+        sum( ifnull(t.rate,0)) as total_rate,
+        sum( ifnull( t.budget_workload, 0 )) as budget_workload,
+        min( t.act_start_time ) AS act_start_time,
+        max( t.act_end_time ) AS act_end_time,
+        min( t.start_time ) AS start_time,
+        max( t.end_time ) AS end_time
+        FROM
+        xm_task t
+        WHERE
+        t.parent_taskid = #{id}
+        ) t2 ON t2.parent_taskid = res.id
+        SET
+        res.budget_workload=ifnull(t2.budget_workload,0),
+        res.act_at = t2.act_at,
+        res.act_workload = t2.act_workload,
+        res.rate = case when ifnull(t2.budget_workload,0)>0 then ifnull(t2.budget_workload_calc,0) / t2.budget_workload
+        when t2.act_workload >0 then 100
+        when res.task_state &gt;='2' then 100
+        else res.rate end,
+        res.start_time = ifnull(res.start_time,t2.start_time),
+        res.end_time = ifnull(t2.end_time,t2.end_time),
+        res.act_start_time = t2.act_start_time,
+        res.act_end_time = t2.act_end_time,
+        res.children_cnt = ifnull( t2.children_cnt, 0 ),
+        res.sub_task_cnt = ifnull(t2.sub_task_cnt,0),
+        res.sub_plan_cnt = ifnull(t2.sub_plan_cnt,0)
+        WHERE
+        res.id  = #{id}
+        and res.ntype='1'
+    </update>
+
+    <update id="calcXmTestPlan" parameterType="String">
+        UPDATE xm_test_plan res
+        LEFT JOIN (
+        SELECT
+        pc.plan_id,
+        count( * ) total_cases,
+        sum( IF ( pc.exec_status = '2', 1, 0 ) ) ok_cases,
+        sum( IF ( pc.exec_status = '4', 1, 0 ) ) err_cases,
+        sum( IF ( pc.exec_status = '1', 1, 0 ) ) ig_cases,
+        sum( IF ( pc.exec_status = '3', 1, 0 ) ) bl_cases,
+        sum( IF ( pc.exec_status = '0', 1, 0 ) ) to_test_cases,
+        count( DISTINCT c.menu_id ) menus,
+        count( DISTINCT c.func_id ) funcs
+        FROM
+        xm_test_plan_case pc
+        INNER JOIN xm_test_case c ON pc.case_id = c.id
+        WHERE
+        pc.plan_id = #{id}
+        GROUP BY
+        pc.plan_id
+        ) AS cc ON cc.plan_id = res.id
+        LEFT JOIN (
+        SELECT
+        q.plan_id,
+        count( * ) bug_cnt,
+        sum(
+        IF
+        (
+        q.bug_status = '1'
+        OR q.bug_status = '2'
+        OR q.bug_status = '3'
+        OR q.bug_status = '4'
+        OR q.bug_status = '5'
+        OR q.bug_status = '6'
+        OR q.bug_status = '9',
+        1,
+        0
+        )
+        ) active_bugs,
+        sum( IF ( q.bug_status = '8', 1, 0 ) ) closed_bugs,
+        sum( IF ( q.bug_status = '7', 1, 0 ) ) resolved_bugs,
+        0 confirmed_bugs
+        FROM
+        xm_question q
+        WHERE
+        q.plan_id = #{id}
+        GROUP BY
+        q.plan_id
+        ) AS bugs ON res.id = bugs.plan_id
+        SET res.total_cases = cc.total_cases,
+        res.ok_cases = cc.ok_cases,
+        res.err_cases = cc.err_cases,
+        res.ig_cases = cc.ig_cases,
+        res.bl_cases = cc.bl_cases,
+        res.to_test_cases = cc.to_test_cases,
+        res.menus = cc.menus,
+        res.funcs = cc.funcs,
+        res.bug_cnt = bugs.bug_cnt,
+        res.active_bugs = bugs.active_bugs,
+        res.closed_bugs = bugs.closed_bugs,
+        res.resolved_bugs = bugs.resolved_bugs,
+        res.resolved_bugs = bugs.resolved_bugs,
+        res.confirmed_bugs = bugs.confirmed_bugs
+        WHERE
+        id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.UserInterestsMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_user_interests res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+
+    <select id="detailMap" parameterType="String" resultType="HashMap">
+        select res.*,b.* from sys_user_interests res left join sys_user b on res.userid=b.userid
+        <where>
+            res.userid=#{userid}
+        </where>
+    </select>
+
+
+    <update id="updateAfterBidSuccess" parameterType="HashMap">
+        UPDATE  sys_user_interests res
+        LEFT JOIN (
+        SELECT
+        g.userid userid,
+        sum( ifnull( if(g.state='2',g.at, 0 ),0 )) ctotal_at,
+        sum( ifnull( if(g.state='2',g.exp, 0 ),0 )) ctotal_exp,
+        sum( ifnull( if(g.state='2',1, 0 ),0 )) srv_times,
+        sum(1) as ctotal_bids,
+        sum( if(g.biz_month=#{bizMonth},1,0)) cmonth_bids,
+        sum( if(g.biz_month=#{bizMonth} and g.state='2',g.at,0)) cmonth_at,
+        sum( if(g.biz_month=#{bizMonth} and g.state='2',g.exp,0)) cmonth_exp,
+        sum( if(g.biz_month>= DATE_FORMAT(date_sub(now(),INTERVAL 5 MONTH),'%Y-%m'),1,0)) csix_bids,
+        sum( if(g.biz_month>= DATE_FORMAT(date_sub(now(),INTERVAL 5 MONTH),'%Y-%m') and g.state='2',g.at,0)) csix_at,
+        sum( if(g.biz_month>= DATE_FORMAT(date_sub(now(),INTERVAL 5 MONTH),'%Y-%m') and g.state='2',g.exp,0)) csix_exp
+        FROM
+        sys_user_grade_record g
+        WHERE
+        g.userid = #{userid}
+        ) gr ON res.userid = gr.userid
+        set
+        res.cmonth_bids=gr.cmonth_bids,
+        res.cmonth_at=gr.cmonth_at,
+        res.cmonth_exp=gr.cmonth_exp,
+        res.csix_bids=gr.csix_bids,
+        res.csix_at=gr.csix_at,
+        res.csix_exp=gr.csix_exp,
+        res.ctotal_receive_at=gr.ctotal_at,
+        res.ctotal_at=gr.ctotal_at,
+        res.ctotal_exp=gr.ctotal_exp,
+        res.ctotal_bids=gr.ctotal_bids,
+        res.srv_times=gr.srv_times
+        WHERE
+        res.userid = #{userid}
+    </update>
+
+    <update id="interestsOverUpdate" parameterType="com.mdp.sys.entity.UserInterests">
+        update  sys_user_interests
+        set
+        smax_at=#{smaxAt},
+        smax_exp=#{smaxExp},
+        ilevel=#{ilevel},
+        mfee=#{mfee},
+        sfee_rate=#{sfeeRate},
+        bids=#{bids},
+        rtime=null,
+        ltime=#{ltime}
+        where userid = #{userid}
+    </update>
+
+    <select id="selectNeedOverUser" parameterType="HashMap" resultType="com.mdp.sys.entity.UserInterests">
+        select * from sys_user_interests res where
+        res.rtime between  date(subdate(now(),7)) and date(subdate(now(),0)) and res.ilevel &gt;1
+        limit 200
+    </select>
+</mapper>

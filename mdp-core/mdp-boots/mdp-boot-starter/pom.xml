@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>mdp-boot-starter</artifactId>
+  
+  <packaging>jar</packaging>
+  <name>mdp-boot-starter 多功能快速开发平台集成器 </name>
+  <description>Multifunctional development platform 多功能快速开发平台集成器</description>
+  <parent>
+    <groupId>com.mdp</groupId>
+    <artifactId>mdp-boots</artifactId>
+    <version>${revision}</version>
+  </parent> 
+  <dependencies>
+    <!-- Spring 核心 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-test</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-springdoc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-swagger</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-boot-starter-mybatis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-qx-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-micro</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-safe</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-meta</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-sms</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-msg</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-dm-base</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-plat</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-email</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.mdp</groupId>
+      <artifactId>mdp-client-tpa</artifactId>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mdp.sys.mapper.PostMapper">
+
+    <select id="selectListMapByWhere" resultType="HashMap">
+        select * from sys_post res
+        <where>
+            ${@com.mdp.Util@trimWhere(ew.customSqlSegment)}
+        </where>
+    </select>
+
+    <select id="listPostNotInDeptid" parameterType="HashMap" resultType="HashMap">
+        select * from sys_post res
+        <where>
+            and not exists (select 1 from sys_dept_post dp where dp.post_id=res.id and dp.deptid=#{deptid})
+            <if test="postName != null and postName != ''">      and res.post_name = #{postName}     </if>
+            <if test="remark != null and remark != ''">      and res.remark = #{remark}     </if>
+            <if test="branchId != null and branchId != ''">      and res.branch_id = #{branchId}     </if>
+            <if test="key != null and key !='' ">   and res.post_name like #{key}     </if>
+        </where>
+    </select>
+</mapper>

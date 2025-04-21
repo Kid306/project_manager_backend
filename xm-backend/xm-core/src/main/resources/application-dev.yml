@@ -204,7 +204,7 @@ spring:
 
           url: jdbc:mysql://127.0.0.1:3306/xm?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
           username: root
-          password: pwd@db
+          password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
 
 

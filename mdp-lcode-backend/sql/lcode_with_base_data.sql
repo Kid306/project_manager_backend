@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 16/04/2025 17:27:06
+ Date: 31/08/2024 14:14:03
 */
 
 SET NAMES utf8mb4;
@@ -25,9 +25,9 @@ CREATE TABLE `arc_attachment`  (
   `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
   `NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '附件名称',
   `URL` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '访问路径',
-  `RELATIVE_PATH` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '硬盘存放路径',
+  `RELATIVE_PATH` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '硬盘存放路径',
   `FILE_SUFFIX` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '后缀名',
-  `CDN_URL` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '内容加速器访问路径',
+  `CDN_URL` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '内容加速器访问路径',
   `IS_IMG` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否图片',
   `ARCHIVE_ID` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '档案主编号',
   `IS_CDN` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否使用CDN',
@@ -37,7 +37,7 @@ CREATE TABLE `arc_attachment`  (
   `CAN_DEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可删除',
   `CAN_READ` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可读',
   `BIZ_ID` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务编号、产品编号、商品编号等',
-  `REMARK` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '业务名称、产品名称、商品名称等',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务名称、产品名称、商品名称等',
   `STORE_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '存储名字',
   `FILE_SIZE` decimal(8, 0) NULL DEFAULT NULL COMMENT '文件大小',
   `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '云用户机构编号',
@@ -52,7 +52,7 @@ CREATE TABLE `arc_attachment`  (
   `cusername` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
   `cdate` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段',
-  `tag_ids` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '标签',
+  `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '档案附件表' ROW_FORMAT = DYNAMIC;
 
@@ -250,7 +250,6 @@ INSERT INTO `arc_image` VALUES ('IM1721921561788166', 'logo', 'http://127.0.0.1:
 INSERT INTO `arc_image` VALUES ('IM1721922161558151', 'logo', 'http://127.0.0.1:7014/mdp/arc/image/IM1721921710822158/IM1721922161558151.png', '/IM1721921710822158', '.png', 'D:/arcfile/images', '2024-07-25 23:42:42', 45001, '', NULL, '', 'IM1721921710822158', 'IM1721922161558151', 'mdp/arc/image/', '0', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `arc_image` VALUES ('IM1721922348531188', 'logo', 'http://127.0.0.1:7014/mdp/arc/image/IM1721921517495115/IM1721922348531188.png', '/IM1721921517495115', '.png', 'D:/arcfile/images', '2024-07-25 23:45:49', 45001, '', NULL, '', 'IM1721921517495115', 'IM1721922348531188', 'mdp/arc/image/', '0', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `arc_image` VALUES ('IM1721929310422157', 'logo', 'http://127.0.0.1:7014/mdp/arc/img/image/qqkj_001/IM1721922331903128/IM1721929310422157.png', 'qqkj_001/IM1721922331903128', '.png', 'D:/arcfile/images', '2024-07-26 01:41:50', 45001, '4gx1x7v74q', NULL, '', 'IM1721922331903128', 'IM1721929310422157', 'mdp/arc/img/image/', '0', NULL, 'qqkj_001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `arc_image` VALUES ('IM20240906162923175', 'banner_20230719024308A640', 'http://127.0.0.1:7014/mdp/arc/img/image/demo-branch-01/IM1721921517495115/IM20240906162923175.png', 'demo-branch-01/IM1721921517495115', '.png', 'D:/arcfile/images', '2024-09-06 16:29:24', 638687, 'demo-hr', NULL, '', 'IM1721921517495115', 'IM20240906162923175', 'mdp/arc/img/image/', '0', NULL, 'demo-branch-01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for arc_image_category
@@ -414,6 +413,94 @@ CREATE TABLE `dm_model`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for form_data
+-- ----------------------------
+DROP TABLE IF EXISTS `form_data`;
+CREATE TABLE `form_data`  (
+  `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+  `TWO` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性二',
+  `THREE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性三',
+  `FOUR` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性四',
+  `FIVE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性五',
+  `SIX` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性六',
+  `SEVEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性七',
+  `EIGHT` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性八',
+  `NINE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性九',
+  `TEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性十',
+  `LTIME` datetime NULL DEFAULT NULL COMMENT '最后更新日期',
+  `ONE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性一',
+  `ZERO` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性零',
+  `REMARK` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备注 ',
+  `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单编号',
+  `USERID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最后更新人',
+  `ELEVEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十一',
+  `TWELVE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十二',
+  `THIRTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十三',
+  `FOURTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十四',
+  `FIFTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十五',
+  `ATT_URLS` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '附件url多个',
+  `ATT_NAMES` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '附件名称多个',
+  `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+  `BIZ_KEY` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '唯一确定该业务的主键竖线分隔多个',
+  `DEPTID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+  `FSTATE` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '0初始1审批中2结束审批',
+  `CTIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `dqx_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据权限码',
+  `cuserid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人编号',
+  `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签编号列表逗号分割',
+  `tag_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签名列表逗号分割',
+  `cusername` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
+  `dept_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+  `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段json\r\n[\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'},\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'}\r\n]',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `BIZ_KEY`(`BIZ_KEY` ASC) USING BTREE,
+  INDEX `FORM_ID`(`FORM_ID` ASC, `cuserid` ASC) USING BTREE,
+  INDEX `FORM_ID_2`(`FORM_ID` ASC) USING BTREE,
+  INDEX `FORM_ID_3`(`FORM_ID` ASC, `DEPTID` ASC) USING BTREE,
+  INDEX `USERID`(`FORM_ID` ASC, `USERID` ASC) USING BTREE,
+  INDEX `FORM_ID_4`(`FORM_ID` ASC, `CTIME` ASC) USING BTREE,
+  INDEX `FORM_ID_5`(`FORM_ID` ASC, `USERID` ASC, `CTIME` ASC) USING BTREE,
+  CONSTRAINT `form_data_ibfk_1` FOREIGN KEY (`FORM_ID`) REFERENCES `form_def` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单数据表-作废' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of form_data
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for form_data_flow
+-- ----------------------------
+DROP TABLE IF EXISTS `form_data_flow`;
+CREATE TABLE `form_data_flow`  (
+  `branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+  `proc_inst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程实例编号',
+  `agree` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批状态同意1不同意0',
+  `assignee` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批人',
+  `main_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程标题',
+  `act_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批节点编号',
+  `task_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批环节',
+  `comment_msg` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批意见',
+  `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+  `event_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '事件类型create/assignment/complete/delete/PROCESS_CREATED/PROCESS_COMPLETE/PROCESS_CANCELLED',
+  `biz_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务主键发起时上送，原样返回',
+  `model_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程key，可以根据该key找到对应的流程模型也代表审批事项，就是审什么内容',
+  `flow_last_time` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
+  `flow_branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程审批机构号',
+  `flow_state` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '0初始1审批中2审批通过3审批不通过4流程取消或者删除',
+  `start_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '启动人',
+  `proc_def_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程定义编号带版本的',
+  `model_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '模型名称，也代表审批事项，就是审什么内容',
+  `form_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单编号',
+  `form_data_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单数据编号',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单审核流程表-作废' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of form_data_flow
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for form_def
 -- ----------------------------
 DROP TABLE IF EXISTS `form_def`;
@@ -437,7 +524,7 @@ CREATE TABLE `form_def`  (
   `data_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据存储模式1-api,crud，2-指定表格，3-独立表格（表单设计表根根谁自动变更），4-指定数据集，5-外部处理，9-存粹展示',
   `options` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单的扩展字段信息，对应formCreate.option',
   `funcs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '函数列表{func1:body1,func2:body2}',
-  `rules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单生成规则列表，即页面元素定义列表，对应formCreate.rule',
+  `rules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '表单生成规则列表，即页面元素定义列表，对应formCreate.rule',
   `form_qx` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单权限信息json字符串',
   `flow_state` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审核状态',
   `flow_time` datetime NULL DEFAULT NULL COMMENT '审核时间',
@@ -451,6 +538,87 @@ CREATE TABLE `form_def`  (
 
 -- ----------------------------
 -- Records of form_def
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for form_field
+-- ----------------------------
+DROP TABLE IF EXISTS `form_field`;
+CREATE TABLE `form_field`  (
+  `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '表单编号',
+  `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键-字段编号对应数据库',
+  `TITLE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段显示内容',
+  `DICT` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '下拉时候关联的分组',
+  `TYP` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段类型',
+  `LEN` int NULL DEFAULT NULL COMMENT '字段长度',
+  `DVAL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认值',
+  `MUL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否多选',
+  `REQ` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否必输',
+  `ID_CAMEL` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段驼峰命名',
+  `REMARK` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段备注',
+  `TO_FLOW` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否提交到工作流',
+  `BKEY` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否为主键0否，1是',
+  `SEQ` int NULL DEFAULT NULL COMMENT '显示顺序',
+  `PID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '归属组编号-用于解决多个tab页，或者多个子页面的问题',
+  `show_style` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '展示风格origin-原生、tag-标签、x-综合',
+  `style_obj` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '样式json',
+  `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段json\r\n[\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'},\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'}\r\n]',
+  `qx` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '字段权限 json字符串\r\nothQuery:是否进行查询权限检查0-否，1是\r\nqryMinLvl:最低查询级别,\r\nqryRoleids:可查询的角色\r\nqryDeptid:可查询的部门\r\nqryUserids:可查询的人员\r\nnqRoleids:不可查询的角色\r\nnqDeptids:不可查询的部门\r\nnqUserids:不可查询的人员\r\n',
+  `SPAN` int NULL DEFAULT NULL COMMENT '如果上级是row布局，存span属性,\r\n',
+  `vrules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '验证器列表\r\n[{rule1},{rule2}]',
+  `ext_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '扩展类型user、dept、att、img、row、card、tabs等',
+  `hol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '输入提示，对应placeholder',
+  `gname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分组名称，如果是tabs,这里存tab名称，逗号分割多个\r\n如果上级是tabs,存放tab名称，只存一个',
+  `clazz` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '样式',
+  `ronly` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '只读',
+  `clear` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可清除',
+  `hidden` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否隐藏',
+  PRIMARY KEY (`ID`, `FORM_ID`) USING BTREE,
+  UNIQUE INDEX `FORM_ID`(`FORM_ID` ASC, `ID_CAMEL` ASC) USING BTREE,
+  INDEX `FORM_ID_2`(`FORM_ID` ASC) USING BTREE,
+  CONSTRAINT `form_field_ibfk_1` FOREIGN KEY (`FORM_ID`) REFERENCES `form_def` (`ID`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单字段定义--作废' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of form_field
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for form_qx
+-- ----------------------------
+DROP TABLE IF EXISTS `form_qx`;
+CREATE TABLE `form_qx`  (
+  `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '表单编号',
+  `QRY_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色查询,号分割',
+  `QRY_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门查询,号分割',
+  `QRY_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人查询,号分割',
+  `NQ_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色查询',
+  `NQ_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门查询',
+  `NQ_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人查询',
+  `OTH_QUERY` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人查询',
+  `OTH_EDIT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人修改',
+  `OTH_DEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人删除',
+  `LVL_CHECK` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否进行部门级别传递权限检查',
+  `QRY_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别查询权限',
+  `EDIT_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色更新,号分割',
+  `EDIT_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门更新,号分割',
+  `EDIT_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人更新号分割',
+  `NE_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色更新',
+  `NE_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门更新',
+  `NE_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人更新',
+  `DEL_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色删除,号分割',
+  `DEL_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门删除,号分割',
+  `DEL_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人删除,号分割',
+  `ND_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色删除',
+  `ND_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门删除',
+  `ND_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人查询',
+  `EDIT_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别更新权限',
+  `DEL_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别删除权限',
+  PRIMARY KEY (`FORM_ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单权限-作废' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of form_qx
 -- ----------------------------
 
 -- ----------------------------
@@ -482,312 +650,100 @@ CREATE TABLE `menu_def`  (
 -- ----------------------------
 -- Records of menu_def
 -- ----------------------------
-INSERT INTO `menu_def` VALUES ('1007875672', '1595755785', '/xm/pro/project/view/risk/index', '29.11', '2', 'project', '项目-风险管理', 'risk/index', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1010185430', '829954945', '/mdp/workflow/re/bmlink/index', '23.03', '2', NULL, '关联业务', 'bmlink/index', NULL, '1', '1', NULL, '0', 'xm-development', '0', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('101374796', '1509514699', '/mdp/sys/dept/index', '15.02', '2', NULL, '部门管理', 'dept/index', NULL, '1', '1', NULL, '0', 'xm-development', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('101476115', '1816078477', '/xm/project/suffix', '15.05', '2', 'ep:monitor', '结后管理', 'suffix', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1021264575', '1861535437', '/xm/product/menu/detail', '14.03', '2', 'ep:document', '需求明细', 'menu/detail', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1035577097', '430303105', '/mdp/workflow/ru/task/me/calendar', '24.02', '2', NULL, '我的日历', 'ru/task/me/calendar', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('101374796', '1509514699', '/mdp/sys/dept/index', '13.02', '2', NULL, '部门管理', 'dept/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1035577097', '430303105', '/mdp/workflow/ru/task/me/calendar', '23.01', '2', NULL, '我的日历', 'ru/task/me/calendar', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1037555514', '1697567528', '/mdp/larc/att', '27.00', '2', 'fa-solid:file', '附件库', 'att', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1037573171', '1697567528', '/mdp/larc/tag', '27.02', '2', 'fa-solid:dice-d20', '标签库', 'tag', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1041553970', '829954961', '/mdp/workflow/ru/execution/list/sponsors/me', '25.03', '2', NULL, '我主办的流程', 'execution/list/sponsors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1051359002', '2077304727', '/xm/rpt/branch', '25.03', '2', NULL, '企业级效能概览', 'branch', NULL, '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('105143972', '1814318966', '/xm/pro/cfg/setup', '34.01', '2', 'ep:tools', '立项细则', 'setup', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1054017720', '409121511', '/xm/project/view/hisFlow', '16.21', '2', 'project', '项目-历史审批流', 'hisFlow', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1071394642', '2031760071', '/xm/test/question/detail', '19.03', '2', 'fa:bug', '问题明细', 'question/detail', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('10736013', '430303105', '/mdp/workflow/ru/procinst/parames/exec/set', '24.04', '2', NULL, '任务执行路径', 'ru/procinst/parames/exec/set', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1081793131', '829954961', '/mdp/workflow/ru/ru/execution/list/partake/me', '25.02', '2', NULL, '我参与的流程', 'ru/execution/list/partake/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1096736551', '513581092', '/xm/kpi/his', '25.05', '1', 'fa:history', '考核记录', 'his', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1096741499', '513581092', '/xm/kpi/mng', '25.00', '1', 'fa:key', 'kpi管理', 'mng', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1097908644', '829954945', '/mdp/workflow/re/procdef/index', '23.02', '2', NULL, '激活/挂起', 'procdef/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1101163281', '135682456', '/xm/pro/collect/view/projects', '28.02', '2', 'project', '项目集-项目列表', 'projects', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1104191731', 'M0', '/xm/group', '21', '2', 'fa:sitemap', '团队管理', '/xm/group', 'XmGroup', '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1110556970', '1697696753', '/mdp/plat/branchValidInfo', '16.02', '2', NULL, '企业认证审核', 'branchValidInfo', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1113053970', '1339489517', '/xm/test/view/case', '20.02', '2', NULL, '用例管理', 'case', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1113153808', '1339489517', '/xm/test/view/flow', '20.03', '2', NULL, '用例评审', 'flow', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1113451275', '1339489517', '/xm/test/view/plan', '20.04', '2', NULL, '测试计划', 'plan', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('111465074', '1697402246', '/mdp/form/design/edit/:expandId', '19.02', '2', NULL, '表单编辑', 'design/edit/:expandId', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1123436161', '135682456', '/xm/pro/collect/view/kpi/kadm', '28.13', '2', 'project', '项目集-我审核的kpi', 'kpi/kadm', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1130474044', '409121511', '/xm/project/view/dynamics', '16.12', '2', 'project', '项目-动态', 'dynamics', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1132115138', '1509514699', '/mdp/sys/dept/post/role/index', '15.05', '2', NULL, '部岗调整', 'dept/post/role/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1143808304', '409121511', '/xm/project/view/accept', '16.18', '2', 'project', '项目-结项申请', 'accept', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1162062486', '462708513', '/xm/fin/workload/month', '24.08', '1', 'fa-solid:user-cog', '工时月报', 'workload/month', NULL, '1', '1', NULL, '0', 'oa-finance', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1166098237', '162921639', '/xm/product/view/workloadDay', '17.17', '2', 'product', '产品-工时日报', 'workloadDay', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1168758661', '2031760071', '/xm/test/question/mng', '19.04', '2', 'fa:bug', '问题管理', 'question/mng', NULL, '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1178908656', '1595755785', '/xm/pro/project/view/rpt', '29.05', '2', 'project', '项目-效能', 'rpt', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1182899364', '1861535437', '/xm/product/mng', '14.00', '2', 'fa:product-hunt', '产品管理', 'mng', NULL, '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1182906158', '1861535437', '/xm/product/tpl', '14.02', '2', 'fa-solid:copy', '产品模板', 'tpl', NULL, '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1191697019', '829954961', '/mdp/workflow/ru/execution/list/sponsors/me/calendar', '25.04', '2', NULL, '我的日历流程', 'execution/list/sponsors/me/calendar', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1191850421', '409121511', '/xm/project/view/iteration', '16.03', '2', 'project', '项目-迭代', 'iteration', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1041553970', '430303105', '/mdp/workflow/ru/execution/list/sponsors/me', '24.03', '2', NULL, '我主办的流程', 'ru/execution/list/sponsors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('10736013', '430303105', '/mdp/workflow/ru/procinst/parames/exec/set', '23.03', '2', NULL, '任务执行路径', 'ru/procinst/parames/exec/set', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1097908644', '430303105', '/mdp/workflow/re/procdef/index', '26.03', '2', NULL, '模型激活/挂起', 're/procdef/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1110556970', '1697696753', '/mdp/plat/branchValidInfo', '14.02', '2', NULL, '企业认证审核', 'branchValidInfo', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('111465074', '1697402246', '/mdp/form/design/edit/:expandId', '19.02', '2', NULL, '表单编辑', 'design/edit/:expandId', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1156113951', '430303105', '/mdp/workflow/re/procdef/list/start', '23.07', '2', NULL, '发起流程', 're/procdef/list/start', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1191697019', '430303105', '/mdp/workflow/ru/execution/list/sponsors/me/calendar', '24.04', '2', NULL, '我的日历流程', 'ru/execution/list/sponsors/me/calendar', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1192371226', '1353667415', '/my/order/index', '22.03', '2', 'component', '购买产品', 'index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1194148255', '1353667415', '/my/order/addUsers', '22.05', '2', 'component', '增购人数', 'addUsers', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1200424405', '1353667415', '/my/order/renew', '22.06', '2', 'component', '续费', 'renew', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1203868345', '1697601223', '/mdp/meta/item/set/:itemCode', '17.02', '2', NULL, '参数改值', 'item/set/:itemCode', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1204115580', '162921639', '/xm/product/view/dynamics', '17.13', '2', 'product', '产品-动态', 'dynamics', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1208055976', '135682456', '/xm/pro/collect/view/record', '28.23', '2', 'project', '项目集-日志', 'record', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1215955937', '680783571', '/datav/xm/branch/index', '22.01', '2', 'ep:histogram', '机构大屏', 'branch/index', NULL, '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1218843837', 'M0', '/login', '07', '2', NULL, '登录', '/login', 'Login', '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1203868345', '1697601223', '/mdp/meta/item/set/:itemCode', '15.02', '2', NULL, '参数改值', 'item/set/:itemCode', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1223247853', '1295619531', '/mdp/dm/data/table', '20.03', '2', NULL, '表格数据', 'data/table', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1228083213', 'M0', '/mdp', '14', '2', 'simple-line-icons:people', '角色权限', '/mdp', 'sysRoleQx', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1232045177', '409121511', '/xm/project/view/detail', '16.16', '2', 'project', '项目-详情', 'detail', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1276118055', '1888497401', '/xm/iteration/view/record', '18.09', '2', 'iteration', '迭代-日志', 'record', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('128564337', '829954639', '/mdp/workflow/hi/procinst/list', '26.00', '2', NULL, '所有流程', 'procinst/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1295619531', 'M0', '/mdp/dm', '20', '2', 'ep:data-line', '数据模型', '/mdp/dm', 'dmDataModel', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1228083213', 'M0', '/mdp', '12', '2', 'simple-line-icons:people', '角色权限', '/mdp', '角色权限', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('128564337', '829954639', '/mdp/workflow/hi/procinst/list', '25.00', '2', NULL, '所有流程', 'procinst/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1295619531', 'M0', '/mdp/dm', '20', '2', 'ep:data-line', '数据模型', '/mdp/dm', 'router.dm.dataModel', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
 INSERT INTO `menu_def` VALUES ('1300623580', '1353667415', '/my/order/platfrom/list', '22.01', '2', 'component', '订单列表(平台)', 'platfrom/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1301153252', '462708513', '/xm/fin/branch/budget', '24.02', '1', 'ep:coin', '预算分析', 'branch/budget', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('131384931', '162921639', '/xm/product/view/test/casedb', '17.09', '2', 'fa-solid:bug', '产品-测试用例库', 'test/casedb', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('132474078', '829954945', '/mdp/workflow/re/model/index', '23.01', '2', NULL, '模型管理', 'model/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1327254389', '162921639', '/xm/product/view/iteration', '17.04', '2', 'product', '产品-迭代', 'iteration', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1336933474', '2031760071', '/xm/test/question/mng/me', '19.05', '2', 'fa:bug', '问题(我的)', 'question/mng/me', NULL, '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1339489517', 'M0', '/xm/test/view', '20', '2', 'bug', '测试管理-视图', '/xm/test/view', 'XmTestView', '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1344355146', '1816078477', '/xm/project/task/center/me', '15.13', '2', 'ep:operation', '任务(我的)', 'task/center/me', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1350779265', '829954961', '/mdp/workflow/ru/execution/list/start/me', '25.01', '2', NULL, '我发起的流程', 'execution/list/start/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1352133025', '1697696753', '/mdp/plat/userValidInfo', '16.01', '2', NULL, '个人认证审核', 'userValidInfo', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1353667415', 'M0', '/my/order', '22', '2', 'simple-line-icons:note', '订单管理', '/my/order', 'moOrder', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('135682456', 'M0', '/xm/pro/collect/view', '28', '2', 'project', '项目集-专业视图', '/xm/pro/collect/view', 'XmProCollectView', '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1359026755', '829954639', '/mdp/workflow/hi/procinst/list/start/me', '26.01', '2', NULL, '我发起的流程', 'procinst/list/start/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1369960685', '1104191731', '/xm/group/detail', '21.02', '2', 'fa:sitemap', '项目团队', 'detail', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1393868693', '462708513', '/xm/fin/workload/day/me', '24.05', '1', 'fa-solid:user-clock', '工时日报(我)', 'workload/day/me', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('139389140', '1562684305', '/user/profile/index', '13.00', '2', 'ep:user', '个人中心', 'index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1401993902', '135682456', '/xm/pro/collect/view/workloadDay', '28.20', '2', 'project', '项目集-工时日报', 'workloadDay', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1422726531', '514177993', '/xm/pro/product/view/workloadMonth', '30.03', '2', 'product', '产品-工时月报', 'workloadMonth', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('143437211', 'M0', '/xm/pro/iteration/view', '33', '2', 'iteration', '迭代管理-专业视图', '/xm/pro/iteration/view', 'XmProIterationView', '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1465640911', '1888497401', '/xm/iteration/view/overview', '18.00', '2', 'iteration', '迭代-首页', 'overview', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1490984240', '135682456', '/xm/pro/collect/view/kpi/his', '28.14', '2', 'project', '项目集-kpi历史审核记录', 'kpi/his', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1490989188', '135682456', '/xm/pro/collect/view/kpi/mng', '28.10', '2', 'project', '项目集-kpi管理', 'kpi/mng', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('149131997', '1339489517', '/xm/test/view/group', '20.07', '2', NULL, '团队', 'group', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1492508722', '1816078477', '/xm/project/evn/mng', '15.11', '2', 'fa-solid:list-ol', '环境清单', 'evn/mng', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1498182938', '2077304727', '/xm/rpt/his', '25.00', '2', NULL, '历史报告', 'his', NULL, '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1509514699', 'M0', '/mdp/sys', '15', '2', 'simple-line-icons:grid', '机构管理', '/mdp/sys', 'sysOrgMng', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1509515363', 'M0', '/mdp/tpa', '18', '2', 'fa:wechat', '第三方管理', '/mdp/tpa', 'sysTpa', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('151132983', '1228083213', '/mdp/menu/module/branch', '14.04', '2', NULL, '已开通模块', 'menu/module/branch', NULL, '1', '1', NULL, '0', 'xm-development', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1513929563', '513587830', '/xm/rpt/branch', '26.03', '1', 'fa-solid:chess-queen', '企业级效能概览', 'branch', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('151665511', '1104191731', '/xm/group/user', '21.01', '2', 'fa-solid:users', '成员管理', 'user', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1528380458', '1509514699', '/mdp/sys/user/adm', '15.06', '2', NULL, '机构管理员', 'user/adm', NULL, '1', '1', NULL, '0', 'xm-development', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1528389011', '699946812', '/xm/pro/collect/mng', '23.00', '2', 'ep:copy-document', '项目集管理', 'mng', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1543012339', '1816078477', '/xm/project/execute', '15.03', '2', 'ep:wind-power', '实施管理', 'execute', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('154480968', '2031760071', '/xm/test/plan/mng', '19.02', '2', 'fa:fire', '测试计划', 'plan/mng', NULL, '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1549801778', '462708513', '/xm/fin/workload/day', '24.07', '1', 'fa-solid:user-clock', '工时日报', 'workload/day', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1551571358', '462708513', '/xm/fin/task/sbill', '24.04', '1', 'fa-solid:money-bill-wave', '任务结算单', 'task/sbill', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1552915413', '1339489517', '/xm/test/view/plan/detail', '20.06', '2', NULL, '测试计划明细', 'plan/detail', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1557471888', '1816078477', '/xm/project/workload/mng', '15.14', '2', 'fa-solid:user-clock', '工时管理', 'workload/mng', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1562684305', 'M0', '/user/profile', '13', '2', 'simple-line-icons:layers', '个人中心', '/user/profile', 'profile', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1567163313', '462708513', '/xm/fin/workload/month/me', '24.06', '1', 'fa-solid:user-cog', '工时月报(我)', 'workload/month/me', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1588766697', '1509514699', '/mdp/sys/branch/index', '15.03', '2', NULL, '公司管理', 'branch/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1594073807', '135682456', '/xm/pro/collect/view/test/plan', '28.08', '2', 'project', '项目集-测试计划', 'test/plan', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1595755785', 'M0', '/xm/pro/project/view', '29', '2', 'project', '项目管理-专业视图', '/xm/pro/project/view', 'XmProProjectView', '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1604951772', '462708513', '/xm/fin/branch/budget/record', '24.03', '1', 'fa-solid:coins', '预算明细', 'branch/budget/record', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1629201611', '1339489517', '/xm/test/view/env', '20.05', '2', NULL, '环境', 'env', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('162921639', 'M0', '/xm/product/view', '17', '2', 'product', '产品管理-视图', '/xm/product/view', 'XmProductView', '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1632360569', '409121511', '/xm/project/view/record', '16.11', '2', 'project', '项目-日志', 'record', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1638767858', '1861535437', '/xm/product/iteration/mng', '14.05', '2', 'ep:connection', '迭代管理', 'iteration/mng', NULL, '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1660530179', '1888497401', '/xm/iteration/view/project', '18.01', '2', 'iteration', '迭代-项目', 'project', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1666608115', '1353667415', '/my/order/paySuccess', '22.07', '2', 'component', '支付成功', 'paySuccess', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1667875513', '162921639', '/xm/product/view/detail', '17.15', '2', 'product', '产品-详情', 'detail', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1669612920', '1595755785', '/xm/pro/project/view/cost/create', '29.03', '2', 'project', '项目-创建费用', 'cost/create', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1674056969', '1228083213', '/mdp/func/index', '08.00', '2', 'ep:grid', '功能菜单', 'func/index', NULL, '1', '1', NULL, '0', 'xm-development', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1679856248', '162921639', '/xm/product/view/hisFlow', '17.19', '2', 'project', '产品-历史审批流', 'hisFlow', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1681533993', 'M0', '/invite/success', '03', '2', NULL, '扫码成功', '/invite/success', 'InviteSuccess', '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1684478436', '162921639', '/xm/product/view/file', '17.14', '2', 'product', '产品-文档', 'file', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1684490028', '162921639', '/xm/product/view/func', '17.03', '2', 'product', '产品-模块', 'func', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1684683207', '162921639', '/xm/product/view/menu', '17.02', '2', 'product', '产品-需求', 'menu', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1684778897', '162921639', '/xm/product/view/plan', '17.05', '2', 'product', '产品-计划', 'plan', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1684888045', '162921639', '/xm/product/view/task', '17.06', '2', 'product', '产品-任务', 'task', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1697402246', 'M0', '/mdp/form', '19', '2', 'simple-line-icons:screen-tablet', '智能表单', '/mdp/form', 'AiForm', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1350779265', '430303105', '/mdp/workflow/ru/execution/list/start/me', '24.01', '2', NULL, '我发起的流程', 'ru/execution/list/start/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1352133025', '1697696753', '/mdp/plat/userValidInfo', '14.01', '2', NULL, '个人认证审核', 'userValidInfo', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1353667415', 'M0', '/my/order', '22', '2', 'simple-line-icons:note', '订单管理', '/my/order', '订单', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1359026755', '829954639', '/mdp/workflow/hi/procinst/list/start/me', '25.01', '2', NULL, '我发起的流程', 'procinst/list/start/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('139389140', '1562684305', '/user/profile/index', '18.00', '2', 'ep:user', '个人中心', 'index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1505567404', '430303105', '/mdp/workflow/ru/procinst/parames/start/set', '23.04', '2', NULL, '任务启动路径', 'ru/procinst/parames/start/set', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1509514699', 'M0', '/mdp/sys', '13', '2', 'simple-line-icons:grid', '机构管理', '/mdp/sys', '机构管理', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1509515363', 'M0', '/mdp/tpa', '16', '2', 'fa:wechat', '第三方管理', '/mdp/tpa', '第三方应用', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('151132983', '1228083213', '/mdp/menu/module/branch', '12.04', '2', NULL, '已开通模块', 'menu/module/branch', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1528380458', '1509514699', '/mdp/sys/user/adm', '13.05', '2', NULL, '机构管理员', 'user/adm', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1562684305', 'M0', '/user/profile', '18', '2', 'simple-line-icons:layers', '个人中心', '/user/profile', 'profile', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1588766697', '1509514699', '/mdp/sys/branch/index', '13.03', '2', NULL, '公司管理', 'branch/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1666608115', '1353667415', '/my/order/paySuccess', '22.07', '2', 'component', '支付成功', 'paySuccess', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1697402246', 'M0', '/mdp/form', '19', '2', 'simple-line-icons:screen-tablet', '智能表单', '/mdp/form', 'router.form.IntelligentForm', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
 INSERT INTO `menu_def` VALUES ('1697567528', 'M0', '/mdp/larc', '27', '2', 'fa-solid:atom', '内容管理', '/mdp/larc', 'larc', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1697601223', 'M0', '/mdp/meta', '17', '2', 'simple-line-icons:share-alt', '元数据管理', '/mdp/meta', 'sysMetaData', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1697696753', 'M0', '/mdp/plat', '16', '2', 'simple-line-icons:globe-alt', '平台管理', '/mdp/plat', 'sysPlat', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1699896460', '513581092', '/xm/kpi/kself', '25.01', '1', 'fa-solid:sun', '我负责的kpi', 'kself', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1705714802', '829954961', '/mdp/workflow/ru/execution/list/monitors/me', '25.00', '2', NULL, '我监控的流程', 'execution/list/monitors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1716921546', '1816078477', '/xm/project/accept', '15.04', '2', 'ep:finished', '结项管理', 'accept', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1737218734', '1228083213', '/mdp/sys/qx/index', '14.01', '2', NULL, '权限管理', 'sys/qx/index', NULL, '1', '1', NULL, '0', 'xm-development', '1', NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1739924012', '462708513', '/xm/fin/branch/cost', '24.00', '1', 'fa-solid:spa', '成本分析', 'branch/cost', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1753553337', '135682456', '/xm/pro/collect/view/milestone', '28.06', '2', 'project', '项目集-里程碑', 'milestone', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1761051464', '135682456', '/xm/pro/collect/view/group', '28.17', '2', 'project', '项目集-团队', 'group', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1766711081', '1509515363', '/mdp/tpa/user/index/:inviteId', '18.01', '2', NULL, '我邀请的用户', 'user/index/:inviteId', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1775273149', '829954639', '/mdp/workflow/hi/procinst/list/partake/me', '26.02', '2', NULL, '我参与的流程', 'procinst/list/partake/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1776764900', '1953632781', '/xm/crowd/mng', '23.00', '2', NULL, '众包大厅', 'mng', NULL, '1', '1', NULL, '0', 'xm-crowd', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('177843126', 'M0', '/invite/code/:inviteId', '02', '2', NULL, '邀请码', '/invite/code/:inviteId', 'InviteCode', '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1786458817', '513581092', '/xm/kpi/dict', '25.03', '1', 'fa-solid:list-ol', 'kpi模板', 'dict', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1786659690', '513581092', '/xm/kpi/kadm', '25.02', '1', 'fa-solid:user-check', '我审核的kpi', 'kadm', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1790045151', '1295619531', '/mdp/dm/data/list/:dataSource/:tableName', '20.04', '2', NULL, '表格数据查询', 'data/list/:dataSource/:tableName', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1797864725', '1697696753', '/mdp/plat/platform/PlatformMng', '16.00', '2', NULL, '平台管理', 'platform/PlatformMng', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1797978897', '1816078477', '/xm/project/recycle', '15.08', '2', 'fa:recycle', '项目回收站', 'recycle', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1814318966', 'M0', '/xm/pro/cfg', '34', '2', 'ep:tools', '项目配置', '/xm/pro/cfg', 'xmCfg', '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1816078477', 'M0', '/xm/project', '15', '2', 'fa-solid:project-diagram', '项目管理', '/xm/project', 'XmProject', '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1818987611', '1339489517', '/xm/test/view/overview', '20.00', '2', NULL, '测试管理', 'overview', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1697601223', 'M0', '/mdp/meta', '15', '2', 'simple-line-icons:share-alt', '元数据管理', '/mdp/meta', '元数据管理', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1697696753', 'M0', '/mdp/plat', '14', '2', 'simple-line-icons:globe-alt', '平台管理', '/mdp/plat', '平台管理', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('1705714802', '430303105', '/mdp/workflow/ru/execution/list/monitors/me', '24.00', '2', NULL, '我监控的流程', 'ru/execution/list/monitors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1737218734', '1228083213', '/mdp/sys/qx/index', '12.01', '2', NULL, '权限管理', 'sys/qx/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1747114276', '430303105', '/mdp/workflow/hi/procinst/list/archive', '24.06', '2', NULL, '流程归档', 'hi/procinst/list/archive', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1766711081', '1509515363', '/mdp/tpa/user/index/:inviteId', '16.01', '2', NULL, '我邀请的用户', 'user/index/:inviteId', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1775273149', '829954639', '/mdp/workflow/hi/procinst/list/partake/me', '25.02', '2', NULL, '我参与的流程', 'procinst/list/partake/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1790045151', '1295619531', '/mdp/dm/data/list/:dataSource/:tableName', '20.04', '2', NULL, '表格数据查询', 'data/list/:dataSource/:tableName', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1797864725', '1697696753', '/mdp/plat/platform/PlatformMng', '14.00', '2', NULL, '平台管理', 'platform/PlatformMng', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('1830797352', '1295619531', '/mdp/dm/model/index', '20.00', '2', NULL, '模型中心', 'model/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1832520681', '1888497401', '/xm/iteration/view/group', '18.07', '2', NULL, '团队', 'group', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1842481056', 'M0', '/changeEmailStepTwo', '01', '2', NULL, '更改邮箱验证邮箱', '/changeEmailStepTwo', 'ChangeEmailStepTwo', '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1844012375', '409121511', '/xm/project/view/group', '16.10', '2', 'project', '项目-团队', 'group', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1854712149', '409121511', '/xm/project/view/setup', '16.17', '2', 'project', '项目-立项申请', 'setup', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1861535437', 'M0', '/xm/product', '14', '2', 'fa:product-hunt', '产品管理', '/xm/product', 'XmProduct', '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1861548730', '1509515363', '/mdp/tpa/user/index', '18.02', '2', NULL, '第三方用户查询', 'user/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1883577956', '1816078477', '/xm/project/mng', '15.00', '2', 'fa-solid:project-diagram', '项目管理', 'mng', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1883580961', '1816078477', '/xm/project/pre', '15.01', '2', 'ep:sunrise', '早期项目', 'pre', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1883584750', '1816078477', '/xm/project/tpl', '15.10', '2', 'fa-solid:copy', '项目模板', 'tpl', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1887948229', '409121511', '/xm/project/view/env', '16.07', '2', 'project', '项目-环境清单', 'env', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1888497401', 'M0', '/xm/iteration/view', '18', '2', 'iteration', '迭代管理-视图', '/xm/iteration/view', 'XmIterationView', '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1896710018', '143437211', '/xm/pro/iteration/view/rpt', '33.01', '2', 'iteration', '迭代-效能', 'rpt', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1917138492', '1888497401', '/xm/iteration/view/question', '18.06', '2', 'iteration', '迭代-问题', 'question', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1927900662', '1816078477', '/xm/project/close', '15.06', '2', 'ep:checked', '已关闭项目', 'close', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1929392688', '829954639', '/mdp/workflow/hi/procinst/list/sponsors/me', '26.04', '2', NULL, '我主办的流程', 'procinst/list/sponsors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1941517501', '1228083213', '/mdp/sys/role/index', '14.00', '2', NULL, '角色管理', 'sys/role/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1942473339', '1816078477', '/xm/project/setup', '15.02', '2', 'ep:star', '立项管理', 'setup', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1953632781', 'M0', '/xm/crowd', '23', '2', 'fa-solid:comment-dollar', '众包管理', '/xm/crowd', 'XmCrowd', '1', '1', NULL, '0', 'xm-crowd', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('1955823518', '590127579', '/xm/risk/index', '27.00', '2', 'fa-solid:shield-virus', '风险管理', 'index', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1956765884', '1509514699', '/mdp/sys/user/unregister', '15.08', '2', NULL, '注销审核', 'user/unregister', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1963451742', '409121511', '/xm/project/view/test/plan', '16.08', '2', 'project', '项目-测试', 'test/plan', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1966466503', '409121511', '/xm/project/view/product', '16.01', '2', 'project', '项目-产品', 'product', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1968097161', '1562684305', '/user/profile/message', '13.01', '2', 'fa:commenting-o', '消息中心', 'message', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('1982266620', '829954945', '/mdp/workflow/re/designer/index', '23.00', '2', NULL, '流程设计', 'designer/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2001948802', '135682456', '/xm/pro/collect/view/risk/overview', '28.16', '2', 'project', '项目集-风险分析', 'risk/overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2006905584', '1888497401', '/xm/iteration/view/test/plan', '18.05', '2', 'iteration', '迭代-测试管理', 'test/plan', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1861548730', '1509515363', '/mdp/tpa/user/index', '16.02', '2', NULL, '第三方用户查询', 'user/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1880153208', '430303105', '/mdp/workflow/re/procdef/list/parames', '26.04', '2', NULL, '模型设置', 're/procdef/list/parames', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1929392688', '829954639', '/mdp/workflow/hi/procinst/list/sponsors/me', '25.04', '2', NULL, '我主办的流程', 'procinst/list/sponsors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1941517501', '1228083213', '/mdp/sys/role/index', '12.00', '2', NULL, '角色管理', 'sys/role/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1956765884', '1509514699', '/mdp/sys/user/unregister', '13.07', '2', NULL, '注销审核', 'user/unregister', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('1968097161', '1562684305', '/user/profile/message', '18.01', '2', 'fa:commenting-o', '消息中心', 'message', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('2007594547', '1353667415', '/my/order/branch/list', '22.00', '2', 'component', '已购模块(平台)', 'branch/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2031760071', 'M0', '/xm/test', '19', '2', 'fa-solid:bug', '测试管理', '/xm/test', 'XmTest', '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('2032250793', '1953632781', '/xm/crowd/execuser/me', '23.02', '2', NULL, '候选人(我的)', 'execuser/me', NULL, '1', '1', NULL, '0', 'xm-crowd', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2039387517', '409121511', '/xm/project/view/workloadDay', '16.13', '2', 'project', '项目-工时日报', 'workloadDay', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2049969234', '1509514699', '/mdp/sys/user/index', '15.01', '2', NULL, '用户管理', 'user/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2055788403', '829954961', '/mdp/workflow/ru/execution/list', '25.05', '2', NULL, '执行列表', 'execution/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2057809575', '513587830', '/xm/rpt/his/detail', '26.01', '1', 'fa:line-chart', '报告明细', 'his/detail', NULL, '0', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2065622500', '135682456', '/xm/pro/collect/view/cost', '28.19', '2', 'project', '项目集-费用', 'cost', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2065705875', '135682456', '/xm/pro/collect/view/file', '28.22', '2', 'project', '项目集-文档', 'file', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2065884689', '135682456', '/xm/pro/collect/view/link', '28.03', '2', 'project', '项目集-关联项目', 'link', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2066006336', '135682456', '/xm/pro/collect/view/plan', '28.04', '2', 'project', '项目集-计划', 'plan', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2066115484', '135682456', '/xm/pro/collect/view/task', '28.05', '2', 'project', '项目集-任务', 'task', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2068190905', '162921639', '/xm/product/view/record', '17.12', '2', 'product', '产品-日志', 'record', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2070697251', '1816078477', '/xm/project/mng/me', '15.07', '2', 'fa-solid:project-diagram', '项目(我的)', 'mng/me', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2072963635', '1595755785', '/xm/pro/project/view/risk/overview', '29.12', '2', 'project', '项目-风险分析', 'risk/overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2075571190', '135682456', '/xm/pro/collect/view/env', '28.25', '2', 'project', '项目-环境清单', 'env', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2075583743', '135682456', '/xm/pro/collect/view/rpt', '28.24', '2', 'project', '项目集-效能', 'rpt', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2076968295', '1509514699', '/mdp/sys/post/index', '15.04', '2', NULL, '岗位管理', 'post/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2077304727', 'M0', '/xm/rpt', '25', '2', 'ep:pie-chart', '效能分析', '/xm/rpt', 'XmRpt', '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('2078544506', '1888497401', '/xm/iteration/view/menu/scope', '18.08', '2', NULL, '团队', 'menu/scope', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2091109232', '514177993', '/xm/pro/product/view/kpi/kadm', '30.09', '2', 'project', '产品-我审核的kpi', 'kpi/kadm', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2092397775', '1697402246', '/mdp/form/data/add/:formId', '19.04', '2', NULL, '数据填报', 'data/add/:formId', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2098855710', '162921639', '/xm/product/view/test/plan', '17.08', '2', 'iteration', '产品-测试管理', 'test/plan', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2049969234', '1509514699', '/mdp/sys/user/index', '13.01', '2', NULL, '用户管理', 'user/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2055788403', '430303105', '/mdp/workflow/ru/execution/list', '24.05', '2', NULL, '执行列表', 'ru/execution/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2076968295', '1509514699', '/mdp/sys/post/index', '13.04', '2', NULL, '岗位管理', 'post/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2092397775', '1697402246', '/mdp/form/data/add/:formId', '19.04', '2', NULL, '数据填报', 'data/add/:formId', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('2099671808', '1697567528', '/mdp/larc/icon', '27.03', '2', 'fa-solid:atom', '图标库', 'icon', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2104340555', '514177993', '/xm/pro/product/view/budget', '30.01', '2', 'product', '产品-预算', 'budget', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2105254448', '1595755785', '/xm/pro/project/view/kpi/kadm', '29.09', '2', 'project', '项目-我审核的kpi', 'kpi/kadm', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2109297691', '1509514699', '/mdp/sys/user/join/require/adm', '15.07', '2', NULL, '加入审核', 'user/join/require/adm', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2114397992', '409121511', '/xm/project/view/setting', '16.15', '2', 'project', '项目-配置', 'setting', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2121941076', '430303105', '/mdp/workflow/re/start', '24.07', '2', NULL, '发起流程', 're/start', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('2122931272', '409121511', '/xm/project/view/milestone', '16.04', '2', 'project', '项目-里程碑计划', 'milestone', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('217313185', '409121511', '/xm/project/view/overview', '16.00', '2', 'project', '项目-首页', 'overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2109297691', '1509514699', '/mdp/sys/user/join/require/adm', '13.06', '2', NULL, '加入审核', 'user/join/require/adm', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('2128569720', '430303105', '/mdp/workflow/re/deploy/index', '26.02', '2', NULL, '发布包管理', 're/deploy/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('225564674', '1353667415', '/my/order/alipay', '22.08', '2', 'component', '支付宝支付码页面', 'alipay', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('225823337', '135682456', '/xm/pro/collect/view/risk/index', '28.15', '2', 'project', '项目集-风险管理', 'risk/index', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('230361011', '1339489517', '/xm/test/view/detail', '20.01', '2', NULL, '用例库详情', 'detail', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('255973150', '1697601223', '/mdp/meta/item/index', '17.00', '2', NULL, '字典管理', 'item/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('261674152', '409121511', '/xm/project/view/currFlow', '16.20', '2', 'project', '项目-当前审批流', 'currFlow', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('262158213', '162921639', '/xm/product/view/env', '17.07', '2', 'product', '产品-环境清单', 'env', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('288231092', '1353667415', '/my/order/create', '22.04', '2', 'component', '创建订单', 'create', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('290954721', '162921639', '/xm/product/view/overview', '17.00', '2', 'product', '产品-首页', 'overview', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('293066218', '430303105', '/mdp/workflow/ru/task/list', '24.05', '2', NULL, '任务管理', 'ru/task/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('299224984', '514177993', '/xm/pro/product/view/risk/index', '30.04', '2', 'project', '产品-风险管理', 'risk/index', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('321416427', '409121511', '/xm/project/view/comm/change', '16.19', '2', 'project', '项目-项目变更申请', 'comm/change', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('335315688', '162921639', '/xm/product/view/currFlow', '17.18', '2', 'project', '产品-当前审批流', 'currFlow', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('336181274', '1888497401', '/xm/iteration/view/func', '18.03', '2', 'iteration', '迭代-模块', 'func', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('336374453', '1888497401', '/xm/iteration/view/menu', '18.02', '2', 'iteration', '迭代-需求', 'menu', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('336579291', '1888497401', '/xm/iteration/view/task', '18.04', '2', 'iteration', '迭代-任务', 'task', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('349802645', '1509514699', '/mdp/sys/branch/maxUsersSet', '15.09', '2', NULL, '用户数调整', 'branch/maxUsersSet', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('353101976', '514177993', '/xm/pro/product/view/contract', '30.00', '2', 'product', '产品-合同', 'contract', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('360244557', '2031760071', '/xm/test/casedb/mng', '19.00', '2', 'fa-solid:star-of-david', '用例库管理', 'casedb/mng', NULL, '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('377450220', '1697601223', '/mdp/meta/item/option/index', '17.01', '2', NULL, '字典列表', 'item/option/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('38498579', '1595755785', '/xm/pro/project/view/cost', '29.02', '2', 'project', '项目-费用', 'cost', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('385176203', 'M0', '/xm/pro/test/view', '32', '2', 'bug', '测试管理-专业视图', '/xm/pro/test/view', 'XmProTestView', '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('400414022', '514177993', '/xm/pro/product/view/kpi/kself', '30.08', '2', 'fa-solid:sun', '产品-我负责的kpi', 'kpi/kself', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('409121511', 'M0', '/xm/project/view', '16', '2', 'project', '项目管理-视图', '/xm/project/view', 'XmProjectView', '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('424577267', '514177993', '/xm/pro/product/view/risk/overview', '30.05', '2', 'project', '产品-风险分析', 'risk/overview', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('430303105', 'M0', '/mdp/workflow', '24', '2', 'simple-line-icons:magic-wand', '任务中心', '/mdp/workflow', 'WfTaskCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('436078073', '1697402246', '/mdp/form/design/detail/:expandId', '19.01', '2', NULL, '表单明细', 'design/detail/:expandId', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('438340508', '1562684305', '/user/profile/loginRecord', '13.02', '2', 'fa:align-justify', '登录日志', 'loginRecord', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('444057264', '514177993', '/xm/pro/product/view/rpt', '30.11', '2', 'product', '产品-效能', 'rpt', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('444984753', '162921639', '/xm/product/view/project', '17.01', '2', 'product', '产品-项目', 'project', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('446069872', '829954639', '/mdp/workflow/hi/procinst/list/monitors/me', '26.03', '2', NULL, '我监控的流程', 'procinst/list/monitors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('255973150', '1697601223', '/mdp/meta/item/index', '15.00', '2', NULL, '字典管理', 'item/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('288231092', '1353667415', '/my/order/create', '22.04', '2', 'component', '创建订单', 'create', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('291886203', '430303105', '/mdp/workflow/ru/execution/list/partake/me', '24.02', '2', NULL, '我参与的流程', 'ru/execution/list/partake/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('293066218', '430303105', '/mdp/workflow/ru/task/list', '23.05', '2', NULL, '任务管理', 'ru/task/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('349802645', '1509514699', '/mdp/sys/branch/maxUsersSet', '13.08', '2', NULL, '用户数调整', 'branch/maxUsersSet', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('377450220', '1697601223', '/mdp/meta/item/option/index', '15.01', '2', NULL, '字典列表', 'item/option/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('430303105', 'M0', '/mdp/workflow', '26', '2', 'simple-line-icons:drawer', '模型审批', '/mdp/workflow', 'router.workflow.modelCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('436078073', '1697402246', '/mdp/form/design/detail/:expandId', '19.01', '2', NULL, '表单明细', 'design/detail/:expandId', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('438340508', '1562684305', '/user/profile/loginRecord', '18.02', '2', 'fa:align-justify', '登录日志', 'loginRecord', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('446069872', '829954639', '/mdp/workflow/hi/procinst/list/monitors/me', '25.03', '2', NULL, '我监控的流程', 'procinst/list/monitors/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('447774473', '1697402246', '/mdp/form/index', '19.00', '2', NULL, '表单中心', 'index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('454673871', '2031760071', '/xm/test/case/mng', '19.01', '2', 'fa-solid:fan', '用例管理', 'case/mng', NULL, '1', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('454902849', '1295619531', '/mdp/dm/data/set', '20.05', '2', NULL, '数据集', 'data/set', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('462099559', 'M0', '/social/login/success', '04', '2', NULL, '扫码成功', '/social/login/success', 'SocialLogin', '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('462708513', 'M0', '/xm/fin', '24', '1', 'ep:coin', '财务结算', '/xm/fin', 'XmFin', '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('466368267', '1595755785', '/xm/pro/project/view/budget', '29.00', '2', 'project', '项目-预算', 'budget', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('467319893', '135682456', '/xm/pro/collect/view/kpi/kself', '28.12', '2', 'fa-solid:sun', '项目集-我负责的kpi', 'kpi/kself', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('482492432', '135682456', '/xm/pro/collect/view/overview', '28.00', '2', 'project', '项目集总览', 'overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('487521175', '430303105', '/mdp/workflow/ru/task/claim/me', '24.03', '2', NULL, '抢任务', 'ru/task/claim/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('487521175', '430303105', '/mdp/workflow/ru/task/claim/me', '23.02', '2', NULL, '抢任务', 'ru/task/claim/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('490165531', '852072728', '/mdp/lcode/gen/index', '21.00', '2', 'simple-line-icons:organization', '代码生成', 'index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('49302859', '699946812', '/xm/pro/collect/me', '23.01', '2', 'ep:copy-document', '项目集(我的)', 'me', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('501085788', '1816078477', '/xm/project/mng/record', '15.09', '2', 'fa-solid:list', '项目动态', 'mng/record', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('512404490', '514177993', '/xm/pro/product/view/kpi/overview', '30.07', '2', 'project', '产品-kpi门户', 'kpi/overview', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('513581092', 'M0', '/xm/kpi', '25', '1', 'fa:key', 'kpi', '/xm/kpi', 'XmKpi', '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('513587830', 'M0', '/xm/rpt', '26', '1', 'fa-solid:chart-pie', '效能分析', '/xm/rpt', 'XmRpt', '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('514177993', 'M0', '/xm/pro/product/view', '30', '2', 'product', '产品管理-专业视图', '/xm/pro/product/view', 'XmProProductView', '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('532294770', '385176203', '/xm/pro/test/view/rpt', '32.00', '2', NULL, '统计分析', 'rpt', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('544361380', '409121511', '/xm/project/view/file', '16.14', '2', 'project', '项目-文档', 'file', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('544566151', '409121511', '/xm/project/view/menu', '16.02', '2', 'project', '项目-需求', 'menu', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('544661841', '409121511', '/xm/project/view/plan', '16.05', '2', 'project', '项目-计划', 'plan', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('544770989', '409121511', '/xm/project/view/task', '16.06', '2', 'project', '项目-任务', 'task', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('581309924', '430303105', '/mdp/workflow/ru/task/me', '24.01', '2', NULL, '我的待执行', 'ru/task/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('590127579', 'M0', '/xm/risk', '27', '2', 'fa-solid:shield-virus', '风险管理', '/xm/risk', 'XmRisk', '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('592752872', '162921639', '/xm/product/view/setting', '17.16', '2', 'product', '产品-设置', 'setting', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('594286017', '1814318966', '/xm/pro/cfg/accept', '34.02', '2', 'ep:tools', '结项细则', 'accept', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('610026296', '1861535437', '/xm/product/menu/mng', '14.04', '2', 'fa:envira', '需求管理', 'menu/mng', NULL, '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('61823104', '1595755785', '/xm/pro/project/view/budget/create', '29.01', '2', 'project', '项目-创建预算单', 'budget/create', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('621862744', '430303105', '/mdp/workflow/re/biz/start', '24.06', '2', NULL, '任务启动模型', 're/biz/start', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('625133600', '680783571', '/datav/xm/project/index', '22.00', '2', 'ep:histogram', '项目大屏', 'project/index', NULL, '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('626903603', '1814318966', '/xm/pro/cfg/type', '34.00', '2', 'ep:tools', '项目类型', 'type', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('630676403', '1339489517', '/xm/test/view/record', '20.08', '2', NULL, '测试库-日志', 'record', NULL, '0', '1', NULL, '0', 'xm-test', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('652790770', '1295619531', '/mdp/dm/data/set/list/:id', '20.07', '2', NULL, '数据集数据列表', 'data/set/list/:id', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('581309924', '430303105', '/mdp/workflow/ru/task/me', '23.00', '2', NULL, '我的待执行', 'ru/task/me', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('58162402', '430303105', '/mdp/workflow/biz/model/index', '26.05', '2', NULL, '业务模型管理', 'biz/model/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('617719715', '430303105', '/mdp/workflow/re/procdef/list/biz/start', '23.06', '2', NULL, '任务启动模型', 're/procdef/list/biz/start', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('652790770', '1295619531', '/mdp/dm/data/set/list/:id', '20.07', '2', NULL, '数据集数据列表', 'data/set/list/:id', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('665600948', '1697567528', '/mdp/larc/image', '27.01', '2', 'fa-solid:images', '图片库', 'image', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('668810766', '409121511', '/xm/project/view/question', '16.09', '2', 'project', '项目-问题', 'question', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('67452513', '514177993', '/xm/pro/product/view/kpi/his', '30.10', '2', 'project', '产品-kpi历史审核记录', 'kpi/his', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('67457461', '514177993', '/xm/pro/product/view/kpi/mng', '30.06', '2', 'project', '产品-kpi管理', 'kpi/mng', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('680419095', '162921639', '/xm/product/view/group', '17.11', '2', 'product', '产品-团队', 'group', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('680783571', 'M0', '/datav/xm', '22', '2', 'ep:histogram', '驾驶舱', '/datav/xm', 'xmDatav', '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('699946812', 'M0', '/xm/pro/collect', '23', '2', 'ep:copy-document', '项目集合', '/xm/pro/collect', 'XmCollect', '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('70237304', '1509515363', '/mdp/tpa/invite/index', '18.00', '2', NULL, '邀请管理', 'invite/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('703337785', '1509514699', '/mdp/sys/branch/set', '15.00', '2', NULL, '机构设置', 'branch/set', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('705992452', '513581092', '/xm/kpi/overview', '25.04', '1', 'fa-solid:chart-line', 'kpi门户', 'overview', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('722749173', '1953632781', '/xm/crowd/execuser/mng', '23.01', '2', NULL, '候选人管理', 'execuser/mng', NULL, '1', '1', NULL, '0', 'xm-crowd', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('742452302', '162921639', '/xm/product/view/question', '17.10', '2', 'product', '产品-问题', 'question', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('764787612', '135682456', '/xm/pro/collect/view/budget', '28.18', '2', 'project', '项目集-预算', 'budget', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('773399242', '1595755785', '/xm/pro/project/view/kpi/overview', '29.07', '2', 'project', '项目-kpi门户', 'kpi/overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('70237304', '1509515363', '/mdp/tpa/invite/index', '16.00', '2', NULL, '邀请管理', 'invite/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('703337785', '1509514699', '/mdp/sys/branch/set', '13.00', '2', NULL, '机构设置', 'branch/set', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('767843884', '430303105', '/mdp/workflow/de/model/index', '26.01', '2', NULL, '模型管理', 'de/model/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('781183081', '1353667415', '/my/order/my/list', '22.02', '2', 'component', '我的订单', 'my/list', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('804973324', '1295619531', '/mdp/dm/meta/index', '20.01', '2', NULL, '表格结构', 'meta/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('805642890', '1295619531', '/mdp/dm/data/set/create', '20.08', '2', NULL, '创建数据集', 'data/set/create', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('807740584', '135682456', '/xm/pro/collect/view/detail', '28.01', '2', 'project', '项目集-明细', 'detail', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('822472486', '135682456', '/xm/pro/collect/view/iteration', '28.07', '2', 'project', '项目集-迭代', 'iteration', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
 INSERT INTO `menu_def` VALUES ('825785593', '1697402246', '/mdp/form/design/add', '19.03', '2', NULL, '表单设计', 'design/add', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('829788973', '590127579', '/xm/risk/overview', '27.01', '2', 'fa-solid:shield-alt', '风险分析', 'overview', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('829919137', '1595755785', '/xm/pro/project/view/kpi/his', '29.10', '2', 'project', '项目-kpi历史审核记录', 'kpi/his', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('829924085', '1595755785', '/xm/pro/project/view/kpi/mng', '29.06', '2', 'project', '项目-kpi管理', 'kpi/mng', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('829954639', 'M0', '/mdp/workflow/hi', '26', '2', 'simple-line-icons:book-open', '历史审批', '/mdp/workflow/hi', 'WfProcinstCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('829954945', 'M0', '/mdp/workflow/re', '23', '2', 'simple-line-icons:drawer', '流程设计', '/mdp/workflow/re', 'WfModelCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('829954961', 'M0', '/mdp/workflow/ru', '25', '2', 'simple-line-icons:shield', '流程监控', '/mdp/workflow/ru', 'WfExecCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('83565213', '430303105', '/mdp/workflow/ru/task/detail', '24.00', '2', NULL, 'router.workflow.WfTaskDetail', 'ru/task/detail', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('836796753', '1697601223', '/mdp/meta/params/index', '17.03', '2', NULL, '参数定义', 'params/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('838915718', '1595755785', '/xm/pro/project/view/kpi/kself', '29.08', '2', 'fa-solid:sun', '项目-我负责的kpi', 'kpi/kself', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('840382107', '135682456', '/xm/pro/collect/view/kpi/overview', '28.11', '2', 'project', '项目集-kpi门户', 'kpi/overview', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('848856719', '1888497401', '/xm/iteration/view/workloadDay', '18.10', '2', 'iteration', '迭代-工时日报', 'workloadDay', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('852072728', 'M0', '/mdp/lcode/gen', '21', '2', 'simple-line-icons:screen-tablet', '代码生成', '/mdp/lcode/gen', 'lcodeGen', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
-INSERT INTO `menu_def` VALUES ('852614418', '135682456', '/xm/pro/collect/view/workloadMonth', '28.21', '2', 'project', '项目集-工时月报', 'workloadMonth', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('870293908', '462708513', '/xm/fin/branch/cost/record', '24.01', '1', 'fa-solid:cannabis', '成本明细', 'branch/cost/record', NULL, '1', '1', NULL, '0', 'oa-finance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('875802663', '1888497401', '/xm/iteration/view/detail', '18.01', '2', 'iteration', '迭代-详情', 'detail', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('876970105', '513587830', '/xm/rpt/his', '26.00', '1', 'fa:history', '历史报告', 'his', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('880425555', '514177993', '/xm/pro/product/view/cost', '30.02', '2', 'product', '产品-成本', 'cost', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('881723938', '1295619531', '/mdp/dm/meta/table/struct/:dataSource/:tableName', '20.02', '2', NULL, '表格结构', 'meta/table/struct/:dataSource/:tableName', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('905442250', '1104191731', '/xm/group/mng', '21.00', '2', 'fa:sitemap', '团队管理', 'mng', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('909177694', '1295619531', '/mdp/dm/data/set/edit/:id', '20.06', '2', NULL, '数据集', 'data/set/edit/:id', NULL, '0', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('910389990', '2077304727', '/xm/rpt/his/detail', '25.01', '2', NULL, '报告明细', 'his/detail', NULL, '0', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('911781021', '1228083213', '/mdp/menu/module/index', '14.03', '2', NULL, '模块管理', 'menu/module/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('914250065', '1861535437', '/xm/product/recycle', '14.01', '2', 'fa:recycle', '产品回收站', 'recycle', NULL, '1', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('923629251', '1595755785', '/xm/pro/project/view/workloadMonth', '29.04', '2', 'project', '项目-工时月报', 'workloadMonth', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('933990013', '135682456', '/xm/pro/collect/view/question', '28.09', '2', 'project', '项目集-问题', 'question', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('940820570', '2077304727', '/xm/rpt/index', '25.02', '2', NULL, '指标分析', 'index', NULL, '1', '1', NULL, '0', 'xm-analysis', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('953368989', '1816078477', '/xm/project/task/center', '15.12', '2', 'ep:operation', '任务大厅', 'task/center', NULL, '1', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('955742201', '513587830', '/xm/rpt/index', '26.02', '1', 'fa:bar-chart', '指标分析', 'index', NULL, '1', '1', NULL, '0', 'oa-performance', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('95643492', '1228083213', '/mdp/menu/index', '14.02', '2', NULL, '功能菜单', 'menu/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('959934421', '143437211', '/xm/pro/iteration/view/workloadMonth', '33.00', '2', 'iteration', '迭代-工时月报', 'workloadMonth', NULL, '0', '1', NULL, '0', 'xm-product', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('981834982', '829954961', '/mdp/workflow/ru/procinst/list/archive', '25.06', '2', NULL, '流程归档', 'procinst/list/archive', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
-INSERT INTO `menu_def` VALUES ('982158745', '1816078477', '/xm/project/task/detail', '15.15', '2', 'ep:document', '任务详情', 'task/detail', NULL, '0', '1', NULL, '0', 'xm-project', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('829954639', 'M0', '/mdp/workflow/hi', '25', '2', 'simple-line-icons:book-open', '历史审批', '/mdp/workflow/hi', 'router.workflow.procinstFlowCenter', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('836796753', '1697601223', '/mdp/meta/params/index', '15.03', '2', NULL, '参数定义', 'params/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('852072728', 'M0', '/mdp/lcode/gen', '21', '2', 'simple-line-icons:screen-tablet', '代码生成', '/mdp/lcode/gen', 'router.lcode.gen', '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '0');
+INSERT INTO `menu_def` VALUES ('881723938', '1295619531', '/mdp/dm/meta/table/struct/:dataSource/:tableName', '20.02', '2', NULL, '表格结构', 'meta/table/struct/:dataSource/:tableName', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('909177694', '1295619531', '/mdp/dm/data/set/edit/:id', '20.06', '2', NULL, '数据集', 'data/set/edit/:id', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('911781021', '1228083213', '/mdp/menu/module/index', '12.03', '2', NULL, '模块管理', 'menu/module/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('95643492', '1228083213', '/mdp/menu/index', '12.02', '2', NULL, '功能菜单', 'menu/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
+INSERT INTO `menu_def` VALUES ('958385534', '430303105', '/mdp/workflow/editor/index', '26.00', '2', NULL, '模型编辑', 'editor/index', NULL, '1', '1', NULL, '0', 'xm-development', NULL, NULL, NULL, '1');
 
 -- ----------------------------
 -- Table structure for menu_favorite
@@ -853,7 +809,7 @@ INSERT INTO `menu_module` VALUES ('oa-car', '车辆中心', NULL, '0', 10.00, '{
 INSERT INTO `menu_module` VALUES ('oa-contract', '合同管理', NULL, '1', 1.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
 INSERT INTO `menu_module` VALUES ('oa-customer', '客户管理', NULL, '1', 1.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
 INSERT INTO `menu_module` VALUES ('oa-file', '档案信息', NULL, '0', 2.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
-INSERT INTO `menu_module` VALUES ('oa-finance', '财务', NULL, '0', 3.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
+INSERT INTO `menu_module` VALUES ('oa-finance', '财务', NULL, '1', 3.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
 INSERT INTO `menu_module` VALUES ('oa-meeting', '会议管理', NULL, '0', 4.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
 INSERT INTO `menu_module` VALUES ('oa-office', '办公用品', NULL, '0', 4.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
 INSERT INTO `menu_module` VALUES ('oa-performance', '绩效考核', NULL, '1', 1.00, '{\"days\":\"0-90:100\\n90-180:98\\n180-360:95\\n360-720:90\",\"userNum\":\"0-10:100\\n10-50:98\\n50-100:95\\n100-200:90\\n200-500:85\\n500-50000:80\"}', '', '', '2', '', '1', '1', '', '', 50, '1', '', NULL, NULL, NULL);
@@ -902,20 +858,12 @@ CREATE TABLE `menu_module_branch`  (
 -- ----------------------------
 -- Records of menu_module_branch
 -- ----------------------------
-INSERT INTO `menu_module_branch` VALUES ('BR1650198578683185', '开发平台', 'xm-development', NULL, NULL, '2024-04-08 10:14:51', '2024-04-08 10:14:51', 'superAdmin', '超级管理员', 'superAdmin', '超级管理员', '0', NULL, NULL, NULL, '', NULL, '', NULL, NULL, '', '');
 INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '智能分析', 'xm-analysis', '2022-05-29 04:04:49', '2022-11-25 04:04:49', '2022-05-29 04:04:49', '2022-05-29 04:04:49', NULL, NULL, NULL, NULL, '1', 25, NULL, NULL, '1', '2022-05-29 04:04:49', NULL, 50, 50, '1', '2');
 INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '众包', 'xm-crowd', '2022-05-29 04:04:49', '2022-11-25 04:04:49', '2022-05-29 04:04:49', '2022-05-29 04:04:49', NULL, NULL, NULL, NULL, '1', 25, NULL, NULL, '1', '2022-05-29 04:04:49', NULL, 50, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '开发平台', 'xm-development', NULL, NULL, '2024-04-08 10:18:11', '2024-04-08 10:18:11', 'superAdmin', '超级管理员', 'superAdmin', '超级管理员', '0', NULL, NULL, NULL, '', NULL, '', NULL, NULL, '', '');
 INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '流水线', 'xm-pipeline', '2022-05-29 04:04:49', '2022-11-25 04:04:49', '2022-05-29 04:04:49', '2022-05-29 04:04:49', NULL, NULL, NULL, NULL, '1', 25, NULL, NULL, '1', '2022-05-29 04:04:49', NULL, 50, 50, '1', '2');
 INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '产品规划', 'xm-product', '2022-05-29 04:04:49', '2022-11-25 04:04:49', '2022-05-29 04:04:49', '2022-05-29 04:04:49', NULL, NULL, NULL, NULL, '1', 25, NULL, NULL, '1', '2022-05-29 04:04:49', NULL, 50, 50, '1', '2');
 INSERT INTO `menu_module_branch` VALUES ('BR1653413892864189', '测试管理', 'xm-test', '2022-05-29 04:04:49', '2022-11-25 04:04:49', '2022-05-29 04:04:49', '2022-05-29 04:04:49', NULL, NULL, NULL, NULL, '1', 25, NULL, NULL, '1', '2022-05-29 04:04:49', NULL, 50, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('hzxy-001', '智能分析', 'xm-analysis', '2024-01-20 22:16:14', '2025-01-14 22:23:05', '2024-01-20 22:16:14', '2024-01-20 22:23:05', NULL, NULL, NULL, NULL, '1', 505, NULL, NULL, '1', '2024-01-20 22:23:05', NULL, 1010, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('hzxy-001', '众包', 'xm-crowd', '2024-01-20 22:26:18', '2025-01-14 22:26:18', '2024-01-20 22:26:18', '2024-01-20 22:26:18', NULL, NULL, NULL, NULL, '1', 5, NULL, NULL, '1', '2024-01-20 22:26:18', NULL, 10, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('hzxy-001', '流水线', 'xm-pipeline', '2024-01-20 21:52:10', '2025-01-14 21:52:10', '2024-01-20 21:52:10', '2024-01-20 21:52:10', NULL, NULL, NULL, NULL, '1', 505, NULL, NULL, '1', '2024-01-20 21:52:10', NULL, 1010, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('hzxy-001_1', '流水线', 'xm-pipeline', '2024-01-20 21:52:10', '2025-01-14 21:52:10', '2024-04-08 10:16:39', '2024-04-08 10:16:39', 'superAdmin', '超级管理员', 'superAdmin', '超级管理员', '0', 505, NULL, NULL, '1', '2024-01-20 21:52:10', NULL, 1010, 50, '1', '2');
 INSERT INTO `menu_module_branch` VALUES ('qqkj_001', '智能分析', 'xm-analysis', '2022-05-28 17:29:13', '2023-05-23 17:29:13', '2022-05-28 17:29:13', '2022-05-28 17:29:13', NULL, NULL, NULL, NULL, '1', 105025, NULL, NULL, '1', '2022-05-28 17:29:13', NULL, 210050, 50, '1', '2');
-INSERT INTO `menu_module_branch` VALUES ('qqkj_001', '开发平台', 'xm-development', NULL, NULL, '2025-03-31 12:28:17', '2025-03-31 12:28:17', 'superAdmin', '超级管理员', 'superAdmin', '超级管理员', '1', NULL, NULL, NULL, '', NULL, '', NULL, NULL, '', '');
-INSERT INTO `menu_module_branch` VALUES ('qqkj_001', '项目管理', 'xm-project', NULL, NULL, '2025-03-31 12:28:48', '2025-03-31 12:28:48', 'superAdmin', '超级管理员', 'superAdmin', '超级管理员', '1', NULL, NULL, NULL, '', NULL, '', NULL, NULL, '', '');
 
 -- ----------------------------
 -- Table structure for menu_role
@@ -933,34 +881,6 @@ CREATE TABLE `menu_role`  (
 -- ----------------------------
 -- Records of menu_role
 -- ----------------------------
-INSERT INTO `menu_role` VALUES ('4123', '1178908656', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1191850421', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1344355146', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1492508722', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1557471888', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1632360569', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1797978897', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1844012375', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1883577956', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1883584750', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1887948229', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1963451742', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '1966466503', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '2039387517', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '2070697251', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '2122931272', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '217313185', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '38498579', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '466368267', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '501085788', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '544361380', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '544566151', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '544661841', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '544770989', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '668810766', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '923629251', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '953368989', NULL);
-INSERT INTO `menu_role` VALUES ('4123', '982158745', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '101374796', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1035577097', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1037555514', NULL);
@@ -971,7 +891,6 @@ INSERT INTO `menu_role` VALUES ('admin', '1097908644', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1110556970', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '111465074', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1156113951', NULL);
-INSERT INTO `menu_role` VALUES ('admin', '1178908656', '0');
 INSERT INTO `menu_role` VALUES ('admin', '1191697019', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1192371226', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '1194148255', NULL);
@@ -1043,699 +962,92 @@ INSERT INTO `menu_role` VALUES ('admin', '909177694', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '911781021', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '95643492', NULL);
 INSERT INTO `menu_role` VALUES ('admin', '958385534', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1007875672', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1010185430', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '101374796', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '101476115', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1021264575', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1035577097', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1037555514', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1037573171', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1041553970', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1051359002', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '105143972', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1054017720', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1071394642', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '10736013', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1081793131', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1096736551', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1096741499', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1097908644', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1101163281', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1110556970', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1113053970', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1113153808', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1113451275', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '111465074', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1123436161', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1130474044', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1132115138', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1143808304', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1162062486', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1166098237', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1168758661', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1178908656', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1182899364', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1182906158', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '1156113951', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1191697019', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1191850421', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1192371226', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1194148255', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1200424405', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1203868345', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1204115580', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1208055976', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1215955937', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1218843837', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1223247853', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1232045177', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1276118055', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '128564337', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1300623580', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1301153252', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '131384931', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '132474078', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1327254389', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1336933474', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1344355146', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1350779265', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1352133025', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1359026755', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1369960685', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1393868693', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '139389140', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1401993902', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1422726531', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1465640911', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1490984240', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1490989188', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '149131997', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1492508722', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1498182938', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '1505567404', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '151132983', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1513929563', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '151665511', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1528380458', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1528389011', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1543012339', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '154480968', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1549801778', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1551571358', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1552915413', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1557471888', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1567163313', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1588766697', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1594073807', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1604951772', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1629201611', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1632360569', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1638767858', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1660530179', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1666608115', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1667875513', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1669612920', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1674056969', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1679856248', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1681533993', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1684478436', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1684490028', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1684683207', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1684778897', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1684888045', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1699896460', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1705714802', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1716921546', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1737218734', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1739924012', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1753553337', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1761051464', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '1747114276', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1766711081', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1775273149', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1776764900', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '177843126', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1786458817', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1786659690', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1790045151', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1797864725', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1797978897', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1818987611', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1830797352', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1832520681', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1842481056', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1844012375', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1854712149', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1861548730', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1883577956', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1883580961', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1883584750', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1887948229', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1896710018', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1917138492', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1927900662', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '1880153208', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1929392688', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1941517501', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1942473339', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1955823518', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1956765884', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1963451742', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1966466503', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '1968097161', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '1982266620', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2001948802', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2006905584', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2007594547', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2032250793', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2039387517', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2049969234', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2055788403', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2057809575', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2065622500', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2065705875', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2065884689', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2066006336', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2066115484', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2068190905', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2070697251', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2072963635', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2075571190', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2075583743', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2076968295', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2078544506', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2091109232', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2092397775', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2098855710', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2099671808', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2104340555', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2105254448', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '2109297691', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2114397992', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2121941076', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '2122931272', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '217313185', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '2128569720', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '225564674', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '225823337', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '230361011', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '255973150', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '261674152', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '262158213', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '288231092', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '290954721', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '291886203', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '293066218', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '299224984', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '321416427', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '335315688', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '336181274', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '336374453', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '336579291', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '349802645', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '353101976', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '360244557', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '377450220', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '38498579', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '400414022', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '424577267', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '436078073', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '438340508', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '444057264', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '444984753', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '446069872', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '447774473', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '454673871', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '454902849', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '462099559', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '466368267', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '467319893', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '482492432', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '487521175', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '490165531', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '49302859', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '501085788', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '512404490', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '532294770', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '544361380', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '544566151', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '544661841', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '544770989', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '581309924', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '592752872', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '594286017', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '610026296', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '61823104', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '621862744', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '625133600', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '626903603', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '630676403', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '58162402', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '617719715', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '652790770', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '665600948', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '668810766', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '67452513', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '67457461', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '680419095', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '70237304', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '703337785', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '705992452', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '722749173', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '742452302', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '764787612', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '773399242', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '767843884', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '781183081', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '804973324', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '805642890', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '807740584', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '822472486', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '825785593', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '829788973', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '829919137', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '829924085', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '83565213', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '836796753', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '838915718', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '840382107', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '848856719', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '852614418', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '870293908', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '875802663', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '876970105', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '880425555', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '881723938', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '905442250', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '909177694', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '910389990', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '911781021', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '914250065', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '923629251', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '933990013', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '940820570', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '953368989', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '955742201', NULL);
 INSERT INTO `menu_role` VALUES ('branchAdmin', '95643492', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '959934421', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '981834982', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', '982158745', NULL);
-INSERT INTO `menu_role` VALUES ('branchAdmin', 'xm-workload', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '101374796', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1035577097', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1037555514', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1037573171', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1041553970', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '10736013', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1097908644', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1110556970', NULL);
+INSERT INTO `menu_role` VALUES ('branchAdmin', '958385534', NULL);
 INSERT INTO `menu_role` VALUES ('demoFree', '111465074', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1156113951', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1191697019', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1192371226', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1194148255', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1200424405', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1203868345', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1223247853', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '128564337', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1300623580', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1350779265', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1352133025', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1359026755', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '139389140', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1505567404', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '151132983', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1528380458', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1588766697', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1666608115', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1705714802', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1737218734', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1747114276', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1766711081', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1775273149', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1790045151', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1797864725', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1830797352', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1861548730', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1880153208', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1929392688', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1941517501', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', '1956765884', NULL);
 INSERT INTO `menu_role` VALUES ('demoFree', '2092397775', NULL);
 INSERT INTO `menu_role` VALUES ('demoFree', '436078073', NULL);
 INSERT INTO `menu_role` VALUES ('demoFree', '447774473', NULL);
 INSERT INTO `menu_role` VALUES ('demoFree', '825785593', NULL);
-INSERT INTO `menu_role` VALUES ('demoFree', 'xm-workload', NULL);
-INSERT INTO `menu_role` VALUES ('HKCGroup-Role', '1010185430', '0');
-INSERT INTO `menu_role` VALUES ('log', '1010185430', '0');
-INSERT INTO `menu_role` VALUES ('log', '1178908656', '0');
-INSERT INTO `menu_role` VALUES ('log', '1359026755', NULL);
-INSERT INTO `menu_role` VALUES ('log', '1775273149', NULL);
-INSERT INTO `menu_role` VALUES ('log', '1929392688', NULL);
-INSERT INTO `menu_role` VALUES ('log', '446069872', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1010185430', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '101374796', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1021264575', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1035577097', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1037555514', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1037573171', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1041553970', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1051359002', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1071394642', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '10736013', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1081793131', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1097908644', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1110556970', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1113053970', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1113153808', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1113451275', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '111465074', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1132115138', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1162062486', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1166098237', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1168758661', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1178908656', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1182899364', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1182906158', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1191697019', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1191850421', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1192371226', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1194148255', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1200424405', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1203868345', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1215955937', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1218843837', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1223247853', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1276118055', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '128564337', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1300623580', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1301153252', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '132474078', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1327254389', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1336933474', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1344355146', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1350779265', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1352133025', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1359026755', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1393868693', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '139389140', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1422726531', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1465640911', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '149131997', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1492508722', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1498182938', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '151132983', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1528380458', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '154480968', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1549801778', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1551571358', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1552915413', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1557471888', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1567163313', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1588766697', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1604951772', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1629201611', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1632360569', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1638767858', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1660530179', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1666608115', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1674056969', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1681533993', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1684478436', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1684490028', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1684683207', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1684778897', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1684888045', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1705714802', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1737218734', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1739924012', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1766711081', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1775273149', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1776764900', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '177843126', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1790045151', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1797864725', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1797978897', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1818987611', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1830797352', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1832520681', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1842481056', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1844012375', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1861548730', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1883577956', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1883584750', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1887948229', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1896710018', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1917138492', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1929392688', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1941517501', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1956765884', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1963451742', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1966466503', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1968097161', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '1982266620', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2006905584', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2007594547', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2032250793', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2039387517', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2049969234', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2055788403', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2068190905', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2070697251', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2076968295', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2092397775', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2098855710', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2099671808', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2104340555', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2109297691', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2121941076', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '2122931272', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '217313185', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '225564674', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '255973150', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '262158213', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '288231092', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '290954721', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '293066218', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '336181274', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '336374453', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '336579291', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '349802645', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '353101976', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '360244557', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '377450220', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '38498579', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '436078073', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '438340508', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '444057264', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '444984753', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '446069872', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '447774473', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '454673871', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '454902849', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '462099559', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '466368267', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '487521175', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '490165531', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '501085788', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '532294770', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '544361380', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '544566151', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '544661841', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '544770989', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '581309924', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '610026296', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '621862744', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '625133600', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '652790770', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '665600948', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '668810766', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '680419095', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '70237304', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '703337785', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '722749173', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '742452302', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '781183081', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '804973324', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '805642890', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '825785593', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '83565213', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '836796753', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '848856719', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '870293908', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '880425555', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '881723938', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '909177694', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '910389990', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '911781021', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '914250065', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '923629251', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '940820570', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '953368989', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '95643492', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '959934421', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '981834982', NULL);
-INSERT INTO `menu_role` VALUES ('projectAdmin', '982158745', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1021264575', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1051359002', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1071394642', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1113053970', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1113153808', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1113451275', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1162062486', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1166098237', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1168758661', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1178908656', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1182899364', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1182906158', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1191850421', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1215955937', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1276118055', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1301153252', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1327254389', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1336933474', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1344355146', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1393868693', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1422726531', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1465640911', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '149131997', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1492508722', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1498182938', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '154480968', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1549801778', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1551571358', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1552915413', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1557471888', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1567163313', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1604951772', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1629201611', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1632360569', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1638767858', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1660530179', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1684478436', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1684490028', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1684683207', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1684778897', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1684888045', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1739924012', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1776764900', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1797978897', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1818987611', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1832520681', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1844012375', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1883577956', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1883584750', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1887948229', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1896710018', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1917138492', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1963451742', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '1966466503', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2006905584', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2032250793', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2039387517', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2068190905', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2070697251', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2098855710', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2104340555', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '2122931272', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '217313185', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '262158213', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '290954721', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '336181274', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '336374453', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '336579291', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '353101976', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '360244557', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '38498579', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '444057264', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '444984753', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '454673871', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '466368267', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '501085788', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '532294770', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '544361380', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '544566151', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '544661841', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '544770989', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '610026296', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '625133600', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '668810766', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '680419095', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '722749173', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '742452302', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '848856719', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '870293908', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '880425555', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '910389990', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '914250065', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '923629251', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '940820570', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '953368989', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '959934421', NULL);
-INSERT INTO `menu_role` VALUES ('qq_pm', '982158745', NULL);
-INSERT INTO `menu_role` VALUES ('RO1724326926687185', '1010185430', '0');
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1071394642', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1104191731', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1113053970', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1113153808', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1113451275', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1168758661', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1178908656', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1191850421', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1336933474', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1339489517', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1344355146', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1369960685', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '149131997', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1492508722', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '151665511', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '154480968', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1552915413', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1557471888', NULL);
-INSERT INTO `menu_role` VALUES ('RO20240903145430154', '1632360569', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'mdp-arc', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'mdp-dm', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'mdp-sys', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-asset', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-attendance', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-car', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-contract', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-customer', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'oa-file', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'xm-pipeline', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'xm-product', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'xm-project', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'xm-test', NULL);
-INSERT INTO `menu_role` VALUES ('superAdmin', 'xm-workload', NULL);
-INSERT INTO `menu_role` VALUES ('test', '1010185430', '0');
-INSERT INTO `menu_role` VALUES ('test', '111465074', NULL);
-INSERT INTO `menu_role` VALUES ('test', '1156113951', NULL);
-INSERT INTO `menu_role` VALUES ('test', '1178908656', '0');
-INSERT INTO `menu_role` VALUES ('test', '1595755785', '0');
-INSERT INTO `menu_role` VALUES ('test', '255973150', NULL);
-INSERT INTO `menu_role` VALUES ('test', '462708513', '0');
-INSERT INTO `menu_role` VALUES ('test-0001', '101374796', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1035577097', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1037555514', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1037573171', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1041553970', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '10736013', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1097908644', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1110556970', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '111465074', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1156113951', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1191697019', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1192371226', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1194148255', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1200424405', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1203868345', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1223247853', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1228083213', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '128564337', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1295619531', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1300623580', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1350779265', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1352133025', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1353667415', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1359026755', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '139389140', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1505567404', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1509514699', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1509515363', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '151132983', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1528380458', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1562684305', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1588766697', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1666608115', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1697402246', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1697567528', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1697601223', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1697696753', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1705714802', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1737218734', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1747114276', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1766711081', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1775273149', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1790045151', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1797864725', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1830797352', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1861548730', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1880153208', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1929392688', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1941517501', NULL);
-INSERT INTO `menu_role` VALUES ('test-0001', '1956765884', NULL);
 
 -- ----------------------------
 -- Table structure for meta_category
@@ -1818,7 +1130,7 @@ INSERT INTO `meta_item` VALUES ('3hHFWJY07', 'zd', '字第', '', 'COURT_ALL', 10
 INSERT INTO `meta_item` VALUES ('3hHUmiW08', 'JCBMMBLB', '卷册编目模板列表', '', 'COURT_ALL', 10, '4', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('3hNLBt608', 'mb2', '2015模板2', '', 'COURT_JCBM_TPL', 10, '4', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('3hP8v2L06', 'sex', '性别', '', 'COURT_ALL', 10, '4', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('4qqyfcq263', 'urgencyLevel', '紧急程度', '紧急程度', 'all', 10, '4', '', '', NULL, '3', NULL, '[{\"id\":\"1\",\"name\":\"非常紧急\"},{\"id\":\"3\",\"name\":\"一般紧急\"},{\"id\":\"2\",\"name\":\"紧急\"},{\"id\":\"4\",\"name\":\"低\"}]', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"id\":\"kclass\",\"name\":\"指标类型\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]');
+INSERT INTO `meta_item` VALUES ('4qqyfcq263', 'urgencyLevel', '紧急程度', '紧急程度', 'all', 10, '4', '', '', NULL, '3', NULL, '[{\"id\":\"1\",\"name\":\"非常紧急\"},{\"id\":\"3\",\"name\":\"一般紧急\"},{\"id\":\"2\",\"name\":\"紧急\"},{\"id\":\"4\",\"name\":\"低\"}]', NULL, NULL, NULL, NULL, NULL, NULL, '[]');
 INSERT INTO `meta_item` VALUES ('55c2u14kf9', 'overtimeType', '加班类型', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"双休日加班\"},{\"id\":\"0\",\"name\":\"工作日加班\"},{\"id\":\"2\",\"name\":\"法定假日加班\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('55gxectc61', 'customerType', '客户类型', '客户类型', 'all', 10, '4', '', '', NULL, 'fxs', NULL, '[{\"id\":\"kh\",\"name\":\"客户\"},{\"id\":\"dls\",\"name\":\"代理商\"},{\"id\":\"fxs\",\"name\":\"分销商\"},{\"id\":\"wbzy\",\"name\":\"外部资源\"},{\"id\":\"gryh\",\"name\":\"个人用户\"},{\"id\":\"jjds\",\"name\":\"竞争对手\"},{\"id\":\"hzhb\",\"name\":\"合作伙伴\"},{\"id\":\"yh\",\"name\":\"银行\"},{\"id\":\"ggmt\",\"name\":\"公关媒体\"},{\"id\":\"zjjg\",\"name\":\"中介机构\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('55jhbgr81k', 'language', '语言', '语言', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"TraditionalChinese\",\"name\":\"繁体中文\"},{\"id\":\"SimplifiedChinese\",\"name\":\"简体中文\"},{\"id\":\"English\",\"name\":\"英语\"},{\"id\":\"Japanese\",\"name\":\"日语\"},{\"id\":\"Korean\",\"name\":\"韩语\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -1852,7 +1164,6 @@ INSERT INTO `meta_item` VALUES ('currency', 'currency', '资产币种', '资产�
 INSERT INTO `meta_item` VALUES ('dataLvl', 'dataLvl', '数据权限等级', '', 'all', 20, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"禁止所有数据访问\"},{\"id\":\"-1\",\"name\":\"未分配\"},{\"id\":\"2\",\"name\":\"可操作本部门及下属部门数据\"},{\"id\":\"1\",\"name\":\"可操作本部门数据\"},{\"id\":\"3\",\"name\":\"可操作上一级、本级、下级部门数据\"},{\"id\":\"5\",\"name\":\"可操作本机构所有数据\"},{\"id\":\"4\",\"name\":\"可操作上两级及以下部门数据\"},{\"id\":\"6\",\"name\":\"可操作全平台数据\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('deptType', 'deptType', '部门类型', '部门类型', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"技术部门\"},{\"id\":\"2\",\"name\":\"管理部门\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('eduBackground', 'eduBackground', '学历', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"大专\",\"name\":\"大专\"},{\"id\":\"本科\",\"name\":\"本科\"},{\"id\":\"研究生\",\"name\":\"研究生\"},{\"id\":\"博士\",\"name\":\"博士\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('gain', 'gain', '成果', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('gbuyTimes', 'gbuyTimes', '团购时间段', '团购时间段', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"gbuyTimes08:00\",\"name\":\"08:00\"},{\"id\":\"gbuyTimes10:00\",\"name\":\"10:00\"},{\"id\":\"gbuyTimes12:00\",\"name\":\"12:00\"},{\"id\":\"gbuyTimes14:00\",\"name\":\"14:00\"},{\"id\":\"gbuyTimes16:00\",\"name\":\"16:00\"},{\"id\":\"gbuyTimes18:00\",\"name\":\"18:00\"},{\"id\":\"gbuyTimes20:00\",\"name\":\"20:00\"},{\"id\":\"gbuyTimes22:00\",\"name\":\"22:00\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('goodsStatus', 'goodsStatus', '商品状态', '商品状态', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"未启用\"},{\"id\":\"1\",\"name\":\"正常\"},{\"id\":\"3\",\"name\":\"淘汰\"},{\"id\":\"2\",\"name\":\"预淘汰\"},{\"id\":\"4\",\"name\":\"试销\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('healCondition', 'healCondition', '健康情况', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"健康\",\"name\":\"健康\"},{\"id\":\"生病\",\"name\":\"生病\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -1965,7 +1276,7 @@ INSERT INTO `meta_item` VALUES ('IT1713930215405148', 'formDataType', '智能表
 INSERT INTO `meta_item` VALUES ('IT1714452369149184', 'dm_data_model', '数据模型', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', NULL);
 INSERT INTO `meta_item` VALUES ('IT1715018520088158', 'platformBranchId', '平台机构号', '平台机构号', 'sysParams', 50, '1', '', '', '', 'platform-branch-001', '平台机构号', NULL, '', '', 999, NULL, '', '', '[{\"id\":\"platformBranchName\",\"name\":\"平台机构名称\",\"value\":\"平台管理机构\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]');
 INSERT INTO `meta_item` VALUES ('IT1716141779047192', 'lvl', '层级', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT1716319161416186', 'bpm_task_candidate_strategy', '工作流审批人分配策略', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[{\"id\":\"remark\",\"name\":\"备注\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]');
+INSERT INTO `meta_item` VALUES ('IT1716319161416186', 'bpm_task_candidate_strategy', '工作流审批人分配策略', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('IT1717254785691169', 'wfSignType', '加签方式', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('IT1718881282938116', 'workloadFillType', '项目工时计时方式', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('IT1718946061378186', 'envState', '环境清单状态', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
@@ -1995,25 +1306,6 @@ INSERT INTO `meta_item` VALUES ('IT202109066C-3', '33344', '33344', '33', '', 3,
 INSERT INTO `meta_item` VALUES ('IT20210906PG-1', '333', '33', '33', '', 2, '2', '', '', '', NULL, NULL, NULL, '33', '1', 1, NULL, NULL, '', NULL);
 INSERT INTO `meta_item` VALUES ('IT20210906RN-1', 'ceshi001', '测试001', '222222', '', 3, '4', '', '', '', '', '', '[{\"id\":\"1\",\"name\":\"测试1\"},{\"id\":\"3\",\"name\":\"测试3\"},{\"id\":\"2\",\"name\":\"测试插入5\"},{\"id\":\"4\",\"name\":\"测试4\"}]', '踩踩踩', '1', NULL, NULL, '1', '', NULL);
 INSERT INTO `meta_item` VALUES ('IT20210913IH-1', 'categoryType', '内容-文章固定分类', '内容-文章固定分类', 'all', NULL, '4', '', '', '', '0', '', '[{\"id\":\"0\",\"name\":\"知识库\"},{\"id\":\"1\",\"name\":\"新闻\"},{\"id\":\"2\",\"name\":\"内部公告\"},{\"id\":\"3\",\"name\":\"平台公告\"},{\"id\":\"5\",\"name\":\"论坛\"},{\"id\":\"6\",\"name\":\"公文\"},{\"id\":\"4\",\"name\":\"其它\"},{\"id\":\"7\",\"name\":\"归档\"},{\"id\":\"8\",\"name\":\"网站栏目\"}]', '', '', NULL, '', '', '', NULL);
-INSERT INTO `meta_item` VALUES ('IT20240907024602158', 'xm_wtype', '报工方式', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20240907024722171', 'xm_calc_type', '进度统计方式', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250330142707121', 'ptype', '计划任务类型', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250402212317543046', 'wf_process_listener', '1', '', 'all', 50, '1', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250405143421232075', 'kstatus', '指标状态', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250405144107168019', 'kclass', '指标分类', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250405144839800024', 'calcType', 'kpi考核周期', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250405145316318089', 'dataLink', 'kpi指标数据来源', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250405145916809045', 'ktype', 'kpi指标等级', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', NULL);
-INSERT INTO `meta_item` VALUES ('IT20250408191015929058', 'kadmStatus', 'kpi考核复评状态', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250409120402407024', 'kwarnStatus', '预警状态', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410012934434083', 'risk_type', '风险类型', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410013156635097', 'odds', '发生概率', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410013318212046', 'impact', '影响程度', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410013440415063', 'rstatus', '风险状态', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410013611783022', 'rlvl', '分析等级', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250410013756131028', 'rsgy', '风险应对策略', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
-INSERT INTO `meta_item` VALUES ('IT20250413004618413037', 'subject_class', '科目小分类', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]');
-INSERT INTO `meta_item` VALUES ('IT20250413005535218046', 'subject_big_class', '科目大分类', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('jxSchemeType', 'jxSchemeType', '绩效考核方案类型', '绩效考核方案类型', 'all', 10, '4', '', '', NULL, '3', NULL, '[{\"id\":\"0\",\"name\":\"月度考核\"},{\"id\":\"1\",\"name\":\"季度考核\"},{\"id\":\"2\",\"name\":\"半年度考核\"},{\"id\":\"3\",\"name\":\"年度考核\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('kdgs', 'kdgs', '快递公司', '快递公司列表', 'all', 100, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"sfkd\",\"name\":\"顺丰快递\"},{\"id\":\"ttkd\",\"name\":\"天天快递\"},{\"id\":\"ydkd\",\"name\":\"韵达快递\"},{\"id\":\"ytkd\",\"name\":\"圆通快递\"},{\"id\":\"ztkd\",\"name\":\"中通快递\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('locationtype', 'locationtype', '门店类型', '门店类型', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"直营\"},{\"id\":\"2\",\"name\":\"加盟\"},{\"id\":\"3\",\"name\":\"批发\"},{\"id\":\"4\",\"name\":\"虚拟门店\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -2031,16 +1323,9 @@ INSERT INTO `meta_item` VALUES ('politicsStatus', 'politicsStatus', '政治面�
 INSERT INTO `meta_item` VALUES ('postLvl', 'postLvl', '岗位级别', '岗位级别', 'all', 2, '4', NULL, NULL, NULL, '1', NULL, '[{\"id\":\"1\",\"name\":\"1级\"},{\"id\":\"2\",\"name\":\"2级\"},{\"id\":\"3\",\"name\":\"3级\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('postType', 'postType', '岗位类型', '岗位类型（技术/管理）', 'all', NULL, '4', NULL, NULL, NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"管理\"},{\"id\":\"2\",\"name\":\"技术\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('priority', 'priority', '优先级别', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"最高\"},{\"id\":\"1\",\"name\":\"较高\"},{\"id\":\"2\",\"name\":\"普通\"},{\"id\":\"3\",\"name\":\"较低\"},{\"id\":\"4\",\"name\":\"最低\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectAccept', 'projectAccept', '项目验收细则说明', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', NULL);
 INSERT INTO `meta_item` VALUES ('projectGroupType', 'projectGroupType', '项目团队类型', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"nbxmjl\",\"name\":\"内部项目经理\"},{\"id\":\"jgs\",\"name\":\"架构师\"},{\"id\":\"khxmjl\",\"name\":\"客户项目经理\"},{\"id\":\"jsjl\",\"name\":\"技术经理\"},{\"id\":\"khjsjl\",\"name\":\"客户技术经理\"},{\"id\":\"kh\",\"name\":\"客户\"},{\"id\":\"xsjl\",\"name\":\"销售经理/总监\"},{\"id\":\"xs\",\"name\":\"销售\"},{\"id\":\"kfz\",\"name\":\"开发组\"},{\"id\":\"csz\",\"name\":\"测试组\"},{\"id\":\"uat\",\"name\":\"uat测试\"},{\"id\":\"yyz\",\"name\":\"运营组\"},{\"id\":\"nbldz\",\"name\":\"内部领导组\"},{\"id\":\"qtz\",\"name\":\"其他组\"},{\"id\":\"khldz\",\"name\":\"客户领导组\"},{\"id\":\"xmzk\",\"name\":\"项目主控领导\"},{\"id\":\"xmzl\",\"name\":\"项目助理\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectPhasePlans100', 'projectPhasePlans100', NULL, NULL, 'all', 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 999, NULL, '1', NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectPhasePlans110', 'projectPhasePlans110', '【IT】软件开发（自研）项目阶段定义', NULL, 'all', 50, '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 999, NULL, '1', NULL, '[]');
-INSERT INTO `meta_item` VALUES ('projectPhasePlans120', 'projectPhasePlans120', '【IT】软件开发（合同)项目阶段定义', NULL, 'all', 50, '4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 999, NULL, '1', NULL, '[]');
-INSERT INTO `meta_item` VALUES ('projectPhasePlans140', 'projectPhasePlans140', NULL, NULL, 'all', 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 999, NULL, '1', NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectPhasePlans160', 'projectPhasePlans160', NULL, NULL, 'all', 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', 999, NULL, '1', NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectSetup', 'projectSetup', '立项细则说明', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('projectStatus', 'projectStatus', '项目状态', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"初始\"},{\"id\":\"1\",\"name\":\"售前\"},{\"id\":\"2\",\"name\":\"立项中\"},{\"id\":\"3\",\"name\":\"实施中\"},{\"id\":\"4\",\"name\":\"暂停中\"},{\"id\":\"5\",\"name\":\"结项中\"},{\"id\":\"6\",\"name\":\"已结项\"},{\"id\":\"7\",\"name\":\"售后\"},{\"id\":\"8\",\"name\":\"已完成\"},{\"id\":\"9\",\"name\":\"已关闭\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('projectSubject', 'projectSubject', '项目管理中对应的科目编号', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"wgzfgz\",\"name\":\"外购结算支付工资\"},{\"id\":\"yggz\",\"name\":\"员工工资\"},{\"id\":\"bgyp\",\"name\":\"办公用品\"},{\"id\":\"xmjj\",\"name\":\"项目奖金\"},{\"id\":\"htskrz\",\"name\":\"合同收款\"},{\"id\":\"hdjf\",\"name\":\"活动经费\"}]', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]');
+INSERT INTO `meta_item` VALUES ('projectSubject', 'projectSubject', '项目管理中对应的科目编号', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"wgzfgz\",\"name\":\"外购结算支付工资\"},{\"id\":\"yggz\",\"name\":\"员工工资\"},{\"id\":\"bgyp\",\"name\":\"办公用品\"},{\"id\":\"xmjj\",\"name\":\"项目奖金\"},{\"id\":\"htskrz\",\"name\":\"合同收款\"},{\"id\":\"hdjf\",\"name\":\"活动经费\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('projectTaskExecuserStatus', 'projectTaskExecuserStatus', '项目任务执行者状态列表', '执行人状态0候选排队中1执行任务中7放弃任务8黑名单', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"候选中\"},{\"id\":\"1\",\"name\":\"执行中\"},{\"id\":\"7\",\"name\":\"放弃任务\"},{\"id\":\"8\",\"name\":\"黑名单\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('projectTaskSettleStatus', 'projectTaskSettleStatus', '项目任务结算状态', '', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"未结算\"},{\"id\":\"1\",\"name\":\"已结算\"},{\"id\":\"2\",\"name\":\"无需结算\"},{\"id\":\"3\",\"name\":\"已付款\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('projectType', 'projectType', '项目类型', 'projectType', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"it-新建-瀑布\"},{\"id\":\"2\",\"name\":\"it-新建-敏捷\"},{\"id\":\"1\",\"name\":\"it-存量-瀑布\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -2056,13 +1341,43 @@ INSERT INTO `meta_item` VALUES ('storeaddress', 'storeaddress', '仓库地址', 
 INSERT INTO `meta_item` VALUES ('taskType', 'taskType', '任务类型', '任务类型', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"售前\"},{\"id\":\"2\",\"name\":\"投标\"},{\"id\":\"3\",\"name\":\"需求\"},{\"id\":\"4\",\"name\":\"设计\"},{\"id\":\"5\",\"name\":\"测试\"},{\"id\":\"6\",\"name\":\"开发\"},{\"id\":\"7\",\"name\":\"验收\"},{\"id\":\"8\",\"name\":\"运维\"},{\"id\":\"9\",\"name\":\"部署\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('tpAppCategory', 'tpAppCategory', '第三方应用分类', '第三方应用分类', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"wxpub\",\"name\":\"微信公众号\"},{\"id\":\"wxa\",\"name\":\"微信小程序\"},{\"id\":\"mdpApp\",\"name\":\"平台授权应用\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('tpAppPayType', 'tpAppPayType', '第三方支付渠道', '第三方支付渠道', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"微信\"},{\"id\":\"2\",\"name\":\"支付宝 \"},{\"id\":\"3\",\"name\":\"银行\"},{\"id\":\"6\",\"name\":\"其他\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('tsrc', 'tsrc', '技术来源', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[]');
 INSERT INTO `meta_item` VALUES ('weekday', 'weekday', '星期几', '星期一到星期天', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"FRIDAY\",\"name\":\"周五\"},{\"id\":\"MONDAY\",\"name\":\"周一\"},{\"id\":\"SATURDAY\",\"name\":\"周六\"},{\"id\":\"SUNDAY\",\"name\":\"周日\"},{\"id\":\"THURSDAY\",\"name\":\"周四\"},{\"id\":\"TUESDAY\",\"name\":\"周二\"},{\"id\":\"WEDNESDAY\",\"name\":\"周三\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('wxcolor', 'wxcolor', '微信卡券接口颜色', '微信卡券接口颜色', 'all', 10, '4', 'mktv4i2u1', NULL, NULL, NULL, NULL, '[{\"id\":\"#2c9f67\",\"name\":\"深绿色\"},{\"id\":\"#509fc9\",\"name\":\"浅蓝色\"},{\"id\":\"#5885cf\",\"name\":\"深蓝色\"},{\"id\":\"#63b359\",\"name\":\"浅绿色\"},{\"id\":\"#9062c0\",\"name\":\"紫色\"},{\"id\":\"#cc463d\",\"name\":\"深红色\"},{\"id\":\"#d09a45\",\"name\":\"浅棕色\"},{\"id\":\"#dd6549\",\"name\":\"浅红色\"},{\"id\":\"#e4b138\",\"name\":\"黄色\"},{\"id\":\"#ee903c\",\"name\":\"橘红色\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item` VALUES ('xm_kpi_tpl', 'xm_kpi_tpl', 'kpi指标库', '测试', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"calcType\",\"name\":\"kpi考核周期\",\"value\":\"M\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"${kpiValue}>=90%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"weight\",\"name\":\"权重\",\"value\":\"30\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"2\",\"remark\":\"\"},{\"id\":\"yellowRule\",\"name\":\"黄色预警规则\",\"value\":\"${kpiValue}<70%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"orangeRule\",\"name\":\"橙色预警规则\",\"value\":\"${kpiValue}<80%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"redRule\",\"name\":\"红色预警规则\",\"value\":\"${kpiValue}<90%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]');
-INSERT INTO `meta_item` VALUES ('xm_project_fields', 'xm_project_fields', '项目字段列表', '', 'all', 50, '4', '', '', '', '', '', NULL, '', '', 999, NULL, '', '', '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"4\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]');
 INSERT INTO `meta_item` VALUES ('xmMenuPlanStatus', 'xmMenuPlanStatus', '项目功能计划状态', '项目功能计划状态', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"0\",\"name\":\"初始\"},{\"id\":\"1\",\"name\":\"正常\"},{\"id\":\"3\",\"name\":\"延误\"},{\"id\":\"2\",\"name\":\"暂停\"},{\"id\":\"4\",\"name\":\"结束\"},{\"id\":\"5\",\"name\":\"关闭\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item` VALUES ('xmTaskSettleSchemel', 'xmTaskSettleSchemel', '项目任务结算方案', '项目任务结算方案', 'all', 10, '4', '', '', NULL, NULL, NULL, '[{\"id\":\"1\",\"name\":\"按工期延迟比率打折\"},{\"id\":\"2\",\"name\":\"按报价结算不打折\"},{\"id\":\"3\",\"name\":\"按工期提前或者延迟进行奖罚\"}]', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for meta_item_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `meta_item_copy1`;
+CREATE TABLE `meta_item_copy1`  (
+  `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+  `ITEM_CODE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '代码，小写,下横线分割，请不要用驼峰命名',
+  `ITEM_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '名称',
+  `REMARK` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备注',
+  `CATEGORY_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分类编号 暂时sysParams系统参数，all-通用',
+  `ITEM_SIZE` int NULL DEFAULT 50 COMMENT '长度',
+  `ITEM_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '1-普通文本，2-数字，3-日期，4-单选列表，5-多选列表，6-单文件，7-多文件，8-富文本，9-单图文，10多图文,11-单视频，12-多视频，13单选radio,14多选checkbox',
+  `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+  `DEPTID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '部门编号',
+  `CMENU` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否创建菜单',
+  `DVALUES` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认值,如果是列表，则存储列表编号，多个逗号分割',
+  `DNAMES` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认名称，如果是列表，则存储列表名称，多个则逗号分割',
+  `OPTION_LIST` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT 'item_type=4,5时的选项列表-指向item_option表关联的列表，该字段作废',
+  `input_format` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '输入提示',
+  `required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '0' COMMENT '是否必须0否1是',
+  `seq` int NULL DEFAULT 999 COMMENT '排序顺序',
+  `table_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表名',
+  `is_show` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '1' COMMENT '是否显示0否1是',
+  `qx` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权限，是否可以0-新增，1-删除，2-编辑，3-查询，多个以逗号分割',
+  `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段\r\n[{name:\'中文名称\',id:\'编号\',value:\'值\',remark:\'备注\',type:\'支持简单的1-普通文本2-数字，3-日期，8-富文本，9单图文，15-是否\'}]',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `META_ITEM_I_CODE`(`ITEM_CODE` ASC, `CATEGORY_ID` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '数据项定义' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of meta_item_copy1
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for meta_item_option
@@ -2090,10 +1405,11 @@ CREATE TABLE `meta_item_option`  (
 -- ----------------------------
 -- Records of meta_item_option
 -- ----------------------------
-INSERT INTO `meta_item_option` VALUES ('0', '停用', '', '', '', '', 'rgba(45, 84, 18, 1)', '1,0', '', '3gTalxF07', 10, NULL, NULL, NULL, 'fa-solid:window-minimize');
+INSERT INTO `meta_item_option` VALUES ('0', '停用', '', '1', '', '', 'rgba(61, 64, 59, 1)', '1,0', '', '3gTalxF07', 10, NULL, NULL, NULL, 'fa-solid:window-minimize');
 INSERT INTO `meta_item_option` VALUES ('1', '启用', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', '3gTalxF07', 11, NULL, NULL, NULL, 'fa:500px');
 INSERT INTO `meta_item_option` VALUES ('0', '正常', '', '0', '', '', 'rgba(154, 104, 43, 1)', '', '', '3gTtvEr07', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '已锁定', '', '', '', '', 'rgba(241, 149, 36, 1)', '', '', '3gTtvEr07', 0, NULL, NULL, NULL, 'ep:chat-dot-round');
+INSERT INTO `meta_item_option` VALUES ('y73G', 'OYn2', NULL, NULL, NULL, NULL, 'Hipn', 'd4L0', 'u', '3L6R', 4155, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '非常紧急', NULL, NULL, NULL, NULL, 'rgba(26, 12, 3, 1)', NULL, NULL, '4qqyfcq263', 1, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '紧急', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 1)', NULL, NULL, '4qqyfcq263', 2, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '一般紧急', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 0.46)', NULL, NULL, '4qqyfcq263', 3, NULL, NULL, NULL, 'fa-solid:abacus');
@@ -2105,13 +1421,13 @@ INSERT INTO `meta_item_option` VALUES ('dls', '代理商', NULL, NULL, NULL, NUL
 INSERT INTO `meta_item_option` VALUES ('fxs', '分销商', NULL, '现金', NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('ggmt', '公关媒体', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('gryh', '个人用户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('hzhb', '合作伙伴', NULL, NULL, NULL, NULL, 'rgba(82, 13, 56, 1)', NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, 'ep:avatar');
+INSERT INTO `meta_item_option` VALUES ('hzhb', '合作伙伴', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('jjds', '竞争对手', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('kh', '客户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('wbzy', '外部资源', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('yh', '银行', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('zjjg', '中介机构', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55gxectc61', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('English', '英语', 'aaa', '', NULL, NULL, NULL, NULL, NULL, '55jhbgr81k', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('English', '英语', 'aaa', NULL, NULL, NULL, NULL, NULL, NULL, '55jhbgr81k', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('Japanese', '日语', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55jhbgr81k', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('Korean', '韩语', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55jhbgr81k', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('SimplifiedChinese', '简体中文', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '55jhbgr81k', NULL, NULL, NULL, NULL, NULL);
@@ -2179,6 +1495,32 @@ INSERT INTO `meta_item_option` VALUES ('D级', 'D级', NULL, NULL, NULL, NULL, N
 INSERT INTO `meta_item_option` VALUES ('1', '增值税专用发票', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5w3nc7tidx', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '增值税普通发票', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5w3nc7tidx', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '增值税电子普通发票', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '5w3nc7tidx', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('10:00-10:30', '10:00-10:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('10:30-11:00', '10:30-11:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('11:00-11:30', '11:00-11:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('11:30-12:00', '11:30-12:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('12:00-12:30', '12:00-12:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('12:30-13:00', '12:30-13:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('13:00-13:30', '13:00-13:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('13:30-14:00', '13:30-14:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('14:00-14:30', '14:00-14:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('14:30-15:00', '14:30-15:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('15:00-15:30', '15:00-15:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('15:30-16:00', '15:30-16:00', ' ', NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('16:00-16:30', '16:00-16:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('16:30-17:00', '16:30-17:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('17:00-17:30', '17:00-17:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('17:30-18:00', '17:30-18:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('18:00-18:30', '18:00-18:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('18:30-19:00', '18:30-19:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('19:00-19:30', '19:00-19:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('19:30-20:00', '19:30-20:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('20:00-20:30', '20:00-20:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('20:30-21:00', '20:30-21:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('21:00-21:30', '21:00-21:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('8:00-8:30', '8:00-8:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('8:30-9:00', '8:30-9:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('9:00-9:30', '9:00-9:30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('9:30-10:00', '门店', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bookTimes', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '致命', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugSeverity', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '严重', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugSeverity', NULL, NULL, NULL, NULL, NULL);
@@ -2191,14 +1533,14 @@ INSERT INTO `meta_item_option` VALUES ('4', '已解决', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('5', '无法重现', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugSolution', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '延期处理', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugSolution', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('7', '不予解决', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugSolution', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '新提交', NULL, NULL, NULL, NULL, '#67C23A', '4,5,8', NULL, 'bugStatus', 1, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '处理中', NULL, NULL, NULL, NULL, NULL, '1,4,5,8', NULL, 'bugStatus', 2, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '已修复', NULL, NULL, NULL, NULL, NULL, '1,2,8', NULL, 'bugStatus', 3, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('4', '重新打开', NULL, NULL, NULL, NULL, NULL, '1,5,8', NULL, 'bugStatus', 4, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('5', '已发布', NULL, NULL, NULL, NULL, NULL, '1,2,3,4,6,7', NULL, 'bugStatus', 5, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('6', '已拒绝', NULL, NULL, NULL, NULL, NULL, '1,2,3,5,7,8', NULL, 'bugStatus', 6, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('7', '挂起', NULL, NULL, NULL, NULL, NULL, '1,3,5,6,8', NULL, 'bugStatus', 7, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('8', '已关闭', '', '', '', '', '', '1,2,3,5,6,7', '', 'bugStatus', 8, '', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '新提交', NULL, NULL, NULL, NULL, '#67C23A', NULL, NULL, 'bugStatus', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '处理中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 2, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '已修复', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 3, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '重新打开', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 4, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('5', '已发布', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 5, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('6', '已拒绝', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 6, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('7', '挂起', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugStatus', 7, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('8', '已关闭', '', '', '', '', '', '', '', 'bugStatus', 8, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '代码错误', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '低级缺陷', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '设计缺陷', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bugType', NULL, NULL, NULL, NULL, NULL);
@@ -2246,14 +1588,18 @@ INSERT INTO `meta_item_option` VALUES ('0', '委员会', '', '', '', '', 'rgba(1
 INSERT INTO `meta_item_option` VALUES ('1', '监督部', NULL, NULL, NULL, NULL, 'rgba(64, 158, 255, 1)', '2,', NULL, 'deptType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '本部部门', NULL, NULL, NULL, NULL, 'rgba(230, 162, 60, 1)', NULL, NULL, 'deptType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '分公司', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'deptType', 3, '', NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('测试部门', '测试部门', 'deptType', '', '', '', '', '', '', 'deptType', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('博士', '博士', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'eduBackground', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('大专', '大专', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'eduBackground', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('本科', '本科', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'eduBackground', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('研究生', '研究生', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'eduBackground', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '新产品', '', '', '', '', '', '', '', 'gain', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '新技术', '', '', '', '', '', '', '', 'gain', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '新工艺', '', '', '', '', '', '', '', 'gain', 3, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes08:00', '08:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes10:00', '10:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes12:00', '12:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes14:00', '14:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes16:00', '16:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes18:00', '18:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes20:00', '20:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('gbuyTimes22:00', '22:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'gbuyTimes', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '未启用', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'goodsStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '正常', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'goodsStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '预淘汰', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'goodsStatus', NULL, NULL, NULL, NULL, NULL);
@@ -2276,8 +1622,6 @@ INSERT INTO `meta_item_option` VALUES ('1', '燃料物流', '', '', '', '', '', 
 INSERT INTO `meta_item_option` VALUES ('computersHardware', '计算机硬件', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IndustryCategory', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('computersSoftware', '计算机软件', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IndustryCategory', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('sp', '食品', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IndustryCategory', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('watch', '手表', '', '', '', '', '', '', '', 'IndustryCategory', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('Z', '制造业', '', '', '', '', '', '', '', 'IndustryCategory', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('zfdw-sb', '政府单位-社保', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IndustryCategory', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '书籍', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1631307316781128', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '电子书', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1631307316781128', NULL, NULL, NULL, NULL, NULL);
@@ -2295,9 +1639,6 @@ INSERT INTO `meta_item_option` VALUES ('11', '单视频', '', '', '', '', '', ''
 INSERT INTO `meta_item_option` VALUES ('12', '多视频', '', '', '', '', '', '', '', 'IT1631666500591186', 12, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('13', '单选radio', '', '', '', '', '', '', '', 'IT1631666500591186', 13, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('14', '多选checkbox', '', '', '', '', '', '', '', 'IT1631666500591186', 14, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('15', '是否', '', '', '', '', '', '', '', 'IT1631666500591186', 15, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('16', '用户', '', '', '', '', '', '', '', 'IT1631666500591186', 16, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('17', '部门', '', '', '', '', '', '', '', 'IT1631666500591186', 17, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '数字', '', '', '', '', '', '', '', 'IT1631666500591186', 2, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '日期', '', '', '', '', '', '', '', 'IT1631666500591186', 3, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('4', '单选列表', '', '', '', '', '', '', '', 'IT1631666500591186', 4, NULL, NULL, NULL, NULL);
@@ -2306,7 +1647,7 @@ INSERT INTO `meta_item_option` VALUES ('6', '单文件', '', '', '', '', '', '',
 INSERT INTO `meta_item_option` VALUES ('7', '多文件夹', '', '', '', '', '', '', '', 'IT1631666500591186', 7, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('8', '富文本', '', '', '', '', '', '', '', 'IT1631666500591186', 8, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('9', '单图文', '', '', '', '', '', '', '', 'IT1631666500591186', 9, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '个月', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 0.46)', NULL, NULL, 'IT1631954002123139', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '个月', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1631954002123139', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '个季度', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1631954002123139', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '年', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1631954002123139', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '软件', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1640590217408146', NULL, NULL, NULL, NULL, NULL);
@@ -2323,10 +1664,10 @@ INSERT INTO `meta_item_option` VALUES ('4', '测试阶段款', NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('5', '验收试运营款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1640590560478117', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '中期款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1640590560478117', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('7', '尾款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1640590560478117', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '打开', NULL, NULL, NULL, NULL, NULL, '2,3', NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '研发中', NULL, NULL, NULL, NULL, NULL, '0,3', NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '已完成', NULL, NULL, NULL, NULL, NULL, '0,1', NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '已关闭', NULL, NULL, NULL, NULL, NULL, '1,2', NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '打开', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '研发中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '已完成', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '已关闭', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1645446807730187', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '新增功能', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242369307127', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '功能改进', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242369307127', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', 'bug修复', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242369307127', NULL, NULL, NULL, NULL, NULL);
@@ -2345,16 +1686,16 @@ INSERT INTO `meta_item_option` VALUES ('4', '运营反馈', NULL, NULL, NULL, NU
 INSERT INTO `meta_item_option` VALUES ('5', '团队讨论', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242537115125', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '老板需求', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242537115125', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('7', '自身需求', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647242537115125', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '初始', '', '', '', '', '', '4,5,6,7,8', '', 'IT1647268434864172', 0, '', NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '评审中', NULL, NULL, NULL, NULL, NULL, '0,4,5,6,7,8', NULL, 'IT1647268434864172', 1, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '设计中', NULL, NULL, NULL, NULL, NULL, '0,1,5,6,7,8', NULL, 'IT1647268434864172', 2, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '开发中', NULL, NULL, NULL, NULL, NULL, '0,1,8', NULL, 'IT1647268434864172', 3, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('4', '测试中', '', '', '', '', '', '0,1,2,8', '', 'IT1647268434864172', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', 'sit', '', '', '', '', '', '0,1,2,3', '', 'IT1647268434864172', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('6', 'uat', '', '', '', '', '', '0,1,2,3', '', 'IT1647268434864172', 6, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('7', '已上线', '', '', '', '', '', '0,1,2,3,4,5,6,9', '', 'IT1647268434864172', 7, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('8', '已下线', '', '', '', '', '', '0,1,2,3,4,5,6', '', 'IT1647268434864172', 8, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('9', '已删除', '', '', '', '', '', '1,2,3,4,5,6,7,8', '', 'IT1647268434864172', 9, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('0', '初始', '', '', '', '', '', '', '', 'IT1647268434864172', 0, '', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '评审中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647268434864172', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '设计中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647268434864172', 2, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '开发中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647268434864172', 3, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '测试中', '', '', '', '', '', '', '', 'IT1647268434864172', 4, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('5', 'sit', '', '', '', '', '', '', '', 'IT1647268434864172', 5, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('6', 'uat', '', '', '', '', '', '', '', 'IT1647268434864172', 6, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('7', '已上线', '', '', '', '', '', '', '', 'IT1647268434864172', 7, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('8', '已下线', '', '', '', '', '', '', '', 'IT1647268434864172', 8, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('9', '已删除', '', '', '', '', '', '', '', 'IT1647268434864172', 9, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('0', '打开', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '需求评审', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '计划会', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
@@ -2363,12 +1704,12 @@ INSERT INTO `meta_item_option` VALUES ('4', '测试中', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('5', '迭代上线', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '已完成', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('7', '关闭', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647316107064178', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '待领取', NULL, NULL, NULL, NULL, NULL, '2,3,4,9', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '执行中', NULL, NULL, NULL, NULL, NULL, '3,4,9', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '已完工', NULL, NULL, NULL, NULL, 'rgba(255, 215, 0, 1)', '0,4,9', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '已验收', NULL, NULL, NULL, NULL, NULL, '0,1', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('4', '已结算', NULL, NULL, NULL, NULL, NULL, '0,1,2,3', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('9', '已关闭', NULL, NULL, NULL, NULL, NULL, '0,1,2,3,4', NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '待领取', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '执行中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '已完工', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '已验收', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '已结算', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('9', '已关闭', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647801639994137', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '必现', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647979373083149', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '大概率复现', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647979373083149', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '小概率复现', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1647979373083149', NULL, NULL, NULL, NULL, NULL);
@@ -2387,11 +1728,11 @@ INSERT INTO `meta_item_option` VALUES ('0', '不计费', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('1', '按购买人数计费', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649539230402136', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '总包费用', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649539230402136', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '1个月免费试用，1个月后按实际使用人数每月计费', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649539230402136', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, '1111111', '22222', 'rgba(64, 158, 255, 1)', '', NULL, 'IT1649541511551186', 0, '', NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '审批中', NULL, NULL, NULL, NULL, 'rgba(0, 206, 209, 1)', NULL, NULL, 'IT1649541511551186', 1, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '审批通过', NULL, NULL, NULL, NULL, 'rgba(103, 194, 58, 1)', NULL, NULL, 'IT1649541511551186', 2, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '审批不通过', NULL, NULL, NULL, NULL, 'rgba(245, 108, 108, 1)', NULL, NULL, 'IT1649541511551186', 3, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('4', '流程取消', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 1)', NULL, NULL, 'IT1649541511551186', 4, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, '1111111', '22222', NULL, '', NULL, 'IT1649541511551186', NULL, '', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '审批中', NULL, NULL, NULL, NULL, 'rgba(194, 50, 50, 1)', NULL, NULL, 'IT1649541511551186', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '审批通过', NULL, NULL, NULL, NULL, 'rgba(96, 66, 66, 1)', NULL, NULL, 'IT1649541511551186', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '审批不通过', NULL, NULL, NULL, NULL, 'rgba(0, 206, 209, 1)', NULL, NULL, 'IT1649541511551186', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '流程取消或者删除', NULL, NULL, NULL, NULL, 'rgba(103, 194, 58, 1)', NULL, NULL, 'IT1649541511551186', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '协同', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649768047549179', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '研发', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649768047549179', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '电商', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1649768047549179', NULL, NULL, NULL, NULL, NULL);
@@ -2401,9 +1742,9 @@ INSERT INTO `meta_item_option` VALUES ('3', '3级', NULL, NULL, NULL, NULL, NULL
 INSERT INTO `meta_item_option` VALUES ('4', '4级', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652703728663171', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('5', '5级', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652703728663171', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '6级', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652703728663171', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '史诗', NULL, NULL, NULL, NULL, 'rgba(64, 158, 255, 1)', '2,3', NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, 'fa:envira');
-INSERT INTO `meta_item_option` VALUES ('2', '特性', NULL, NULL, NULL, NULL, 'rgba(103, 194, 58, 1)', '1,3', NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, 'fa:flag');
-INSERT INTO `meta_item_option` VALUES ('3', '故事', NULL, NULL, NULL, NULL, 'rgba(230, 162, 60, 1)', '1,2', NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, 'fa:file-text');
+INSERT INTO `meta_item_option` VALUES ('1', '史诗', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '特性', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '故事', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1652705775326118', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 0.46)', NULL, NULL, 'IT1653640125080133', NULL, NULL, NULL, NULL, 'ep:bell-filled');
 INSERT INTO `meta_item_option` VALUES ('1', '待确认', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1653640125080133', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '待付款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1653640125080133', NULL, NULL, NULL, NULL, NULL);
@@ -2446,8 +1787,6 @@ INSERT INTO `meta_item_option` VALUES ('9', '个人', NULL, NULL, NULL, NULL, NU
 INSERT INTO `meta_item_option` VALUES ('C', '成本', '', '', '', '', '', '', '', 'IT1655730717345168', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('H', '合同', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1655730717345168', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('K', '客户', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1655730717345168', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('KPI', 'kpi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1655730717345168', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('R', '风险', '', '', '', '', '', '', '', 'IT1655730717345168', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('TB', '测试库', '', '', '', '', '', '', '', 'IT1655730717345168', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('TC', '测试用例', '', '', '', '', '', '', '', 'IT1655730717345168', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('TE', '测试执行用例', '', '', '', '', '', '', '', 'IT1655730717345168', 0, '', NULL, '[]', '');
@@ -2467,9 +1806,9 @@ INSERT INTO `meta_item_option` VALUES ('1', '待付款', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('2', '已托管资金', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1657030829847153', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '已付款给服务商', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1657030829847153', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('4', '已退款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1657030829847153', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '未开始', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '执行中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', 1, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('2', '已结束', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', 2, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '未开始', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '执行中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '已结束', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200417191153', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '未通过', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200476395123', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '已通过', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200476395123', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '未测', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658200621783128', NULL, NULL, NULL, NULL, NULL);
@@ -2496,10 +1835,10 @@ INSERT INTO `meta_item_option` VALUES ('2', '女', NULL, NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658511571561129', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '启用', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658511571561129', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '关闭', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658511571561129', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '不限制', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658516293195139', NULL, NULL, NULL, NULL, 'fa:500px');
+INSERT INTO `meta_item_option` VALUES ('0', '不限制', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658516293195139', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', 'scrum', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658516293195139', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '看板', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1658516293195139', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '大型(瀑布+敏捷+其它)', '', '', '', '', '', '', '', 'IT1658516293195139', 0, '', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '传统', '', '', '', '', '', '', '', 'IT1658516293195139', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '发布需求', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1663065169722118', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '用户投标', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1663065169722118', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '雇主选标', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1663065169722118', NULL, NULL, NULL, NULL, NULL);
@@ -2510,6 +1849,30 @@ INSERT INTO `meta_item_option` VALUES ('1', '开发类', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('2', '测试类', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1669924214148198', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '设计类', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1669924214148198', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('4', '管理类', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1669924214148198', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944492645179', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944492646188', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944503839185', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944503839259', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944514303146', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944514303213', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944524851187', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944524851289', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944555902121', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944555902225', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944564645122', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944564645299', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944615752191', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944615752285', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944713873194', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944713873231', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944759724121', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944759724283', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944763568117', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944763568284', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944764674163', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944764674262', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944949768176', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944955492177', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690944958874156', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690944958875187', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137495198', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137495265', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137495133', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137495372', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137497183', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137497284', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137519189', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137519218', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137519326', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137519534', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137519441', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137519655', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945137520145', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945137520278', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945143744163', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945143744243', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945156861124', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945156861234', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690945203822188', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690945203822248', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('IT1690966016690175', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT1690966016691137', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '#409EFF', '', '', 'IT1691041018097128', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '#409EFF', '', '', 'IT1691041024122167', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '#409EFF', '', '', 'IT1691041046190137', 0, NULL, NULL, NULL, NULL);
@@ -2521,6 +1884,12 @@ INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '', 
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '#409EFF', '', '', 'IT1691041782474124', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '', '', '', 'IT1691041836958138', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '普通文本', '', '', '', '', '', '', '', 'IT1691042054883147', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '2', '', '', '', '', '', '', '', 'IT1691042925330167', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '33', '', '', '', '', '', '', '', 'IT1691043059702117', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '3', '', '', '', '', '', '', '', 'IT1691043750573158', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '3', '', '', '', '', '', '', '', 'IT1691044715026114', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('23', '33', '', '', '', '', '', '', '', 'IT1691044847994173', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('xx', 'xx', '', '', '', '', '', '', '', 'IT1691044847994173', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '无效', '', '', '', '', '', '', '', 'IT1691120718771191', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '有效', '', '', '', '', '', '', '', 'IT1691120718771191', 0, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '自定义角色', '', '', '', '', '', '', '', 'IT1691776688640136', 0, NULL, NULL, NULL, NULL);
@@ -2744,6 +2113,7 @@ INSERT INTO `meta_item_option` VALUES ('0', '0级', '', '', '', '', '', '', '', 
 INSERT INTO `meta_item_option` VALUES ('1', '1级', '', '', '', '', '', '', '', 'IT1716141779047192', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '2级', '', '', '', '', '', '', '', 'IT1716141779047192', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '3级', '', '', '', '', '', '', '', 'IT1716141779047192', 0, '', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('1', '1', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('10', '指定角色', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('20', '指定部门', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('21', '部门领导', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
@@ -2754,7 +2124,7 @@ INSERT INTO `meta_item_option` VALUES ('31', '上一步提交者的部门领导'
 INSERT INTO `meta_item_option` VALUES ('311', '上一步任务提交者所属部门的上级主管领导', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('32', '发起人的部门领导', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('321', '发起人所属部门的上级主管领导', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('35', '发起人自选', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, '[{\"id\":\"remark\",\"name\":\"备注\",\"value\":\"在流程发起时，由发起人设定各节点候选人策略\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', NULL);
+INSERT INTO `meta_item_option` VALUES ('35', '发起人自选', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('36', '转发起人', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('37', '转主办人', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('38', '转监控人', '', '', '', '', '', '', '', 'IT1716319161416186', 0, '', NULL, NULL, NULL);
@@ -2850,6 +2220,9 @@ INSERT INTO `meta_item_option` VALUES ('2', '待收货', '', '', '', '', '', '',
 INSERT INTO `meta_item_option` VALUES ('3', '已收货', '', '', '', '', '', '', '', 'IT1724194444816163', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('4', '已入库', '', '', '', '', '', '', '', 'IT1724194444816163', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('0', '初始', '', '', '', '', '', '', '', 'IT1724194952241195', 0, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('0_1', '初始', '', '', '', '', '', '', '', 'IT1724194952241195', 0, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('0_1_1', '初始', '', '', '', '', '', '', '', 'IT1724194952241195', 0, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('0_1_1_1', '初始', '', '', '', '', '', '', '', 'IT1724194952241195', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('1', '子公司仓库', '', '', '', '', '', '', '', 'IT1724195549227138', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('2', '总部仓库', '', '', '', '', '', '', '', 'IT1724195549227138', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('1', '个人使用', '', '', '', '', '', '', '', 'IT1724202595934151', 0, '', NULL, '[]', '');
@@ -2871,7 +2244,6 @@ INSERT INTO `meta_item_option` VALUES ('0', '知识库', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('1', '新闻', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:binoculars');
 INSERT INTO `meta_item_option` VALUES ('10', '知识产权', '', '', '', '', '', '', '', 'IT20210913IH-1', 10, '', NULL, NULL, 'fa:american-sign-language-interpreting');
 INSERT INTO `meta_item_option` VALUES ('2', '内部公告', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:asterisk');
-INSERT INTO `meta_item_option` VALUES ('20', '销售', '', '', '', '', '', '', '', 'IT20210913IH-1', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('3', '平台公告', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:arrows-alt');
 INSERT INTO `meta_item_option` VALUES ('4', '其它', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:arrows');
 INSERT INTO `meta_item_option` VALUES ('5', '论坛', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:commenting-o');
@@ -2879,101 +2251,6 @@ INSERT INTO `meta_item_option` VALUES ('6', '公文', NULL, NULL, NULL, NULL, NU
 INSERT INTO `meta_item_option` VALUES ('7', '归档', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:check-square-o');
 INSERT INTO `meta_item_option` VALUES ('8', '网站栏目', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'IT20210913IH-1', NULL, NULL, NULL, NULL, 'fa:amazon');
 INSERT INTO `meta_item_option` VALUES ('9', '流程附件', '', '', '', '', '', '', '', 'IT20210913IH-1', 0, NULL, NULL, NULL, 'fa:file-word-o');
-INSERT INTO `meta_item_option` VALUES ('0', '无须报工', '', '', '', '', '', '', '', 'IT20240907024602158', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '强制每日报工', '', '', '', '', '', '', '', 'IT20240907024602158', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '工期内任意日报工', '', '', '', '', '', '', '', 'IT20240907024602158', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '每周报工', '', '', '', '', '', '', '', 'IT20240907024602158', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '手工填写', '', '', '', '', '', '', '', 'IT20240907024722171', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '自动汇总', '', '', '', '', '', '', '', 'IT20240907024722171', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '阶段', '', '', '', '', '', '2,3', '', 'IT20250330142707121', 0, '', NULL, '[]', 'ep:magic-stick');
-INSERT INTO `meta_item_option` VALUES ('2', '规划', '', '', '', '', '', '1,3', '', 'IT20250330142707121', 0, '', NULL, '[]', 'ep:stopwatch');
-INSERT INTO `meta_item_option` VALUES ('3', '任务', '', '', '', '', '', '1,2', '', 'IT20250330142707121', 0, '', NULL, '[]', 'ep:operation');
-INSERT INTO `meta_item_option` VALUES ('0', '草稿', '', '', '', '', 'rgba(64, 158, 255, 1)', '1,4,5', '', 'IT20250405143421232075', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '未达成', '', '', '', '', 'rgba(199, 21, 133, 1)', '0,2,3', '', 'IT20250405143421232075', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '进行中', '', '', '', '', 'rgba(0, 206, 209, 1)', '0', '', 'IT20250405143421232075', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '暂停中', '', '', '', '', 'rgba(255, 215, 0, 1)', '0', '', 'IT20250405143421232075', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '已达成', '', '', '', '', 'rgba(103, 194, 58, 1)', '0,1,2,3,5', '', 'IT20250405143421232075', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '已逾期', '', '', '', '', 'rgba(245, 108, 108, 1)', '0', '', 'IT20250405143421232075', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '销售', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'IT20250405144107168019', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('10', '服务', '', '', '', '', 'rgba(154, 46, 46, 1)', '', '', 'IT20250405144107168019', 10, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '研发', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'IT20250405144107168019', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '财务', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'IT20250405144107168019', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '运营', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250405144107168019', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '人资', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250405144107168019', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('6', '战略', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250405144107168019', 6, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('7', '战术', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250405144107168019', 7, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('8', '科技', '', '', '', '', 'rgba(199, 21, 133, 0.46)', '', '', 'IT20250405144107168019', 8, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('9', '制造', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250405144107168019', 9, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('H', '半年', '', '', '', '', '', '', '', 'IT20250405144839800024', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('M', '每月', '', '', '', '', '', '', '', 'IT20250405144839800024', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('P', '项目制', '', '', '', '', '', '', '', 'IT20250405144839800024', 6, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('Q', '每季', '', '', '', '', '', '', '', 'IT20250405144839800024', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('W', '每周', '', '', '', '', '', '', '', 'IT20250405144839800024', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('Y', '一年', '', '', '', '', '', '', '', 'IT20250405144839800024', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('10', 'CRM', '', '', '', '', '', '', '', 'IT20250405145316318089', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('20', 'OA', '', '', '', '', '', '', '', 'IT20250405145316318089', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('30', '项目管理系统', '', '', '', '', '', '', '', 'IT20250405145316318089', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('40', '财务报表', '', '', '', '', '', '', '', 'IT20250405145316318089', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('50', '互联网', '', '', '', '', '', '', '', 'IT20250405145316318089', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '战略层', '', '', '', '', 'rgba(64, 158, 255, 1)', '2,3', '', 'IT20250405145916809045', 1, '', NULL, '[]', 'fa-solid:chess-queen');
-INSERT INTO `meta_item_option` VALUES ('2', '协同层', '', '', '', '', 'rgba(103, 194, 58, 1)', '1,3', '', 'IT20250405145916809045', 2, '', NULL, '[]', 'fa-solid:cogs');
-INSERT INTO `meta_item_option` VALUES ('3', '执行层', '', '', '', '', 'rgba(230, 162, 60, 1)', '1', '', 'IT20250405145916809045', 3, '', NULL, '[]', 'fa-solid:tasks');
-INSERT INTO `meta_item_option` VALUES ('0', '待提交', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'IT20250408191015929058', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '待审核', '', '', '', '', 'rgba(0, 206, 209, 1)', '0', '', 'IT20250408191015929058', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '不通过', '', '', '', '', 'rgba(245, 108, 108, 1)', '0,3', '', 'IT20250408191015929058', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '已通过', '', '', '', '', 'rgba(103, 194, 58, 1)', '0,1,2', '', 'IT20250408191015929058', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('0', '初始', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'IT20250409120402407024', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '正常', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'IT20250409120402407024', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '黄色', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250409120402407024', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '橙色', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250409120402407024', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '红色', '', '', '', '', 'rgba(247, 30, 14, 1)', '', '', 'IT20250409120402407024', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '市场风险', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'IT20250410012934434083', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '技术风险', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'IT20250410012934434083', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '质量风险', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'IT20250410012934434083', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '成本风险', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250410012934434083', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '进度风险', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250410012934434083', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('6', '人事风险', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250410012934434083', 6, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '很高', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250410013156635097', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '高', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250410013156635097', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '中', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250410013156635097', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '低', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250410013156635097', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '很低', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250410013156635097', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '很高', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250410013318212046', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '高', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250410013318212046', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '中', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250410013318212046', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '低', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250410013318212046', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '很低', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250410013318212046', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '识别', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'IT20250410013440415063', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '评估', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250410013440415063', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '监控', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250410013440415063', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '应对', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'IT20250410013440415063', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '解除', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'IT20250410013440415063', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '立即行动', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250410013611783022', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '立即关注', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250410013611783022', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '定期关注', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250410013611783022', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '无须处理', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'IT20250410013611783022', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('1', '上报', '', '', '', '', 'rgba(199, 21, 133, 1)', '', '', 'IT20250410013756131028', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '规避', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'IT20250410013756131028', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '转移', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'IT20250410013756131028', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '减轻', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'IT20250410013756131028', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('5', '接受', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'IT20250410013756131028', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('A10', '流动资产', '', '', '', '', '', '', '', 'IT20250413004618413037', 1, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"A\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A20', '非流动资产', '', '', '', '', '', '', '', 'IT20250413004618413037', 2, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"A\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('B10', '流动负债', '', '', '', '', '', '', '', 'IT20250413004618413037', 3, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"B\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('B20', '长期负债', '', '', '', '', '', '', '', 'IT20250413004618413037', 4, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"B\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('C10', '资本类', '', '', '', '', '', '', '', 'IT20250413004618413037', 5, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"C\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('C20', '留存收益类', '', '', '', '', '', '', '', 'IT20250413004618413037', 6, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"C\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('D10', '生产/劳务成本', '', '', '', '', '', '', '', 'IT20250413004618413037', 7, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"D\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('E10', '收入性科目', '', '', '', '', '', '', '', 'IT20250413004618413037', 8, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"E\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('E20', '费用性科目', '', '', '', '', '', '', '', 'IT20250413004618413037', 9, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"E\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('F10', '清算资金往来', '', '', '', '', '', '', '', 'IT20250413004618413037', 10, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"F\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('F20', '货币兑换', '', '', '', '', '', '', '', 'IT20250413004618413037', 11, '', NULL, '[{\"id\":\"subject_big_class\",\"name\":\"科目大分类\",\"value\":\"F\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413005535218046\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A', '资产类', '', '', '', '', '', '', '', 'IT20250413005535218046', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('B', '负债类', '', '', '', '', '', '', '', 'IT20250413005535218046', 2, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('C', '所有者权益类', '', '', '', '', '', '', '', 'IT20250413005535218046', 3, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('D', '成本类', '', '', '', '', '', '', '', 'IT20250413005535218046', 4, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('E', '损益类', '', '', '', '', '', '', '', 'IT20250413005535218046', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('F', '共同类', '', '', '', '', '', '', '', 'IT20250413005535218046', 6, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('0', '月度考核', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jxSchemeType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '季度考核', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jxSchemeType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '半年度考核', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jxSchemeType', NULL, NULL, NULL, NULL, NULL);
@@ -3035,13 +2312,11 @@ INSERT INTO `meta_item_option` VALUES ('3', '3级', NULL, NULL, NULL, NULL, NULL
 INSERT INTO `meta_item_option` VALUES ('1', '管理', NULL, NULL, NULL, NULL, 'rgba(183, 141, 89, 1)', NULL, NULL, 'postType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '技术', NULL, NULL, NULL, NULL, 'rgba(61, 163, 79, 1)', NULL, NULL, 'postType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '质量', 'zl', '', '', '', 'rgba(179, 42, 42, 1)', '', '', 'postType', 0, '', NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('0', '最高', NULL, NULL, NULL, NULL, 'rgba(239, 17, 17, 1)', NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '最高', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '较高', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '普通', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '较低', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('4', '最低', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'priority', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '1', '', '', '', '', '', '', '', 'projectAccept', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '2', '', '', '', '', '', '', '', 'projectAccept', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('csz', '测试组', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('jgs', '架构师', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('jsjl', '技术经理', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
@@ -3059,45 +2334,19 @@ INSERT INTO `meta_item_option` VALUES ('xmzl', '项目助理', NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('xs', '销售', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('xsjl', '销售经理/总监', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('yyz', '运营组', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectGroupType', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('10', '启动', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'projectPhasePlans100', 0, '', NULL, '[]', 'fa:anchor');
-INSERT INTO `meta_item_option` VALUES ('20', '规划', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'projectPhasePlans100', 0, '', NULL, '[]', 'fa:envira');
-INSERT INTO `meta_item_option` VALUES ('30', '执行', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'projectPhasePlans100', 0, '', NULL, '[]', 'fa:gg');
-INSERT INTO `meta_item_option` VALUES ('40', '收尾', '', '', '', '', 'rgba(0, 206, 209, 1)', '', '', 'projectPhasePlans100', 0, '', NULL, '[]', 'fa:retweet');
-INSERT INTO `meta_item_option` VALUES ('10', '立项', '', '', '', '', 'rgba(64, 158, 255, 1)', '30,40,50', '', 'projectPhasePlans110', 1, '', NULL, '[]', 'fa-solid:dragon');
-INSERT INTO `meta_item_option` VALUES ('20', '需求', '', '', '', '', 'rgba(103, 194, 58, 1)', '10,50', '', 'projectPhasePlans110', 2, '', NULL, '[]', 'fa:envira');
-INSERT INTO `meta_item_option` VALUES ('30', '开发', '', '', '', '', 'rgba(230, 162, 60, 1)', '10,20', '', 'projectPhasePlans110', 3, '', NULL, '[]', 'fa:file-code-o');
-INSERT INTO `meta_item_option` VALUES ('40', '测试', '', '', '', '', 'rgba(0, 206, 209, 1)', '10,20,30', '', 'projectPhasePlans110', 4, '', NULL, '[]', 'fa:bug');
-INSERT INTO `meta_item_option` VALUES ('50', '结项', '', '', '', '', 'rgba(199, 21, 133, 1)', '10,20,30,40', '', 'projectPhasePlans110', 5, '', NULL, '[]', 'fa:transgender-alt');
-INSERT INTO `meta_item_option` VALUES ('10', '售前', '', '', '', '', '#409EFF', '', '', 'projectPhasePlans120', 1, '', NULL, '[]', 'fa:bitcoin');
-INSERT INTO `meta_item_option` VALUES ('12', '合同', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'projectPhasePlans120', 2, '', NULL, '[]', 'ep:stamp');
-INSERT INTO `meta_item_option` VALUES ('14', '立项', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'projectPhasePlans120', 3, '', NULL, '[]', 'ep:open');
-INSERT INTO `meta_item_option` VALUES ('20', '需求分析', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'projectPhasePlans120', 4, '', NULL, '[]', 'ep:menu');
-INSERT INTO `meta_item_option` VALUES ('30', '概要设计', '', '', '', '', 'rgba(255, 140, 0, 1)', '', '', 'projectPhasePlans120', 5, '', NULL, '[]', 'fa:arrows-alt');
-INSERT INTO `meta_item_option` VALUES ('35', '详细设计', '', '', '', '', 'rgba(199, 21, 133, 0.46)', '', '', 'projectPhasePlans120', 6, '', NULL, '[]', 'fa:anchor');
-INSERT INTO `meta_item_option` VALUES ('40', '开发', '', '', '', '', 'rgba(255, 215, 0, 1)', '', '', 'projectPhasePlans120', 7, '', NULL, '[]', 'fa:code');
-INSERT INTO `meta_item_option` VALUES ('50', '测试', '', '', '', '', 'rgba(248, 10, 66, 1)', '', '', 'projectPhasePlans120', 8, '', NULL, '[]', 'fa:bug');
-INSERT INTO `meta_item_option` VALUES ('60', '培训', '', '', '', '', 'rgba(203, 185, 27, 1)', '', '', 'projectPhasePlans120', 9, '', NULL, '[]', 'fa:book');
-INSERT INTO `meta_item_option` VALUES ('70', '试运行', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'projectPhasePlans120', 10, '', NULL, '[]', 'ep:d-caret');
-INSERT INTO `meta_item_option` VALUES ('80', '上线', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'projectPhasePlans120', 11, '', NULL, '[]', 'ep:flag');
-INSERT INTO `meta_item_option` VALUES ('90', '收款', '', '', '', '', 'rgba(103, 194, 58, 1)', '', '', 'projectPhasePlans120', 12, '', NULL, '[]', 'ep:coin');
-INSERT INTO `meta_item_option` VALUES ('92', '运维', '', '', '', '', 'rgba(230, 162, 60, 1)', '', '', 'projectPhasePlans120', 13, '', NULL, '[]', 'ep:refresh');
-INSERT INTO `meta_item_option` VALUES ('95', '结项', '', '', '', '', 'rgba(245, 108, 108, 1)', '', '', 'projectPhasePlans120', 14, '', NULL, '[]', 'fa:transgender-alt');
-INSERT INTO `meta_item_option` VALUES ('1', '1', '', '', '', '', 'rgba(126, 9, 9, 1)', '', '', 'projectSetup', 0, '', NULL, '[]', 'ep:back');
-INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, NULL, NULL, 'rgba(192, 199, 207, 1)', '3,4,5,6,7,8', NULL, 'projectStatus', 0, NULL, NULL, NULL, 'fa:500px');
-INSERT INTO `meta_item_option` VALUES ('1', '售前', '', '', '', '', 'rgba(64, 158, 255, 1)', '2,3,4,5,6,7,8', '', 'projectStatus', 1, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '立项中', NULL, NULL, NULL, NULL, 'rgba(103, 194, 58, 1)', '3,4,5,6,7,8', NULL, 'projectStatus', 2, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('3', '实施中', NULL, NULL, NULL, NULL, 'rgba(230, 162, 60, 1)', '0,1,2,6,7,8', NULL, 'projectStatus', 3, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('4', '暂停中', NULL, NULL, NULL, NULL, 'rgba(245, 108, 108, 1)', '0,1,2,5,6,7,8', NULL, 'projectStatus', 4, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('5', '已验收', '', '', '', '', 'rgba(0, 206, 209, 1)', '0,1,2,3,4,6,7,8', '', 'projectStatus', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('6', '已结项', NULL, NULL, NULL, NULL, 'rgba(199, 21, 133, 1)', '0,1,2,3,4', NULL, 'projectStatus', 6, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('7', '售后', NULL, NULL, NULL, NULL, 'rgba(255, 140, 0, 1)', '0,1,2,3,4,5,6', NULL, 'projectStatus', 7, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('8', '已关闭', NULL, NULL, NULL, NULL, 'rgba(255, 215, 0, 1)', '0,1,2,3,4,5,6,7', NULL, 'projectStatus', 8, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('bgyp', '办公用品', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"E20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
-INSERT INTO `meta_item_option` VALUES ('hdjf', '活动经费', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"E20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
-INSERT INTO `meta_item_option` VALUES ('htskrz', '合同收款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"E10\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
-INSERT INTO `meta_item_option` VALUES ('wgzfgz', '外购结算支付工资', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"D10\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
-INSERT INTO `meta_item_option` VALUES ('xmjj', '项目奖金', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"D10\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
-INSERT INTO `meta_item_option` VALUES ('yggz', '员工工资', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, '[{\"id\":\"subject_class\",\"name\":\"科目分类\",\"value\":\"D10\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250413004618413037\"}]', NULL);
+INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '立项中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '实施中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '暂停中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('6', '已结项', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('7', '售后', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('8', '已完成', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('bgyp', '办公用品', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('hdjf', '活动经费', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('htskrz', '合同收款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('wgzfgz', '外购结算支付工资', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('xmjj', '项目奖金', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('yggz', '员工工资', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectSubject', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '候选中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskExecuserStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '执行中', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskExecuserStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('7', '放弃任务', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskExecuserStatus', NULL, NULL, NULL, NULL, NULL);
@@ -3106,36 +2355,12 @@ INSERT INTO `meta_item_option` VALUES ('0', '未结算', NULL, NULL, NULL, NULL,
 INSERT INTO `meta_item_option` VALUES ('1', '已结算', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskSettleStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '无需结算', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskSettleStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '已付款', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'projectTaskSettleStatus', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('100', '【通用】标准项目', '', '', '', '', 'rgba(64, 158, 255, 1)', '', '', 'projectType', 0, '', NULL, '[]', 'ep:expand');
-INSERT INTO `meta_item_option` VALUES ('110', '【IT】软件开发 (自研)', NULL, '1', NULL, NULL, '#00ced1', NULL, NULL, 'projectType', 1, NULL, NULL, NULL, 'ep:arrow-left-bold');
-INSERT INTO `meta_item_option` VALUES ('120', '【IT】软件开发 (合同交付)', NULL, NULL, NULL, NULL, '#c71585', NULL, NULL, 'projectType', 2, NULL, NULL, NULL, 'fa:500px');
-INSERT INTO `meta_item_option` VALUES ('130', '【IT】系统集成', NULL, NULL, NULL, NULL, '#00ced1', '1', NULL, 'projectType', 3, '2', NULL, NULL, 'ep:aim');
-INSERT INTO `meta_item_option` VALUES ('140', '【IT】基础设施建设', NULL, NULL, NULL, NULL, 'rgba(255, 191, 0, 1)', NULL, NULL, 'projectType', 4, NULL, NULL, NULL, 'ep:baseball');
-INSERT INTO `meta_item_option` VALUES ('150', '【IT】网站建设和维护', '', '', '', '', '', '', '', 'projectType', 5, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('160', '【生产制造】产品设计和研发', '', '', '', '', '', '', '', 'projectType', 6, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('170', '【生产制造】订单生产', '', '', '', '', '', '', '', 'projectType', 7, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('180', '【生产制造】机械设备制造', '', '', '', '', '', '', '', 'projectType', 8, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('190', '【生产制造】汽车和交通工具制造', '', '', '', '', '', '', '', 'projectType', 9, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('200', '【生产制造】电子电器制造', '', '', '', '', '', '', '', 'projectType', 10, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('210', '【健康和医疗】临床试验和药物研发', '', '', '', '', '', '', '', 'projectType', 11, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('220', '【健康和医疗】医疗设备制造', '', '', '', '', '', '', '', 'projectType', 12, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('230', '【健康和医疗】医疗设备采购和维护', '', '', '', '', '', '', '', 'projectType', 13, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('240', '【健康和医疗】医疗信息化建设', '', '', '', '', '', '', '', 'projectType', 14, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('250', '【健康和医疗】药品生产', '', '', '', '', '', '', '', 'projectType', 15, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('260', '【教育和培训】课程开发和教学设计', '', '', '', '', '', '', '', 'projectType', 16, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('270', '【教育和培训】师资队伍建设和师资培训', '', '', '', '', '', '', '', 'projectType', 17, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('280', '【教育和培训】教育评估和考试管理', '', '', '', '', '', '', '', 'projectType', 18, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('290', '【教育和培训】职业培训和技能提升', '', '', '', '', '', '', '', 'projectType', 19, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('300', '【建筑装饰工程】土木建筑工程', '', '', '', '', '', '', '', 'projectType', 20, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('310', '【建筑装饰工程】弱电施工工程', '', '', '', '', '', '', '', 'projectType', 21, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('320', '【建筑装饰工程】建筑安装工程', '', '', '', '', '', '', '', 'projectType', 22, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('330', '【建筑装饰工程】公共装饰装修工程', '', '', '', '', '', '', '', 'projectType', 23, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('340', '【建筑装饰工程】家居装饰装修工程', '', '', '', '', '', '', '', 'projectType', 24, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('350', '【管理咨询】人力资源咨询', '', '', '', '', '', '', '', 'projectType', 25, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('360', '【管理咨询】财务和会计咨询', '', '', '', '', '', '', '', 'projectType', 26, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('370', '【管理咨询】税务和审计咨询', '', '', '', '', '', '', '', 'projectType', 27, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('380', '【管理咨询】法律咨询', '', '', '', '', '', '', '', 'projectType', 28, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('390', '【管理咨询】商业策划和管理咨询', '', '', '', '', '', '', '', 'projectType', 29, '', NULL, '[]', '');
+INSERT INTO `meta_item_option` VALUES ('1', '毕业设计项目', NULL, NULL, NULL, NULL, '#00ced1', NULL, NULL, 'projectType', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('2', '净水机项目', NULL, NULL, NULL, NULL, '#c71585', NULL, NULL, 'projectType', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('3', '饮水机项目', NULL, NULL, NULL, NULL, '#00ced1', '1', NULL, 'projectType', NULL, '2', NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('4', '机器人开发项目', NULL, NULL, NULL, NULL, 'rgba(255, 191, 0, 1)', NULL, NULL, 'projectType', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('5', '控制柜定制', NULL, NULL, NULL, NULL, 'rgba(64, 158, 255, 1)', NULL, NULL, 'projectType', 1, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('8', '外部项目', '', '', '', '', '', '', '', 'projectType', 0, '', NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('博士', '博士', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'qualification', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('学士', '学士', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'qualification', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('硕士', '硕士', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'qualification', NULL, NULL, NULL, NULL, NULL);
@@ -3178,6 +2403,7 @@ INSERT INTO `meta_item_option` VALUES ('$BETWEEN', '区间内', 'SQL_OPER', NULL
 INSERT INTO `meta_item_option` VALUES ('$IN', '包含', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 13, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('$IS NOT NULL', '不为空', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 12, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('$IS NULL', '为空', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 11, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('$IS NULL_1', '为空', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 11, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('$LIKE', '模糊匹配-两边', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 10, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('$LIKE LEFT', '模糊匹配-左边', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 8, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('$LIKE RIGHT', '模糊匹配-右边', 'SQL_OPER', NULL, NULL, NULL, NULL, NULL, NULL, 'sql_link_and_sql_oper', 9, NULL, NULL, NULL, NULL);
@@ -3192,6 +2418,8 @@ INSERT INTO `meta_item_option` VALUES ('解聘', '解聘', NULL, NULL, NULL, NUL
 INSERT INTO `meta_item_option` VALUES ('试用', '试用', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'staffStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('试用延期', '试用延期', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'staffStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('退休', '退休', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'staffStatus', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('storeaddress01', '123商城1号仓管理员', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'storeaddress', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('storeaddress02', '123商城2号仓管理员', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'storeaddress', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '售前', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'taskType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '投标', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'taskType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '需求', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'taskType', NULL, NULL, NULL, NULL, NULL);
@@ -3208,10 +2436,6 @@ INSERT INTO `meta_item_option` VALUES ('1', '微信', NULL, NULL, NULL, NULL, NU
 INSERT INTO `meta_item_option` VALUES ('2', '支付宝 ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'tpAppPayType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('3', '银行', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'tpAppPayType', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('6', '其他', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'tpAppPayType', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('1', '自有技术', '', '', '', '', '', '', '', 'tsrc', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('2', '引进新技术再创新', '', '', '', '', '', '', '', 'tsrc', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('3', '院校合作研发', '', '', '', '', '', '', '', 'tsrc', 0, '', NULL, '[]', '');
-INSERT INTO `meta_item_option` VALUES ('4', '其它企业技术', '', '', '', '', '', '', '', 'tsrc', 0, '', NULL, '[]', '');
 INSERT INTO `meta_item_option` VALUES ('FRIDAY', '周五', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('MONDAY', '周一', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('SATURDAY', '周六', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
@@ -3219,52 +2443,16 @@ INSERT INTO `meta_item_option` VALUES ('SUNDAY', '周日', NULL, NULL, NULL, NUL
 INSERT INTO `meta_item_option` VALUES ('THURSDAY', '周四', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('TUESDAY', '周二', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('WEDNESDAY', '周三', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'weekday', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `meta_item_option` VALUES ('A10', '人力资源-员工管理-关键人才流失率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 110, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"H\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"5\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"${kpiValue}<50%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"weight\",\"name\":\"权重\",\"value\":\"30\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"2\",\"remark\":\"\"},{\"id\":\"yellowRule\",\"name\":\"黄色预警规则\",\"value\":\"${kpiValue}<70%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"orangeRule\",\"name\":\"橙色预警规则\",\"value\":\"${kpiValue}<80%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"redRule\",\"name\":\"红色预警规则\",\"value\":\"${kpiValue}<90%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A20', '财务-成本控制-净利润率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 120, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"H\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"3\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"30\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"${kpiValue}>30%\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A30', '研发-创新-新产品收入占比', '', '', '', '', '', '', '', 'xm_kpi_tpl', 130, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A40', '客户服务-响应效率-投诉处理时效', '', '', '', '', '', '', '', 'xm_kpi_tpl', 140, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('A50', '行政-运营支持-固定资产利用率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 150, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('H10', '互联网行业-用户运营-日活跃用户（DAU）', '', '', '', '', '', '', '', 'xm_kpi_tpl', 210, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('H20', '互联网行业-用户运营-月活跃用户（MAU）', '', '', '', '', '', '', '', 'xm_kpi_tpl', 220, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J10', '教育行业-学员管理-学员续费率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 310, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J20', '教育行业-招生能力-招生转化率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 320, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J30', '教育行业-教学评估-教师教学评分', '', '', '', '', '', '', '', 'xm_kpi_tpl', 330, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J40', '教育行业-课程质量-课程完课率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 340, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J50', '教育行业-资源利用-学员平均培训成本', '', '', '', '', '', '', '', 'xm_kpi_tpl', 350, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J60', '金融业-偿付能力-综合偿付能力充足率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 360, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J65', '金融业-客户管理-客户满意度指数', '', '', '', '', '', '', '', 'xm_kpi_tpl', 365, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J70', '金融业-盈利能力-资本利润率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 370, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J75', '金融业-资产质量-不良贷款率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 375, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('J80', '金融业-风险管理-拨备覆盖率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 380, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('L10', '零售业-促销效果-促销活动ROI', '', '', '', '', '', '', '', 'xm_kpi_tpl', 410, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('L20', '零售业-销售绩效-销售额增长率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 420, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('W10', '物流行业-供应链-库存周转率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 510, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('W20', '物流行业-库存管理-库存准确率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 520, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('W30', '物流行业-成本控制-运输成本占比', '', '', '', '', '', '', '', 'xm_kpi_tpl', 530, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('W40', '物流行业-订单处理-订单处理时效', '', '', '', '', '', '', '', 'xm_kpi_tpl', 540, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('W50', '物流行业-配送效率-准时送达率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 550, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Y10', '医疗行业-服务质量-患者平均住院天数', '', '', '', '', '', '', '', 'xm_kpi_tpl', 610, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Y20', '医疗行业-满意度-门诊患者满意度', '', '', '', '', '', '', '', 'xm_kpi_tpl', 620, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Y30', '医疗行业-设备管理-医疗设备利用率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 630, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Y40', '医疗行业-质量安全-医疗错误率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 640, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Y50', '医疗行业-资源效率-床位周转率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 650, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Z10', '制造业-供应链管理-采购及时率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 710, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Z20', '制造业-成本管理-库存周转率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 720, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Z30', '制造业-生产效率-设备综合效率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 730, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Z40', '制造业-生产管理-订单交付准时率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 740, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('Z50', '制造业-质量控制-产品良品率', '', '', '', '', '', '', '', 'xm_kpi_tpl', 750, '', NULL, '[{\"id\":\"calcType\",\"name\":\"考核周期\",\"value\":\"W\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144839800024\"},{\"id\":\"ktype\",\"name\":\"指标等级\",\"value\":\"1\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145916809045\"},{\"id\":\"kclass\",\"name\":\"指标分类\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405144107168019\"},{\"id\":\"dataLink\",\"name\":\"数据来源\",\"value\":\"20\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT20250405145316318089\"},{\"id\":\"targetValue\",\"name\":\"目标值\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('admUserid', '项目总控', '', '', '', '', '', '', '', 'xm_project_fields', 1, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"16\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('assUserid', '项目副经理', '', '', '', '', '', '', '', 'xm_project_fields', 3, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"16\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('budgetMarginRate', '考核标准毛利率', '', '', '', '', '', '', '', 'xm_project_fields', 12, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"% 填写0-100之间的数字，一般30%左右\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('contractAmt', '合同总金额', '', '', '', '', '', '', '', 'xm_project_fields', 11, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"元 从合同中汇总所有金额填入\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('endTime', '结束时间', '', '', '', '', '', '', '', 'xm_project_fields', 6, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"3\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('planTotalCost', '项目总预算', '', '', '', '', '', '', '', 'xm_project_fields', 10, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"元 \",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('planWorkingHours', '总工期', '', '', '', '', '', '', '', 'xm_project_fields', 7, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"小时 ，一天按8小时计算\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('planWorkload', '预估工作量', '', '', '', '', '', '', '', 'xm_project_fields', 9, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"人时 按中级标准计算人时\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('pmUserid', '项目经理', '', '', '', '', '', '', '', 'xm_project_fields', 2, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"16\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('startTime', '开始时间', '', '', '', '', '', '', '', 'xm_project_fields', 5, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"3\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('taxRate', '税率', '', '', '', '', '', '', '', 'xm_project_fields', 8, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"2\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"},{\"id\":\"fremark\",\"name\":\"字段填写说明\",\"value\":\"% 填写0-100之间的数字\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
-INSERT INTO `meta_item_option` VALUES ('xmType', '项目类型', '', '', '', '', '', '', '', 'xm_project_fields', 4, '', NULL, '[{\"id\":\"item_type\",\"name\":\"输入类型\",\"value\":\"4\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"4\",\"remark\":\"\",\"itemCode\":\"IT1631666500591186\"},{\"id\":\"itemCode\",\"name\":\"字典代码\",\"value\":\"projectType\",\"url\":\"\",\"extInfo\":\"\",\"type\":\"1\",\"remark\":\"\"}]', '');
+INSERT INTO `meta_item_option` VALUES ('#2c9f67', '深绿色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#509fc9', '浅蓝色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#5885cf', '深蓝色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#63b359', '浅绿色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#9062c0', '紫色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#cc463d', '深红色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#d09a45', '浅棕色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#dd6549', '浅红色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#e4b138', '黄色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `meta_item_option` VALUES ('#ee903c', '橘红色', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'wxcolor', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('0', '初始', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'xmMenuPlanStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('1', '正常', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'xmMenuPlanStatus', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `meta_item_option` VALUES ('2', '暂停', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'xmMenuPlanStatus', NULL, NULL, NULL, NULL, NULL);
@@ -3457,7 +2645,6 @@ INSERT INTO `oauth_registered_client` VALUES ('audit', NULL, 'audit-8888', 'all'
 INSERT INTO `oauth_registered_client` VALUES ('client-login', NULL, 'client-login-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', 'http://localhost:7002/authorized', NULL, '1', 'client-login', '0', '0', NULL, NULL, NULL, NULL, 'basic');
 INSERT INTO `oauth_registered_client` VALUES ('form', NULL, 'form-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'form', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `oauth_registered_client` VALUES ('im', NULL, 'im-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'im', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `oauth_registered_client` VALUES ('lcode', NULL, 'lcode-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'lcode', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `oauth_registered_client` VALUES ('mall', NULL, 'mall-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'mall', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `oauth_registered_client` VALUES ('mallm', NULL, 'mallm-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'mallm', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `oauth_registered_client` VALUES ('mdp', NULL, 'mdp-8888', 'all', 'authorization_code,refresh_token,password,client_credentials', NULL, NULL, '1', 'mdp', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -3538,7 +2725,27 @@ CREATE TABLE `plat_platform`  (
 -- ----------------------------
 -- Records of plat_platform
 -- ----------------------------
-INSERT INTO `plat_platform` VALUES ('platform-001', '唛盟项目云', '1', NULL, NULL, NULL, NULL, 'https://www.qingqinkj.com/api/m1/arc/mdp/arc/img/image/platform-branch-001/2vd4yb625a/IM1722191453711164.png', '唛盟项目云', '唛盟项目云', 0, '1', '1', NULL, NULL, '{\"bill\":\"\",\"receipt\":\"0\",\"order\":\"\",\"orderFee\":\"\",\"closeOrder\":\"1\",\"cancelOrder\":\"\",\"reGoods\":\"\",\"reReceipt\":\"\",\"rePay\":\"\",\"cpoints\":\"\"}', NULL, '1', 1, NULL, 'platform-shop-001', 'platform-branch-001', '唛盟项目云', 'platform-shop-001-0', '[]', NULL);
+INSERT INTO `plat_platform` VALUES ('platform-001', '唛盟项目云', '1', NULL, NULL, NULL, NULL, 'https://www.qingqinkj.com/api/m1/arc/arc/image/qqkj_001/IM1632611467940176/IM1633550409547158.png', '唛盟项目云', '唛盟项目云', 0, '1', '1', NULL, NULL, '{\"bill\":\"\",\"receipt\":\"0\",\"order\":\"\",\"orderFee\":\"\",\"closeOrder\":\"1\",\"cancelOrder\":\"\",\"reGoods\":\"\",\"reReceipt\":\"\",\"rePay\":\"\",\"cpoints\":\"\"}', NULL, '1', 1, NULL, 'platform-shop-001', 'platform-branch-001', '唛盟项目云', 'platform-shop-001-0', '[]', NULL);
+
+-- ----------------------------
+-- Table structure for platformbranch001_sys_user_ai
+-- ----------------------------
+DROP TABLE IF EXISTS `platformbranch001_sys_user_ai`;
+CREATE TABLE `platformbranch001_sys_user_ai`  (
+  `zero` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `one` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `two` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `three` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `eight` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `four` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `six` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `seven` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `five` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '测试' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of platformbranch001_sys_user_ai
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for res_oper_data_trail
@@ -3696,8 +2903,8 @@ CREATE TABLE `sys_branch_interests`  (
 -- ----------------------------
 -- Records of sys_branch_interests
 -- ----------------------------
-INSERT INTO `sys_branch_interests` VALUES ('demo-branch-01', '1', '默认会员等级', '', 0, 100, '1', '2022-10-06 17:52:41', '2022-10-06 09:52:40', '', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5000.00, 1000000.00, '3', 1000000, 5000, 30, 15, NULL, 0.00, 0, 0, NULL, 100, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_branch_interests` VALUES ('platform-branch-001', '5', '紫金', '', 5, 100, '1', '2022-09-27 18:27:53', '2022-12-14 06:28:31', '', '0', NULL, NULL, NULL, '1', NULL, NULL, NULL, 800000.00, 1000000.00, '1', 1000000, 800000, 60000, 15, NULL, 0.00, 0, 1, 1000.00, 100, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_branch_interests` VALUES ('demo-branch-01', '1', '默认会员等级', '', 0, 100, '1', '2022-10-06 17:52:41', '2022-10-06 09:52:40', '', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5000.00, 1000000.00, '3', 1000000, 5000, 30, 15, NULL, 0.00, 0, 0, NULL, 10, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_branch_interests` VALUES ('platform-branch-001', '5', '紫金', '', 5, 100, '1', '2022-09-27 18:27:53', '2022-12-14 06:28:31', '', '0', NULL, NULL, NULL, '1', NULL, NULL, NULL, 800000.00, 1000000.00, '1', 1000000, 800000, 60000, 15, NULL, 0.00, 0, 1, 1000.00, 10, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_branch_process_approva
@@ -3818,9 +3025,9 @@ CREATE TABLE `sys_dept`  (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('4fr8gart8x', '平台管理机构-总部', 'A0', '1', 'A', '13622750298', '1234567', '平台管理机构-总部', '4fr8gct6f8', NULL, '郭大头', 'qingqin', 'platform-branch-001', 'L1', 'A0,4fr8gart8x,', '879a3abb-743d-11ea-acc5-525400033a00', '2', '2025-04-15 19:00:00', NULL, '9', 'platform-branch-001', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_dept` VALUES ('DE1665049960457133', '唛盟平台官方演示机构-总部', 'A0', NULL, 'A', 'demo-branch-01', NULL, '唛盟平台官方演示机构-总部', 'DE1665049960457133', NULL, '唛盟平台官方演示机构管理员', NULL, 'demo-branch-01', 'L1', 'A0,DE1665049960457133,', NULL, NULL, '2025-04-15 19:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sys_dept` VALUES ('platform-dept-001', '平台默认部门', '4fr8gart8x', '1', 'A', '', '', '平台默认部门', 'platform-dept-001', '', '', '', 'platform-branch-001', 'L2', 'A0,4fr8gart8x,platform-dept-001,', NULL, NULL, '2025-04-15 19:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_dept` VALUES ('4fr8gart8x', '平台管理机构-总部', 'A0', '1', 'A', '13622750298', '1234567', '平台管理机构-总部', '4fr8gct6f8', NULL, '郭大头', 'qingqin', 'platform-branch-001', 'L1', 'A0,4fr8gart8x,', '879a3abb-743d-11ea-acc5-525400033a00', '2', '2023-10-09 19:00:00', NULL, '9', 'platform-branch-001', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_dept` VALUES ('DE1665049960457133', '唛盟平台官方演示机构-总部', 'A0', NULL, 'A', 'demo-branch-01', NULL, '唛盟平台官方演示机构-总部', 'DE1665049960457133', NULL, '唛盟平台官方演示机构管理员', NULL, 'demo-branch-01', 'L1', 'A0,DE1665049960457133,', NULL, NULL, '2023-10-09 19:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_dept` VALUES ('platform-dept-001', '平台默认部门', '4fr8gart8x', '1', 'A', '', '', '平台默认部门', 'platform-dept-001', '', '', '', 'platform-branch-001', 'L2', 'A0,4fr8gart8x,platform-dept-001,', NULL, NULL, '2023-10-09 19:00:00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_dept_del_backup
@@ -4269,6 +3476,29 @@ CREATE TABLE `sys_notify_msg`  (
 -- ----------------------------
 -- Records of sys_notify_msg
 -- ----------------------------
+INSERT INTO `sys_notify_msg` VALUES ('NO1713233643193164', 'demo-branch-01', '测试', '2024-04-16 10:14:01', NULL, '您成为需求【445VV】的负责人，请跟进需求！', '202404161014031597DE84R', 'demo-branch-01', '218.84.107.125', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台公开演示账户2', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713233644970156', 'demo-branch-01', '测试', '2024-04-16 10:14:03', NULL, '您成为需求【445VVV】的负责人，请跟进需求！', '20240416101404947HUS3QF', 'demo-branch-01', '218.84.107.125', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台公开演示账户2', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713248704461118', 'demo-branch-01', '测试', '2024-04-16 14:25:03', NULL, '您成为产品【测试】的产品经理，请及时跟进。', '2024041614250444431J2Z7', 'demo-branch-01', '119.85.101.91', NULL, NULL, NULL, 'demo-branch-01', '测试', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713260946035113', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-16 17:49:04', NULL, '21物联网工程1班王朝兴离开任务【T3TSIBNA7STV-UI设计-知识产权页-个人中心-我的订单】！', '20240416174905996NM9ZA5', 'hzxy-001', '115.46.247.28', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713261004067197', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-16 17:50:02', NULL, '21物联网工程1班张泳春离开任务【T3TBYE4325J1-个人中心-订单查询-版权业务】！', '202404161750040265H3M9T', 'hzxy-001', '115.46.247.28', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713360364001182', 'M_U3TZTFVT117', '', '2024-04-17 21:26:03', NULL, '您成为项目【111】的项目经理，请及时跟进。', '20240417212603978336Y2R', 'M_U3TZTFVT117', '183.158.10.59', NULL, NULL, NULL, 'M_U3TZTFVT117', NULL, '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363319528156', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:15:19', NULL, '您已离开任务【T3TBABFT1MX8-null】！', '20240417221519505881AC2', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MJHVRA582', '21物联网工程1班张泳春', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363344128144', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:15:43', NULL, '您已离开任务【T3TBABFT1TFI-null】！', '2024041722154409436WX19', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MJHVRA582', '21物联网工程1班张泳春', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363360887139', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:16:00', NULL, '您已离开任务【T3TBABFT9822-null】！', '2024041722160086385AZ26', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MJHVRA582', '21物联网工程1班张泳春', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363378471175', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:16:17', NULL, '您已离开任务【T3TBYE4332AU-null】！', '202404172216184516GX1HA', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MJHVRA582', '21物联网工程1班张泳春', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363494873131', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:18:14', NULL, '您成为任务【T3TZGPBZVX3F-null】的执行人，请及时跟进任务！', '20240417221814825Y22H1T', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363686499155', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:21:25', NULL, '您已离开任务【T3TZGPBZ7J8Y-null】！', '202404172221264776KHB19', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363702310164', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:21:41', NULL, '您已离开任务【T3TZGPBZKDAV-null】！', '20240417222142288XB888E', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363719632173', 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '2024-04-17 22:21:59', NULL, '您已离开任务【T3TZGPBZX638-null】！', '20240417222159616R6K3NT', 'hzxy-001', '115.46.142.165', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713363942712122', 'M_U3MJHVRA582', '21物联网工程1班张泳春', '2024-04-17 22:25:42', NULL, '用户【21物联网工程1班张泳春】投标任务【UI设计-知识产权页-科技项目】，请及时跟进！', '202404172225426503P7N15', 'hzxy-001', '115.46.208.0', NULL, NULL, NULL, 'M_U3MECZ2Z195', '21物联网工程1班王朝兴', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713402787813182', 'demo-branch-01', '唛盟平台官方演示机构', '2024-04-18 09:13:08', NULL, '您成为项目【测试项目】的项目经理，请及时跟进。', '2024041809130774648R62W', 'demo-branch-01', '127.0.0.1', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台官方演示机构', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713405232621189', 'demo-branch-01', '唛盟平台官方演示机构', '2024-04-18 09:53:53', NULL, '您成为项目【测试项目】的项目经理，请及时跟进。', '20240418095348513171SAB', 'demo-branch-01', '127.0.0.1', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台官方演示机构', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713408942037118', 'demo-branch-01', '唛盟平台官方演示机构', '2024-04-18 10:55:41', NULL, '您成为产品【1111】的产品经理，请及时跟进。', '20240418105541859TAVD8V', 'demo-branch-01', '127.0.0.1', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台官方演示机构', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713412819414148', 'demo-branch-01', '测试', '2024-04-18 12:00:18', NULL, '您成为项目【项目1】的项目经理，请及时跟进。', '20240418120019354K489ED', 'demo-branch-01', '153.3.126.192', NULL, NULL, NULL, 'demo-branch-01', '测试', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713412833453199', 'demo-branch-01', '测试', '2024-04-18 12:00:32', NULL, '您成为项目【项目1】的项目经理，请及时跟进。', '202404181200334288H7684', 'demo-branch-01', '153.3.126.192', NULL, NULL, NULL, 'demo-branch-01', '测试', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713417157765174', 'demo-branch-01', '测试', '2024-04-18 13:12:37', NULL, '您成为需求【445V】的负责人，请跟进需求！', '20240418131237732WNJ98T', 'demo-branch-01', '123.168.72.215', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台公开演示账户2', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713421075518111', 'demo-branch-01', '唛盟平台官方演示机构', '2024-04-18 14:17:55', NULL, '您成为项目【测试】的项目经理，请及时跟进。', '202404181417554522WJY37', 'demo-branch-01', '127.0.0.1', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台官方演示机构', '0', NULL);
+INSERT INTO `sys_notify_msg` VALUES ('NO1713421671165126', 'demo-branch-01', '唛盟平台官方演示机构', '2024-04-18 14:27:50', NULL, '您成为产品【测试产品】的产品经理，请及时跟进。', '20240418142751046DYP1MJ', 'demo-branch-01', '127.0.0.1', NULL, NULL, NULL, 'demo-branch-01', '唛盟平台官方演示机构', '0', NULL);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -4560,37 +3790,32 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('10001', '角色1', '', '0', NULL, NULL, NULL, '1', '', 99, 'U4DF27GP181', 6);
+INSERT INTO `sys_role` VALUES ('admin', '管理员', '22', '0', NULL, NULL, NULL, '1', '', 1, 'demo-branch-01', 1);
 INSERT INTO `sys_role` VALUES ('branchAdmin', '机构管理员', '可以操作整个机构的数据和功能', '1', NULL, NULL, NULL, '1', 'gw8cb9abg', NULL, 'platform-branch-001', 5);
 INSERT INTO `sys_role` VALUES ('ceo', '总经理', '公司总经理', '1', NULL, NULL, NULL, '1', '4gx1x7v74q', NULL, 'platform-branch-001', 5);
 INSERT INTO `sys_role` VALUES ('DBA', '数据库管理员', '', '1', NULL, NULL, NULL, '1', '', 99, 'platform-branch-001', 6);
-INSERT INTO `sys_role` VALUES ('DBA_1', '数据库管理员', '', '1', NULL, NULL, NULL, '1', '', 99, 'platform-branch-001', 6);
 INSERT INTO `sys_role` VALUES ('demoFree', '免费版演示账户', '', '0', NULL, NULL, NULL, '1', '', 11, 'platform-branch-001', 2);
 INSERT INTO `sys_role` VALUES ('dept-manager', '部门经理', '部门经理', '1', NULL, NULL, NULL, '1', '', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('dev', '开发者', '开发者', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', 2);
 INSERT INTO `sys_role` VALUES ('flowAdmin', '流程管理员', '流程管理员', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('freeWorker', '自由工作者', '自由工作者', '1', NULL, NULL, NULL, '1', '4gx1x7v74q', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('guest', '游客', '游客', '1', NULL, NULL, NULL, '1', 'A0', 99, 'platform-branch-001', 1);
-INSERT INTO `sys_role` VALUES ('HKCGroup-Role', 'HKCGroup-Role', '', '1', NULL, NULL, NULL, '1', '', 99, 'demo-branch-01', 1);
 INSERT INTO `sys_role` VALUES ('hrrs', '人力资源招聘专员', '人力资源招聘专员', '1', NULL, NULL, NULL, '1', '', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('iterationAdmin', '迭代管理员', '迭代管理员', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('locationAdmin', '门店管理员', '门店管理员', '1', NULL, NULL, NULL, '1', NULL, NULL, 'platform-branch-001', NULL);
-INSERT INTO `sys_role` VALUES ('log', '日志管理员', '1', '0', NULL, NULL, NULL, '1', '', 123, 'demo-branch-01', 1);
+INSERT INTO `sys_role` VALUES ('log', '日志管理员', '1', '0', NULL, NULL, NULL, '1', '', 1, 'demo-branch-01', 4);
 INSERT INTO `sys_role` VALUES ('mallm-test', '商城后端角色-测试', NULL, '0', NULL, NULL, NULL, '1', 'mktwr7698', NULL, 'mktv4i2u1', NULL);
 INSERT INTO `sys_role` VALUES ('platformAdmin', '平台管理员', '可以跨机构操作不同企业数据', '1', NULL, NULL, NULL, '1', 'gw8cb9abg', NULL, 'platform-branch-001', 6);
 INSERT INTO `sys_role` VALUES ('productAdmin', '产品经理', '产品经理', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('productTeamAdmin', '产品小组组长', '产品小组组长', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('projectAdmin', '项目经理', '项目经理', '1', NULL, NULL, NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', 5);
 INSERT INTO `sys_role` VALUES ('projectOfficeAssistant', '项目行政助理', '', '1', NULL, NULL, NULL, '1', '4gx1x7v74q', NULL, 'platform-branch-001', NULL);
-INSERT INTO `sys_role` VALUES ('qq_pm', 'QQ项目经理', '', '0', NULL, NULL, NULL, '1', '', 9, 'qqkj_001', 2);
-INSERT INTO `sys_role` VALUES ('RO1724326926687185', '123', '', '1', NULL, NULL, NULL, '1', '', 99, 'demo-branch-01', 2);
-INSERT INTO `sys_role` VALUES ('RO20240903145430154', 'super', '', '1', NULL, NULL, NULL, '1', '', 99, 'demo-branch-01', 1);
 INSERT INTO `sys_role` VALUES ('sbgzhAdmin', '社保公众号管理员', '社保公众号管理员', '0', NULL, NULL, NULL, '1', 'jzza8kj51', NULL, 'jzz9b2335', NULL);
 INSERT INTO `sys_role` VALUES ('shopAdmin', '商户管理员', '商户管理员', '1', NULL, NULL, NULL, '1', 'mktwr7698', NULL, 'platform-branch-001', NULL);
 INSERT INTO `sys_role` VALUES ('SUB_DBA', '机构数据管理员', '机构内部的数据管理员', '1', NULL, NULL, NULL, '1', '', 99, 'platform-branch-001', 5);
 INSERT INTO `sys_role` VALUES ('superAdmin', '超级管理员', '超级管理员', '1', NULL, NULL, NULL, '1', 'com2018081600000001', 99, 'platform-branch-001', 6);
 INSERT INTO `sys_role` VALUES ('sysAdmin', '系统管理员', '用户,角色,权限,机构,元数据管理,系统参数管理', '1', NULL, NULL, NULL, '1', 'com2018081600000001', NULL, 'platform-branch-001', 5);
-INSERT INTO `sys_role` VALUES ('test', '测试角色', '', '0', NULL, NULL, NULL, '0', '', 4, 'demo-branch-01', 4);
+INSERT INTO `sys_role` VALUES ('test', '测试角色', '', '0', NULL, NULL, NULL, '1', '', 4, 'demo-branch-01', 4);
 INSERT INTO `sys_role` VALUES ('test-0001', '测试自定义角色', '', '0', '2021-09-06 00:00:00', '2021-09-14 00:00:00', NULL, '1', '4fr8gart8x', NULL, 'platform-branch-001', 6);
 INSERT INTO `sys_role` VALUES ('user', '普通用户', '普通用户', '1', NULL, NULL, NULL, '1', 'A0', 99, 'platform-branch-001', 1);
 
@@ -5024,6 +4249,89 @@ CREATE TABLE `sys_user_focus`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for sys_user_form_test
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_form_test`;
+CREATE TABLE `sys_user_form_test`  (
+  `UNIONID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '全局唯一编号，也叫主账户，同一个人（比如同一个微信号，同一个邮箱，同一个手机号视为同一个人）。同一个人在mdp有唯一的主账号。\r\n一个主账户下根据不同的机构设立不同的子账户。\r\n\r\n如果使用主账户登录，需要选子账号。\r\n如果使用子账户登录，不需要选，直接登录。\r\n子账号可以事后绑定主账号\r\n子账号绑定主账户的userid.\r\n主账户的unionid=userid。必须相等',
+  `DISPLAY_USERID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '登录展示使用用户编号',
+  `USERID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL DEFAULT ' ' COMMENT '内部用户编号(账户编号)，如果是机构管理员账户，则=机构号',
+  `LOCKED` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否被锁定0否1是',
+  `STARTDATE` datetime NULL DEFAULT NULL COMMENT '启用日期',
+  `NICKNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '昵称',
+  `USERNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户名称',
+  `PHONENO` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '移动电话号码',
+  `PASSWORD` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '密码',
+  `SALT` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '盐值',
+  `PWDTYPE` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '密码类型1指纹2密码',
+  `HEADIMGURL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `COUNTRY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '国家',
+  `CITY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '城市',
+  `PROVINCE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '省份',
+  `ADDRESS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '详细地址',
+  `SEX` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '性别',
+  `ENDDATE` datetime NULL DEFAULT NULL COMMENT '到期日期',
+  `DISTRICT_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '0' COMMENT '区县编号',
+  `EMAIL` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `FG_ONE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹1',
+  `FG_TWO` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹2',
+  `FG_THR` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹3',
+  `ID_CARD_NO` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '身份证号码',
+  `office_phoneno` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '办公室电话',
+  `BIZ_PROC_INST_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '当前流程实例编号',
+  `biz_flow_state` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '当前流程状态',
+  `mem_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '从平台角度看会员类型0-个人账户、1-企业管理员账户、2-企业员工账户，个人账户无须绑定机构号，个人子账户可升级为企业员工账户，企业账户必须绑定机构编号branchId个人账户升级后，保留个人主账户，个人子账户绑定企业编号成为企业员工账户',
+  `org_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备用，暂时不用',
+  `email_bak` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备用邮箱',
+  `pwd_strong` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '1-高风险，2-中风险，3-低风险',
+  `lock_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '锁定类型:0-注册等待邮箱验证，1-注册等待修改初始密码，2-注册等待验证手机号码，3-密码高风险，等待重新修改密码，9-业务需要锁定禁止登录，10-账户被锁定，请联系客服',
+  `lock_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '锁定原因',
+  `ltime` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+  `atype` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '相对于平台来说的账户类型0-子账户，1-主账户。\r\n主账户指个人在平台注册的全域唯一的账户，一个主账户下挂若干子账户，无论是主账户还是子账户都指向同一个主账户，他们都是指同一个人,相同的手机号、邮箱、微信号、身份证上述任意一个相同都代表是同一个人.\r\n同一个自然人只有一个主账户，但是可以拥有无数的子账户。\r\n主账户用于利用微信公众号、支付宝等公共资源（包括不限于收发短信、支付等）\r\n主账户无须指定归属机构号,为方便升级成机构账户，虚拟一个机构号给主账户\r\n\r\n子账户指各个机构下创建的员工账户，他们具有独立的归属机构，子账户权限范围仅限所归属的机构范围。子账户指向主账户。 \r\n子账户必须指定归属机构号。\r\n个人可以以主账户登录，也可以以子账户登录。子账户管理权属于归属机构，子账户可以自行修改子账户信息，主账户无权删除子账户。\r\n子账户通过unionid关联主账户',
+  `branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '机构主子账户归属的机构编号,如果是个人，这里填虚拟机构编号，作为虚拟的机构号，方便将来升级成企业号',
+  `continent` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '洲别',
+  `cpa_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '从入驻企业角度看协作类型0-企业内部人员，1-客户，2-供应商，3-上级机构，4-下属机构',
+  `cpa_org` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '协作组织编码',
+  `roleids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '个人账户拥有的角色，逗号分割',
+  `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
+  `shop_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '商户编号',
+  `profe_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业编号',
+  `profe_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业名称',
+  `grade_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '等级会员，根据经验值而定',
+  `grade_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '等级会员名称',
+  `ilvl_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权益等级青铜、白银、黄金、紫金、钻石',
+  `ilvl_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权益等级名称',
+  `istatus` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '会员权益状态0-无效，1-有效，2-过期',
+  `istime` datetime NULL DEFAULT NULL COMMENT '权益开始时间',
+  `ietime` datetime NULL DEFAULT NULL COMMENT '权益结束时间',
+  `valid_lvls` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '人工验证结果，当审核状态为2时，同步到sys_user表同一个字段，或者sys_branch同一个字段\r\n验证级别列表逗号分割多个，0-验证不通过，1-验证通过 ，2待审核。按顺序位置分别代表1-实名（身份证），2-手机号码，3-邮箱，4-营业执照，5-法人实名\r\n1,2,3,4,5\r\n比如0,0,0,0,0所有验证都不通过。\r\n比如1,1,1,1,1所有验证通过，\r\n比如0,1,1,0,0代表实名身份证验证不通过，法人实名认证不通过\r\n比如0,0,0,1,2代表实名认证待审核，企业法人实名认证待审核',
+  `features` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '个性化签名',
+  `profe_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业类型1-开发类，2-测试类，3-设计类，4-管理类；\r\n多选，逗号分割',
+  `ustatus` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户账户状态0-初始，1-起效，2-注销申请，3-注销后删除',
+  `credit_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '信用等级编号',
+  `credit_score` int NULL DEFAULT NULL COMMENT '信用等级分数',
+  `guard_id` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '服务保障等级0-初始，1-金，2-银，3-铜',
+  `open` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否对互联网用户开放查询0-否1是',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '简介备注',
+  `biz_hours` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '营业时间说明09:00-12:00 14:00-19:00',
+  `skill_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '技能编号列表',
+  `skill_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '技能名称列表',
+  `def_login` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否默认账户0-否，1是，在多个账户存在的情况下，默认取1的账户优先登录',
+  `cpa_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '协作组织用户编号',
+  `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '拓展字段',
+  PRIMARY KEY (`USERID`, `branch_id`) USING BTREE,
+  UNIQUE INDEX `USERID`(`USERID` ASC, `LOCKED` ASC) USING BTREE,
+  UNIQUE INDEX `DISPLAY_USERID`(`DISPLAY_USERID` ASC, `LOCKED` ASC) USING BTREE,
+  INDEX `PHONENO`(`PHONENO` ASC, `LOCKED` ASC) USING BTREE,
+  INDEX `EMAIL`(`EMAIL` ASC) USING BTREE,
+  INDEX `SYS_USER_INDEX_UNIONID`(`UNIONID` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sys_user_form_test
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for sys_user_grade_record
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_grade_record`;
@@ -5047,6 +4355,17 @@ CREATE TABLE `sys_user_grade_record`  (
 -- ----------------------------
 -- Records of sys_user_grade_record
 -- ----------------------------
+INSERT INTO `sys_user_grade_record` VALUES ('US1713251644098148', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TBABFT1MX8', NULL, '1', '2024-04-16 15:14:04', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713251651371152', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TBABFT5C36', NULL, '1', '2024-04-16 15:14:11', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713251656952185', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TBABFT9822', NULL, '1', '2024-04-16 15:14:17', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713260692546119', 'M_U3MECZ2Z195', NULL, '投标获得经验值', 'T3TSIBNA7STV', NULL, '1', '2024-04-16 17:44:53', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363482686123', 'M_U3MECZ2Z195', NULL, '投标获得经验值', 'T3TZGPBZ2195', NULL, '1', '2024-04-17 22:18:03', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363487430183', 'M_U3MECZ2Z195', NULL, '投标获得经验值', 'T3TZGPBZ829P', NULL, '1', '2024-04-17 22:18:07', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363492403178', 'M_U3MECZ2Z195', NULL, '投标获得经验值', 'T3TZGPBZPP43', NULL, '1', '2024-04-17 22:18:12', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363496400149', 'M_U3MECZ2Z195', NULL, '投标获得经验值', 'T3TZGPBZYM4V', NULL, '1', '2024-04-17 22:18:16', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363932442146', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TZHHYB72P4', NULL, '1', '2024-04-17 22:25:32', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363936721196', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TZHHYBANTS', NULL, '1', '2024-04-17 22:25:37', NULL, 0.00, 80, '1', '2024-04');
+INSERT INTO `sys_user_grade_record` VALUES ('US1713363941690162', 'M_U3MJHVRA582', NULL, '投标获得经验值', 'T3TZHHYBWACA', NULL, '1', '2024-04-17 22:25:42', NULL, 0.00, 80, '1', '2024-04');
 
 -- ----------------------------
 -- Table structure for sys_user_interests
@@ -5307,6 +4626,36 @@ CREATE TABLE `sys_user_tpa_apply`  (
 
 -- ----------------------------
 -- Records of sys_user_tpa_apply
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_user_tpa_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_tpa_copy1`;
+CREATE TABLE `sys_user_tpa_copy1`  (
+  `UNIONID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '全局唯一编号',
+  `OPENID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL DEFAULT ' ' COMMENT '帐户加密后的编号，用于对第三方系统进行开放',
+  `LOCKED` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否被锁定',
+  `STARTDATE` datetime NULL DEFAULT NULL COMMENT '启用日期',
+  `NICKNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '昵称',
+  `USERNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户名称',
+  `PHONENO` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '移动电话号码',
+  `COUNTRY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '国家',
+  `CITY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '城市',
+  `HEADIMGURL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `PROVINCE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '省份',
+  `MDP_APPID` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '前端应用系统编号',
+  `APPID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '第三方登录应用系统编号',
+  `AUTH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '授权编号',
+  `BIZ_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '性别',
+  `app_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第三方应用类型，字典tpa_app_type,1-微信公众号，2-小程序，3-微信开放平台',
+  UNIQUE INDEX `SYS_USER_TPA_OPENID`(`OPENID` ASC, `AUTH_ID` ASC) USING BTREE,
+  INDEX `SYS_USER_TPA_I_UID`(`UNIONID` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '第三方系统向我方开放的用户列表' ROW_FORMAT = COMPACT;
+
+-- ----------------------------
+-- Records of sys_user_tpa_copy1
 -- ----------------------------
 
 -- ----------------------------

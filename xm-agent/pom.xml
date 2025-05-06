@@ -2,31 +2,52 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.xm</groupId>
-        <artifactId>xm-backend</artifactId>
-        <version>${revision}</version>
-    </parent>
-
+    
+    <groupId>com.xm</groupId>
     <artifactId>xm-agent</artifactId>
+    <version>3.5.0-RELEASE</version>
     <name>xm-agent</name>
     <description>AI Agent and MCP Integration Module</description>
 
     <properties>
+        <revision>3.5.0-RELEASE</revision>
+        <mdp.version>${revision}</mdp.version>
+        <lombok.version>1.18.30</lombok.version>
+        <spring-boot.version>2.6.11</spring-boot.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <!-- Maven 相关 -->
+        <java.version>1.8</java.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <spring-boot-maven-plugin.version>2.3.5.RELEASE</spring-boot-maven-plugin.version>
         <openai.version>0.18.2</openai.version>
         <okhttp.version>4.12.0</okhttp.version>
         <jackson.version>2.15.2</jackson.version>
+        <retrofit.version>2.9.0</retrofit.version>
     </properties>
 
     <dependencies>
         <!-- Spring Boot Dependencies -->
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--    <version>${spring-boot.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-webflux</artifactId>-->
+        <!--    <version>${spring-boot.version}</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>com.mdp</groupId>
+            <artifactId>mdp-boot-starter-web</artifactId>
         </dependency>
 
         <!-- OpenAI Client -->
@@ -34,6 +55,18 @@
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
             <version>${openai.version}</version>
+        </dependency>
+
+        <!-- Retrofit for API calls -->
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-jackson</artifactId>
+            <version>${retrofit.version}</version>
         </dependency>
 
         <!-- HTTP Client -->
@@ -59,12 +92,35 @@
         </dependency>
 
         <!-- Test Dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--    <version>${spring-boot.version}</version>-->
+        <!--    <scope>test</scope>-->
+        <!--</dependency>-->
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.mdp</groupId>
+                <artifactId>mdp-dependencies</artifactId>
+                <version>${mdp.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.xm</groupId>
+                <artifactId>xm-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xm</groupId>
+                <artifactId>xm-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -79,6 +135,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>

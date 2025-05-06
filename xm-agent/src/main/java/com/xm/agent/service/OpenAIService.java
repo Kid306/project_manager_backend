@@ -4,6 +4,10 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
+import com.xm.agent.config.OpenAIConfig;
+import io.jsonwebtoken.lang.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +25,7 @@ public class OpenAIService {
     public String chat(String message) {
         ChatCompletionRequest request = ChatCompletionRequest.builder()
                 .model(openAIConfig.getModel())
-                .messages(List.of(new ChatMessage("user", message)))
+                .messages(Arrays.asList(new ChatMessage("user", message)))
                 .build();
 
         ChatCompletionResult result = openAiService.createChatCompletion(request);
@@ -31,7 +35,7 @@ public class OpenAIService {
     public Flux<String> streamChat(String message) {
         ChatCompletionRequest request = ChatCompletionRequest.builder()
                 .model(openAIConfig.getModel())
-                .messages(List.of(new ChatMessage("user", message)))
+                .messages(Arrays.asList(new ChatMessage("user", message)))
                 .stream(true)
                 .build();
 

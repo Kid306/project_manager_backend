@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+你是一个Java后端开发大师，对SpringBoot微服务有着非常强的理解。
+项目中大部分时候你只需要关心xm-backend这个模块，其中包含了项目管理软件中的接口。

@@ -13,6 +13,7 @@
 		<module>xm-api</module>
 		<module>xm-bootstrap</module>
 		<module>xm-cloud-bootstrap</module>
+		<module>xm-agent</module>
 	</modules>
 
 	<properties>

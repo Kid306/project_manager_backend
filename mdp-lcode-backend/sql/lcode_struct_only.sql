@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 16/04/2025 17:26:46
+ Date: 31/08/2024 14:14:28
 */
 
 SET NAMES utf8mb4;
@@ -25,9 +25,9 @@ CREATE TABLE `arc_attachment`  (
   `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
   `NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '附件名称',
   `URL` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '访问路径',
-  `RELATIVE_PATH` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '硬盘存放路径',
+  `RELATIVE_PATH` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '硬盘存放路径',
   `FILE_SUFFIX` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '后缀名',
-  `CDN_URL` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '内容加速器访问路径',
+  `CDN_URL` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '内容加速器访问路径',
   `IS_IMG` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否图片',
   `ARCHIVE_ID` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '档案主编号',
   `IS_CDN` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否使用CDN',
@@ -37,7 +37,7 @@ CREATE TABLE `arc_attachment`  (
   `CAN_DEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可删除',
   `CAN_READ` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可读',
   `BIZ_ID` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务编号、产品编号、商品编号等',
-  `REMARK` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '业务名称、产品名称、商品名称等',
+  `REMARK` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务名称、产品名称、商品名称等',
   `STORE_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '存储名字',
   `FILE_SIZE` decimal(8, 0) NULL DEFAULT NULL COMMENT '文件大小',
   `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '云用户机构编号',
@@ -52,7 +52,7 @@ CREATE TABLE `arc_attachment`  (
   `cusername` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
   `cdate` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段',
-  `tag_ids` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '标签',
+  `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '档案附件表' ROW_FORMAT = DYNAMIC;
 
@@ -265,42 +265,195 @@ CREATE TABLE `dm_model`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci ROW_FORMAT = DYNAMIC;
 
--- ----------------------------
--- Table structure for form_def
--- ----------------------------
-DROP TABLE IF EXISTS `form_def`;
-CREATE TABLE `form_def`  (
-  `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
-  `TABLE_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表名-当dataType=2,3时有效',
-  `DS` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据源-当dataType=2,3时有效',
-  `FORM_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单名称',
-  `USERID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人',
-  `DEPTID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
-  `FORM_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单类型',
-  `TPL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否为模板',
-  `BIZ_TYPE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务分类',
-  `CTIME` datetime NULL DEFAULT NULL COMMENT '创建日期',
-  `BRANCH_ID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
-  `CATEGORY_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分类编号',
-  `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签编号列表',
-  `tag_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签名字列表',
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
-  `dept_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
-  `data_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据存储模式1-api,crud，2-指定表格，3-独立表格（表单设计表根根谁自动变更），4-指定数据集，5-外部处理，9-存粹展示',
-  `options` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单的扩展字段信息，对应formCreate.option',
-  `funcs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '函数列表{func1:body1,func2:body2}',
-  `rules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单生成规则列表，即页面元素定义列表，对应formCreate.rule',
-  `form_qx` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单权限信息json字符串',
-  `flow_state` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审核状态',
-  `flow_time` datetime NULL DEFAULT NULL COMMENT '审核时间',
-  `flow_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审核人',
-  `flow_start_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '发审人',
-  `flow_start_time` datetime NULL DEFAULT NULL COMMENT '发审时间',
-  `proc_inst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程实例编号',
-  PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `USERID`(`USERID` ASC, `DEPTID` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单定义' ROW_FORMAT = DYNAMIC;
-
+-- -- ----------------------------
+-- -- Table structure for form_data
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `form_data`;
+-- CREATE TABLE `form_data`  (
+--   `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+--   `TWO` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性二',
+--   `THREE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性三',
+--   `FOUR` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性四',
+--   `FIVE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性五',
+--   `SIX` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性六',
+--   `SEVEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性七',
+--   `EIGHT` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性八',
+--   `NINE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性九',
+--   `TEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性十',
+--   `LTIME` datetime NULL DEFAULT NULL COMMENT '最后更新日期',
+--   `ONE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性一',
+--   `ZERO` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性零',
+--   `REMARK` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备注 ',
+--   `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单编号',
+--   `USERID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最后更新人',
+--   `ELEVEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十一',
+--   `TWELVE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十二',
+--   `THIRTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十三',
+--   `FOURTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十四',
+--   `FIFTEEN` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段十五',
+--   `ATT_URLS` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '附件url多个',
+--   `ATT_NAMES` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '附件名称多个',
+--   `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+--   `BIZ_KEY` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '唯一确定该业务的主键竖线分隔多个',
+--   `DEPTID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+--   `FSTATE` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '0初始1审批中2结束审批',
+--   `CTIME` datetime NULL DEFAULT NULL COMMENT '创建时间',
+--   `dqx_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据权限码',
+--   `cuserid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人编号',
+--   `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签编号列表逗号分割',
+--   `tag_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签名列表逗号分割',
+--   `cusername` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
+--   `dept_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+--   `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段json\r\n[\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'},\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'}\r\n]',
+--   PRIMARY KEY (`ID`) USING BTREE,
+--   UNIQUE INDEX `BIZ_KEY`(`BIZ_KEY` ASC) USING BTREE,
+--   INDEX `FORM_ID`(`FORM_ID` ASC, `cuserid` ASC) USING BTREE,
+--   INDEX `FORM_ID_2`(`FORM_ID` ASC) USING BTREE,
+--   INDEX `FORM_ID_3`(`FORM_ID` ASC, `DEPTID` ASC) USING BTREE,
+--   INDEX `USERID`(`FORM_ID` ASC, `USERID` ASC) USING BTREE,
+--   INDEX `FORM_ID_4`(`FORM_ID` ASC, `CTIME` ASC) USING BTREE,
+--   INDEX `FORM_ID_5`(`FORM_ID` ASC, `USERID` ASC, `CTIME` ASC) USING BTREE,
+--   CONSTRAINT `form_data_ibfk_1` FOREIGN KEY (`FORM_ID`) REFERENCES `form_def` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单数据表-作废' ROW_FORMAT = COMPACT;
+-- 
+-- -- ----------------------------
+-- -- Table structure for form_data_flow
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `form_data_flow`;
+-- CREATE TABLE `form_data_flow`  (
+--   `branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+--   `proc_inst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程实例编号',
+--   `agree` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批状态同意1不同意0',
+--   `assignee` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批人',
+--   `main_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程标题',
+--   `act_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批节点编号',
+--   `task_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批环节',
+--   `comment_msg` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审批意见',
+--   `id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+--   `event_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '事件类型create/assignment/complete/delete/PROCESS_CREATED/PROCESS_COMPLETE/PROCESS_CANCELLED',
+--   `biz_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务主键发起时上送，原样返回',
+--   `model_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程key，可以根据该key找到对应的流程模型也代表审批事项，就是审什么内容',
+--   `flow_last_time` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
+--   `flow_branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程审批机构号',
+--   `flow_state` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '0初始1审批中2审批通过3审批不通过4流程取消或者删除',
+--   `start_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '启动人',
+--   `proc_def_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程定义编号带版本的',
+--   `model_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '模型名称，也代表审批事项，就是审什么内容',
+--   `form_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单编号',
+--   `form_data_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单数据编号',
+--   `end_time` datetime NULL DEFAULT NULL COMMENT '结束时间',
+--   PRIMARY KEY (`id`) USING BTREE
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单审核流程表-作废' ROW_FORMAT = COMPACT;
+-- 
+-- -- ----------------------------
+-- -- Table structure for form_def
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `form_def`;
+-- CREATE TABLE `form_def`  (
+--   `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+--   `TABLE_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表名-当dataType=2,3时有效',
+--   `DS` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据源-当dataType=2,3时有效',
+--   `FORM_NAME` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单名称',
+--   `USERID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人',
+--   `DEPTID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+--   `FORM_TYPE` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表单类型',
+--   `TPL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否为模板',
+--   `BIZ_TYPE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '业务分类',
+--   `CTIME` datetime NULL DEFAULT NULL COMMENT '创建日期',
+--   `BRANCH_ID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+--   `CATEGORY_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分类编号',
+--   `tag_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签编号列表',
+--   `tag_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '标签名字列表',
+--   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建人姓名',
+--   `dept_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '创建部门',
+--   `data_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '数据存储模式1-api,crud，2-指定表格，3-独立表格（表单设计表根根谁自动变更），4-指定数据集，5-外部处理，9-存粹展示',
+--   `options` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单的扩展字段信息，对应formCreate.option',
+--   `funcs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '函数列表{func1:body1,func2:body2}',
+--   `rules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '表单生成规则列表，即页面元素定义列表，对应formCreate.rule',
+--   `form_qx` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '表单权限信息json字符串',
+--   `flow_state` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审核状态',
+--   `flow_time` datetime NULL DEFAULT NULL COMMENT '审核时间',
+--   `flow_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '审核人',
+--   `flow_start_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '发审人',
+--   `flow_start_time` datetime NULL DEFAULT NULL COMMENT '发审时间',
+--   `proc_inst_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '流程实例编号',
+--   PRIMARY KEY (`ID`) USING BTREE,
+--   INDEX `USERID`(`USERID` ASC, `DEPTID` ASC) USING BTREE
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单定义' ROW_FORMAT = DYNAMIC;
+-- 
+-- -- ----------------------------
+-- -- Table structure for form_field
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `form_field`;
+-- CREATE TABLE `form_field`  (
+--   `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '表单编号',
+--   `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键-字段编号对应数据库',
+--   `TITLE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段显示内容',
+--   `DICT` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '下拉时候关联的分组',
+--   `TYP` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段类型',
+--   `LEN` int NULL DEFAULT NULL COMMENT '字段长度',
+--   `DVAL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认值',
+--   `MUL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否多选',
+--   `REQ` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否必输',
+--   `ID_CAMEL` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段驼峰命名',
+--   `REMARK` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '字段备注',
+--   `TO_FLOW` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否提交到工作流',
+--   `BKEY` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否为主键0否，1是',
+--   `SEQ` int NULL DEFAULT NULL COMMENT '显示顺序',
+--   `PID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '归属组编号-用于解决多个tab页，或者多个子页面的问题',
+--   `show_style` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '展示风格origin-原生、tag-标签、x-综合',
+--   `style_obj` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '样式json',
+--   `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段json\r\n[\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'},\r\n{id:\'\',value:\'属性值\',name:\'属性名称\'}\r\n]',
+--   `qx` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '字段权限 json字符串\r\nothQuery:是否进行查询权限检查0-否，1是\r\nqryMinLvl:最低查询级别,\r\nqryRoleids:可查询的角色\r\nqryDeptid:可查询的部门\r\nqryUserids:可查询的人员\r\nnqRoleids:不可查询的角色\r\nnqDeptids:不可查询的部门\r\nnqUserids:不可查询的人员\r\n',
+--   `SPAN` int NULL DEFAULT NULL COMMENT '如果上级是row布局，存span属性,\r\n',
+--   `vrules` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '验证器列表\r\n[{rule1},{rule2}]',
+--   `ext_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '扩展类型user、dept、att、img、row、card、tabs等',
+--   `hol` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '输入提示，对应placeholder',
+--   `gname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分组名称，如果是tabs,这里存tab名称，逗号分割多个\r\n如果上级是tabs,存放tab名称，只存一个',
+--   `clazz` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '样式',
+--   `ronly` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '只读',
+--   `clear` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否可清除',
+--   `hidden` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否隐藏',
+--   PRIMARY KEY (`ID`, `FORM_ID`) USING BTREE,
+--   UNIQUE INDEX `FORM_ID`(`FORM_ID` ASC, `ID_CAMEL` ASC) USING BTREE,
+--   INDEX `FORM_ID_2`(`FORM_ID` ASC) USING BTREE,
+--   CONSTRAINT `form_field_ibfk_1` FOREIGN KEY (`FORM_ID`) REFERENCES `form_def` (`ID`) ON DELETE CASCADE ON UPDATE RESTRICT
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单字段定义--作废' ROW_FORMAT = COMPACT;
+-- 
+-- -- ----------------------------
+-- -- Table structure for form_qx
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `form_qx`;
+-- CREATE TABLE `form_qx`  (
+--   `FORM_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '表单编号',
+--   `QRY_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色查询,号分割',
+--   `QRY_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门查询,号分割',
+--   `QRY_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人查询,号分割',
+--   `NQ_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色查询',
+--   `NQ_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门查询',
+--   `NQ_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人查询',
+--   `OTH_QUERY` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人查询',
+--   `OTH_EDIT` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人修改',
+--   `OTH_DEL` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否允许其它人删除',
+--   `LVL_CHECK` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否进行部门级别传递权限检查',
+--   `QRY_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别查询权限',
+--   `EDIT_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色更新,号分割',
+--   `EDIT_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门更新,号分割',
+--   `EDIT_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人更新号分割',
+--   `NE_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色更新',
+--   `NE_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门更新',
+--   `NE_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人更新',
+--   `DEL_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些角色删除,号分割',
+--   `DEL_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许那些部门删除,号分割',
+--   `DEL_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '允许哪些人删除,号分割',
+--   `ND_ROLEIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些角色删除',
+--   `ND_DEPTIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些部门删除',
+--   `ND_USERIDS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '禁止哪些人查询',
+--   `EDIT_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别更新权限',
+--   `DEL_MIN_LVL` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最低级别删除权限',
+--   PRIMARY KEY (`FORM_ID`) USING BTREE
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '表单权限-作废' ROW_FORMAT = COMPACT;
+-- 
 -- ----------------------------
 -- Table structure for menu_def
 -- ----------------------------
@@ -458,6 +611,35 @@ CREATE TABLE `meta_item`  (
   PRIMARY KEY (`ID`) USING BTREE,
   UNIQUE INDEX `META_ITEM_I_CODE`(`ITEM_CODE` ASC, `CATEGORY_ID` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '数据项定义' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for meta_item_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `meta_item_copy1`;
+CREATE TABLE `meta_item_copy1`  (
+  `ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '主键',
+  `ITEM_CODE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '代码，小写,下横线分割，请不要用驼峰命名',
+  `ITEM_NAME` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '名称',
+  `REMARK` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备注',
+  `CATEGORY_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '分类编号 暂时sysParams系统参数，all-通用',
+  `ITEM_SIZE` int NULL DEFAULT 50 COMMENT '长度',
+  `ITEM_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '1-普通文本，2-数字，3-日期，4-单选列表，5-多选列表，6-单文件，7-多文件，8-富文本，9-单图文，10多图文,11-单视频，12-多视频，13单选radio,14多选checkbox',
+  `BRANCH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '机构编号',
+  `DEPTID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '部门编号',
+  `CMENU` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否创建菜单',
+  `DVALUES` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认值,如果是列表，则存储列表编号，多个逗号分割',
+  `DNAMES` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '默认名称，如果是列表，则存储列表名称，多个则逗号分割',
+  `OPTION_LIST` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT 'item_type=4,5时的选项列表-指向item_option表关联的列表，该字段作废',
+  `input_format` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '输入提示',
+  `required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '0' COMMENT '是否必须0否1是',
+  `seq` int NULL DEFAULT 999 COMMENT '排序顺序',
+  `table_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '表名',
+  `is_show` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '1' COMMENT '是否显示0否1是',
+  `qx` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权限，是否可以0-新增，1-删除，2-编辑，3-查询，多个以逗号分割',
+  `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '扩展字段\r\n[{name:\'中文名称\',id:\'编号\',value:\'值\',remark:\'备注\',type:\'支持简单的1-普通文本2-数字，3-日期，8-富文本，9单图文，15-是否\'}]',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `META_ITEM_I_CODE`(`ITEM_CODE` ASC, `CATEGORY_ID` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '数据项定义' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for meta_item_option
@@ -688,6 +870,22 @@ CREATE TABLE `plat_platform`  (
   `free_max_users` int NULL DEFAULT NULL COMMENT '免费版用户数量',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for platformbranch001_sys_user_ai
+-- ----------------------------
+DROP TABLE IF EXISTS `platformbranch001_sys_user_ai`;
+CREATE TABLE `platformbranch001_sys_user_ai`  (
+  `zero` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `one` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `two` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `three` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `eight` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `four` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `six` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `seven` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性',
+  `five` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '属性'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '测试' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for res_oper_data_trail
@@ -1593,6 +1791,85 @@ CREATE TABLE `sys_user_focus`  (
   PRIMARY KEY (`userid`, `biz_id`, `pbiz_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci ROW_FORMAT = DYNAMIC;
 
+-- -- ----------------------------
+-- -- Table structure for sys_user_form_test
+-- -- ----------------------------
+-- DROP TABLE IF EXISTS `sys_user_form_test`;
+-- CREATE TABLE `sys_user_form_test`  (
+--   `UNIONID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '全局唯一编号，也叫主账户，同一个人（比如同一个微信号，同一个邮箱，同一个手机号视为同一个人）。同一个人在mdp有唯一的主账号。\r\n一个主账户下根据不同的机构设立不同的子账户。\r\n\r\n如果使用主账户登录，需要选子账号。\r\n如果使用子账户登录，不需要选，直接登录。\r\n子账号可以事后绑定主账号\r\n子账号绑定主账户的userid.\r\n主账户的unionid=userid。必须相等',
+--   `DISPLAY_USERID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '登录展示使用用户编号',
+--   `USERID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL DEFAULT ' ' COMMENT '内部用户编号(账户编号)，如果是机构管理员账户，则=机构号',
+--   `LOCKED` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否被锁定0否1是',
+--   `STARTDATE` datetime NULL DEFAULT NULL COMMENT '启用日期',
+--   `NICKNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '昵称',
+--   `USERNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户名称',
+--   `PHONENO` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '移动电话号码',
+--   `PASSWORD` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '密码',
+--   `SALT` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '盐值',
+--   `PWDTYPE` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '密码类型1指纹2密码',
+--   `HEADIMGURL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '头像地址',
+--   `COUNTRY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '国家',
+--   `CITY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '城市',
+--   `PROVINCE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '省份',
+--   `ADDRESS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '详细地址',
+--   `SEX` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '性别',
+--   `ENDDATE` datetime NULL DEFAULT NULL COMMENT '到期日期',
+--   `DISTRICT_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT '0' COMMENT '区县编号',
+--   `EMAIL` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '邮箱',
+--   `FG_ONE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹1',
+--   `FG_TWO` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹2',
+--   `FG_THR` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '指纹3',
+--   `ID_CARD_NO` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '身份证号码',
+--   `office_phoneno` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '办公室电话',
+--   `BIZ_PROC_INST_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '当前流程实例编号',
+--   `biz_flow_state` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '当前流程状态',
+--   `mem_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '从平台角度看会员类型0-个人账户、1-企业管理员账户、2-企业员工账户，个人账户无须绑定机构号，个人子账户可升级为企业员工账户，企业账户必须绑定机构编号branchId个人账户升级后，保留个人主账户，个人子账户绑定企业编号成为企业员工账户',
+--   `org_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备用，暂时不用',
+--   `email_bak` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '备用邮箱',
+--   `pwd_strong` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '1-高风险，2-中风险，3-低风险',
+--   `lock_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '锁定类型:0-注册等待邮箱验证，1-注册等待修改初始密码，2-注册等待验证手机号码，3-密码高风险，等待重新修改密码，9-业务需要锁定禁止登录，10-账户被锁定，请联系客服',
+--   `lock_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '锁定原因',
+--   `ltime` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日期',
+--   `atype` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '相对于平台来说的账户类型0-子账户，1-主账户。\r\n主账户指个人在平台注册的全域唯一的账户，一个主账户下挂若干子账户，无论是主账户还是子账户都指向同一个主账户，他们都是指同一个人,相同的手机号、邮箱、微信号、身份证上述任意一个相同都代表是同一个人.\r\n同一个自然人只有一个主账户，但是可以拥有无数的子账户。\r\n主账户用于利用微信公众号、支付宝等公共资源（包括不限于收发短信、支付等）\r\n主账户无须指定归属机构号,为方便升级成机构账户，虚拟一个机构号给主账户\r\n\r\n子账户指各个机构下创建的员工账户，他们具有独立的归属机构，子账户权限范围仅限所归属的机构范围。子账户指向主账户。 \r\n子账户必须指定归属机构号。\r\n个人可以以主账户登录，也可以以子账户登录。子账户管理权属于归属机构，子账户可以自行修改子账户信息，主账户无权删除子账户。\r\n子账户通过unionid关联主账户',
+--   `branch_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL COMMENT '机构主子账户归属的机构编号,如果是个人，这里填虚拟机构编号，作为虚拟的机构号，方便将来升级成企业号',
+--   `continent` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '洲别',
+--   `cpa_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '从入驻企业角度看协作类型0-企业内部人员，1-客户，2-供应商，3-上级机构，4-下属机构',
+--   `cpa_org` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '协作组织编码',
+--   `roleids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '个人账户拥有的角色，逗号分割',
+--   `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
+--   `shop_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '商户编号',
+--   `profe_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业编号',
+--   `profe_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业名称',
+--   `grade_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '等级会员，根据经验值而定',
+--   `grade_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '等级会员名称',
+--   `ilvl_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权益等级青铜、白银、黄金、紫金、钻石',
+--   `ilvl_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '权益等级名称',
+--   `istatus` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '会员权益状态0-无效，1-有效，2-过期',
+--   `istime` datetime NULL DEFAULT NULL COMMENT '权益开始时间',
+--   `ietime` datetime NULL DEFAULT NULL COMMENT '权益结束时间',
+--   `valid_lvls` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '人工验证结果，当审核状态为2时，同步到sys_user表同一个字段，或者sys_branch同一个字段\r\n验证级别列表逗号分割多个，0-验证不通过，1-验证通过 ，2待审核。按顺序位置分别代表1-实名（身份证），2-手机号码，3-邮箱，4-营业执照，5-法人实名\r\n1,2,3,4,5\r\n比如0,0,0,0,0所有验证都不通过。\r\n比如1,1,1,1,1所有验证通过，\r\n比如0,1,1,0,0代表实名身份证验证不通过，法人实名认证不通过\r\n比如0,0,0,1,2代表实名认证待审核，企业法人实名认证待审核',
+--   `features` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '个性化签名',
+--   `profe_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '职业类型1-开发类，2-测试类，3-设计类，4-管理类；\r\n多选，逗号分割',
+--   `ustatus` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户账户状态0-初始，1-起效，2-注销申请，3-注销后删除',
+--   `credit_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '信用等级编号',
+--   `credit_score` int NULL DEFAULT NULL COMMENT '信用等级分数',
+--   `guard_id` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '服务保障等级0-初始，1-金，2-银，3-铜',
+--   `open` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否对互联网用户开放查询0-否1是',
+--   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '简介备注',
+--   `biz_hours` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '营业时间说明09:00-12:00 14:00-19:00',
+--   `skill_ids` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '技能编号列表',
+--   `skill_names` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '技能名称列表',
+--   `def_login` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否默认账户0-否，1是，在多个账户存在的情况下，默认取1的账户优先登录',
+--   `cpa_userid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '协作组织用户编号',
+--   `ext_infos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL COMMENT '拓展字段',
+--   PRIMARY KEY (`USERID`, `branch_id`) USING BTREE,
+--   UNIQUE INDEX `USERID`(`USERID` ASC, `LOCKED` ASC) USING BTREE,
+--   UNIQUE INDEX `DISPLAY_USERID`(`DISPLAY_USERID` ASC, `LOCKED` ASC) USING BTREE,
+--   INDEX `PHONENO`(`PHONENO` ASC, `LOCKED` ASC) USING BTREE,
+--   INDEX `EMAIL`(`EMAIL` ASC) USING BTREE,
+--   INDEX `SYS_USER_INDEX_UNIONID`(`UNIONID` ASC) USING BTREE
+-- ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '用户表' ROW_FORMAT = COMPACT;
+
 -- ----------------------------
 -- Table structure for sys_user_grade_record
 -- ----------------------------
@@ -1840,6 +2117,32 @@ CREATE TABLE `sys_user_tpa_apply`  (
   `LOPUSERID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '最后操作人',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '岗位申请记录' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for sys_user_tpa_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_tpa_copy1`;
+CREATE TABLE `sys_user_tpa_copy1`  (
+  `UNIONID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT ' ' COMMENT '全局唯一编号',
+  `OPENID` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL DEFAULT ' ' COMMENT '帐户加密后的编号，用于对第三方系统进行开放',
+  `LOCKED` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '是否被锁定',
+  `STARTDATE` datetime NULL DEFAULT NULL COMMENT '启用日期',
+  `NICKNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '昵称',
+  `USERNAME` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '用户名称',
+  `PHONENO` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '移动电话号码',
+  `COUNTRY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '国家',
+  `CITY` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '城市',
+  `HEADIMGURL` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '头像地址',
+  `PROVINCE` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '省份',
+  `MDP_APPID` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '前端应用系统编号',
+  `APPID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '第三方登录应用系统编号',
+  `AUTH_ID` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '授权编号',
+  `BIZ_TYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NULL DEFAULT NULL COMMENT '性别',
+  `app_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第三方应用类型，字典tpa_app_type,1-微信公众号，2-小程序，3-微信开放平台',
+  UNIQUE INDEX `SYS_USER_TPA_OPENID`(`OPENID` ASC, `AUTH_ID` ASC) USING BTREE,
+  INDEX `SYS_USER_TPA_I_UID`(`UNIONID` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_croatian_ci COMMENT = '第三方系统向我方开放的用户列表' ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Table structure for sys_user_tpa_invite
